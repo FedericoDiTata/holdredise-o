@@ -1,0 +1,143 @@
+/* HOLD MarqueeBand — banda full-bleed sutil entre secciones.
+   Loop seamless: items duplicados 6x + margin-right uniforme en cada item
+   (incluido el último). Total width par → translate -50% pixel-exacto. */
+
+.hold-marquee {
+  --marquee-gap: 28px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--accent-08, color-mix(in srgb, var(--accent) 8%, transparent));
+  color: var(--fg);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  isolation: isolate;
+}
+
+/* Hatch diagonal muy bajo alpha sobre el tinte — micro textura. */
+.hold-marquee::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 6%, transparent) 0 8px,
+    transparent 8px 16px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hold-marquee--invert {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+.hold-marquee--invert::before {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 18%, transparent) 0 8px,
+    transparent 8px 16px
+  );
+}
+
+/* Variante accent: bg azul brand, texto blanco bold, items grandes —
+   pensado para frases tipo loop ("Lo que hacemos ↓"). */
+.hold-marquee--accent {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.hold-marquee--accent::before {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0 8px,
+    transparent 8px 16px
+  );
+}
+
+.hold-marquee--accent .hold-marquee__viewport {
+  padding-block: clamp(18px, 2.4vh, 30px);
+}
+
+.hold-marquee--accent .hold-marquee__item {
+  font-size: clamp(20px, 2.4vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #fff;
+}
+
+.hold-marquee--accent .hold-marquee__sep {
+  background: rgba(255, 255, 255, 0.35);
+  width: 8px;
+  height: 8px;
+}
+
+.hold-marquee__viewport {
+  position: relative;
+  z-index: 1;
+  padding-block: 14px;
+  overflow: hidden;
+}
+
+/* Track: flex SIN gap. El spacing entre items lo da `margin-right` de cada item. */
+.hold-marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: hold-marquee-loop var(--marquee-duration, 22s) linear infinite;
+  will-change: transform;
+}
+
+.hold-marquee:hover .hold-marquee__track {
+  animation-play-state: paused;
+}
+
+.hold-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  /* gap interno: text → separador */
+  gap: var(--marquee-gap);
+  /* spacing entre items (incluido el último → total par para seamless -50%) */
+  margin-right: var(--marquee-gap);
+  font-size: clamp(13px, 1.2vw, 16px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hold-marquee__item--em {
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(14px, 1.4vw, 18px);
+  letter-spacing: -0.005em;
+}
+
+.hold-marquee__sep {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--marquee-sep, var(--accent));
+  flex-shrink: 0;
+}
+
+@keyframes hold-marquee-loop {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (max-width: 768px) {
+  .hold-marquee {
+    --marquee-gap: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-marquee__track {
+    animation: none;
+  }
+}

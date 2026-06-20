@@ -1,0 +1,337 @@
+/* HOLD HeroCards — mural editorial con cards rotadas y contenido variado.
+   Estructura: outer maneja entrance (rotate + scale + opacity), inner
+   maneja drift perpetuo (translate). Así no hay conflicto de transforms. */
+
+.hold-hero-cards {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background: var(--bg);
+  overflow: hidden;
+  isolation: isolate;
+  margin-top: calc(-1 * var(--hold-header-h, 72px));
+  padding-top: var(--hold-header-h, 72px);
+}
+
+.hold-hero-cards__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hold-hero-cards__grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 10px;
+  padding: 20px;
+  padding-top: calc(var(--hold-header-h, 72px) + 16px);
+  z-index: 0;
+}
+
+/* === CARD OUTER ===
+   Aplica entrance (rotate + scale + opacity) via animation con delay.
+   Estado final: rotate(var(--rotate)) scale(1). `both` lo mantiene. */
+.hold-hero-cards__card {
+  --rotate: 0deg;
+  --delay: 0s;
+  --drift-delay: 2s;
+  --drift-x: 0px;
+  --drift-y: 0px;
+  --drift-r: 0deg;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  opacity: 0;
+  animation: hold-card-enter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay) both;
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    z-index 0.1s linear;
+  z-index: 1;
+}
+
+.hold-hero-cards__card:hover {
+  z-index: 10;
+}
+
+/* === ENTRANCE direcciones === */
+.hold-hero-cards__card[data-enter="top"] {
+  animation-name: hold-card-enter-top;
+}
+.hold-hero-cards__card[data-enter="bottom"] {
+  animation-name: hold-card-enter-bottom;
+}
+.hold-hero-cards__card[data-enter="left"] {
+  animation-name: hold-card-enter-left;
+}
+.hold-hero-cards__card[data-enter="right"] {
+  animation-name: hold-card-enter-right;
+}
+.hold-hero-cards__card[data-enter="scale"] {
+  animation-name: hold-card-enter-scale;
+}
+
+@keyframes hold-card-enter-top {
+  from {
+    opacity: 0;
+    transform: translateY(-60px) rotate(calc(var(--rotate) - 8deg)) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rotate)) scale(1);
+  }
+}
+
+@keyframes hold-card-enter-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(60px) rotate(calc(var(--rotate) + 8deg)) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rotate)) scale(1);
+  }
+}
+
+@keyframes hold-card-enter-left {
+  from {
+    opacity: 0;
+    transform: translateX(-80px) rotate(calc(var(--rotate) - 12deg)) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(var(--rotate)) scale(1);
+  }
+}
+
+@keyframes hold-card-enter-right {
+  from {
+    opacity: 0;
+    transform: translateX(80px) rotate(calc(var(--rotate) + 12deg)) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(var(--rotate)) scale(1);
+  }
+}
+
+@keyframes hold-card-enter-scale {
+  from {
+    opacity: 0;
+    transform: rotate(calc(var(--rotate) - 16deg)) scale(0.4);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--rotate)) scale(1);
+    filter: blur(0);
+  }
+}
+
+.hold-hero-cards__card:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* === CARD INNER ===
+   Maneja el drift perpetuo después del entrance. Translate sutil + micro
+   rotación. Cada card tiene drift-x, drift-y, drift-r individuales para
+   que no se sincronicen. */
+.hold-hero-cards__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  background-clip: padding-box;
+  animation: hold-card-drift 7s ease-in-out var(--drift-delay) infinite;
+}
+
+@keyframes hold-card-drift {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(var(--drift-x), var(--drift-y)) rotate(var(--drift-r));
+  }
+}
+
+/* === CONTENT VARIANTS ===
+   Distintos tipos de contenido — cada uno con su tratamiento tipográfico. */
+
+/* GLYPH "h" cursiva (logo) */
+.hold-hero-cards__glyph {
+  font-family: "Times New Roman", "Georgia", serif;
+  font-size: clamp(64px, 18vw, 320px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: inherit;
+  user-select: none;
+}
+
+/* WORD: palabras de marca tipo "hola", "hold", "estrategia" */
+.hold-hero-cards__word {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: inherit;
+  text-transform: lowercase;
+  user-select: none;
+  text-align: center;
+  padding: 8px;
+}
+
+.hold-hero-cards__word[data-size="big"] {
+  font-size: clamp(32px, 4.5vw, 64px);
+  line-height: 0.95;
+}
+
+.hold-hero-cards__word[data-size="sm"] {
+  font-size: clamp(20px, 2.4vw, 36px);
+  line-height: 0.95;
+}
+
+.hold-hero-cards__word[data-italic] {
+  font-family: "Times New Roman", "Georgia", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 88px);
+  letter-spacing: -0.03em;
+}
+
+/* NUMBER: "01" estilo magazine */
+.hold-hero-cards__number {
+  font-family: "Times New Roman", "Georgia", serif;
+  font-size: clamp(56px, 10vw, 140px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: inherit;
+  user-select: none;
+}
+
+/* BLOCK: color block puro, sin contenido */
+.hold-hero-cards__card[data-content="block"] .hold-hero-cards__inner {
+  /* nada extra, solo el background-color del style */
+}
+
+/* HATCH: pattern diagonal sobre el color */
+.hold-hero-cards__card[data-content="hatch"] .hold-hero-cards__inner {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0 12px,
+    transparent 12px 24px
+  );
+}
+
+/* === FRASE FINAL === */
+.hold-hero-cards__phrase-wrap {
+  --delay: 1.6s;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--gutter, 48px);
+  pointer-events: none;
+  opacity: 0;
+  animation: hold-fade-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay) both;
+}
+
+.hold-hero-cards__phrase {
+  font-size: clamp(22px, 3.4vw, 48px);
+  line-height: 1.18;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  text-align: center;
+  margin: 0;
+  max-width: 22ch;
+  padding: 22px 32px;
+  background: rgba(250, 255, 250, 0.82);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+
+.hold-hero-cards__phrase em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+/* === CTAs === */
+.hold-hero-cards__cta-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(32px, 7vh, 80px);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hold-hero-cards__cta {
+  --delay: 1.9s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  pointer-events: auto;
+  padding: 8px;
+  background: rgba(250, 255, 250, 0.6);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  opacity: 0;
+  animation: hold-fade-up 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay) both;
+}
+
+@keyframes hold-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .hold-hero-cards__grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 6px;
+    padding: 12px;
+    padding-top: calc(var(--hold-header-h, 72px) + 10px);
+  }
+  .hold-hero-cards__glyph {
+    font-size: clamp(48px, 22vw, 160px);
+  }
+  .hold-hero-cards__cta {
+    gap: 10px;
+    padding: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-hero-cards__card,
+  .hold-hero-cards__inner,
+  .hold-hero-cards__phrase-wrap,
+  .hold-hero-cards__cta {
+    animation: none;
+    opacity: 1;
+    transform: rotate(var(--rotate, 0deg));
+  }
+}

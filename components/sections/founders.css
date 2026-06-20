@@ -1,0 +1,75 @@
+/* HOLD Founders — bloque de fundadoras side-by-side.
+   Cada una: foto vertical 4/5 + bloque de texto (nombre · rol · bio).
+   Layout editorial, espacioso, sin cards. */
+
+.hold-founders {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(40px, 6vw, 96px);
+}
+
+.hold-founder {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.hold-founder__photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.hold-founder__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hold-founder__num {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hold-founder__name {
+  font-size: clamp(36px, 4.5vw, 56px);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin: 0;
+}
+
+.hold-founder__role {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  margin-top: 4px;
+}
+
+.hold-founder__bio {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 48ch;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hold-founder__bio p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .hold-founders {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
+}

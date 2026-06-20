@@ -1,0 +1,146 @@
+/* HOLD HeroShader — versión simple editorial.
+   Bg Star White, texto negro display, CTAs centrados. Sin decoraciones
+   extra. La altura la maneja el sticky parent (HeroScrollStack) que
+   está recortado para mostrar peek de la siguiente sección. */
+
+.hold-hero-shader {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hold-hero-shader__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hold-hero-shader__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3vh, 36px);
+  padding-inline: clamp(24px, 5vw, 80px);
+  /* Padding-top más generoso (header + extra) para que el título no
+     pegue con la nav y respire arriba. */
+  padding-top: calc(var(--hold-header-h, 72px) + clamp(16px, 4vh, 56px));
+  text-align: center;
+}
+
+.hold-hero-shader__title {
+  /* Título en 2 renglones forzados (cada __word es display:block).
+     Font-size grande para que la línea ocupe todo el ancho disponible
+     — efecto "alargado" pedido en el ajuste. */
+  font-size: clamp(36px, 7vw, 112px);
+  line-height: 1.02;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  margin: 0;
+  /* Sin max-width — que el título ocupe el ancho disponible del content
+     (acotado por padding-inline del wrapper). */
+  width: 100%;
+}
+
+.hold-hero-shader__title em {
+  /* "solo" en italic pero MISMO color del texto (sin accent azul) — así
+     todo el renglón queda visualmente unificado en un solo tono. */
+  font-style: italic;
+  font-weight: 300;
+  color: var(--fg);
+}
+
+/* "construimos marcas." va en bold para cerrar fuerte. */
+.hold-hero-shader__word--strong {
+  font-weight: 700;
+  letter-spacing: -0.055em;
+}
+
+.hold-hero-shader__word {
+  /* display:block fuerza un renglón propio a cada span — las 2 líneas
+     quedan separadas sin importar el wrap natural del texto. */
+  display: block;
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(12px);
+  animation: hold-hero-word 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) calc(0.2s + var(--i, 0) * 0.14s) both;
+}
+
+@keyframes hold-hero-word {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hold-hero-shader__sub {
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.45;
+  color: var(--muted);
+  margin: 0;
+  max-width: 42ch;
+  opacity: 0;
+  animation: hold-hero-fade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 1.0s both;
+}
+
+.hold-hero-shader__sub em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fg);
+}
+
+.hold-hero-shader__cta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+  opacity: 0;
+  animation: hold-hero-fade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 1.2s both;
+}
+
+@keyframes hold-hero-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .hold-hero-shader__title {
+    font-size: clamp(38px, 11vw, 88px);
+  }
+  .hold-hero-shader__sub {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-hero-shader__word,
+  .hold-hero-shader__sub,
+  .hold-hero-shader__cta {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
+  }
+}

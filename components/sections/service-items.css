@@ -1,0 +1,54 @@
+/* HOLD ServiceItems — lista editorial de "qué hacemos".
+   Filas grandes con número, separadas por hairline. Hover sutil:
+   el row gana acento de color en el número + el texto pasa a fg full. */
+
+.hold-service-items {
+  width: 100%;
+}
+
+.hold-service-items__row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 32px;
+  align-items: baseline;
+  padding-block: clamp(28px, 4vh, 44px);
+  border-top: 1px solid var(--hairline);
+  transition: background var(--dur-fast) var(--ease-hold);
+}
+
+.hold-service-items__row:last-child {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.hold-service-items__row:hover {
+  background: var(--accent-08);
+}
+
+.hold-service-items__num {
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  transition: color var(--dur-fast) var(--ease-hold);
+}
+
+.hold-service-items__row:hover .hold-service-items__num {
+  color: var(--accent);
+}
+
+.hold-service-items__text {
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.18;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .hold-service-items__row {
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+  }
+}

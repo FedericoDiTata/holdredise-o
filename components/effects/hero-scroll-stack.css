@@ -1,0 +1,55 @@
+/* HOLD HeroScrollStack — sticky hero + next slides over.
+   El sticky queda pegado top:0 del viewport durante el rango del container.
+   El next viene después en el flow normal (sin margin negativo) y sube
+   desde abajo del viewport gracias a su z-index mayor → tapa al sticky. */
+
+.hold-scroll-stack {
+  position: relative;
+  /* Hero detrás del nav transparente: el container arranca 72px arriba del
+     padding-top del <main>, así el sticky cubre desde top:0 del viewport. */
+  margin-top: calc(-1 * var(--hold-header-h, 72px));
+}
+
+.hold-scroll-stack__sticky {
+  position: sticky;
+  top: 0;
+  /* 82svh deja ~18svh del next visible al fondo → el marquee TOP se ve
+     completo asomando, comunicando claramente que hay más para scrollear. */
+  height: 82svh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hold-scroll-stack__hero {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  transition:
+    opacity 0.1s linear,
+    transform 0.1s linear;
+}
+
+/* El hero interno ya tiene 100svh y margin-top negativo standalone.
+   Adentro del stack lo neutralizamos: el sticky maneja la altura.
+   Selector genérico: aplica a HeroCards, HeroParticles, o cualquier hero. */
+.hold-scroll-stack__hero > * {
+  height: 100% !important;
+  margin-top: 0 !important;
+}
+
+.hold-scroll-stack__next {
+  position: relative;
+  z-index: 1;
+  /* Compensa el margin-top negativo del container para que el next no
+     asome 72px en scroll 0 (sin esto se ve la marquee al fondo del hero). */
+  margin-top: var(--hold-header-h, 72px);
+  background: var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-scroll-stack__hero {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

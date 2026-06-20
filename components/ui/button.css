@@ -1,0 +1,128 @@
+/* HOLD Button — variantes y micro-interacciones del DS.
+   El primary recibe el wrapper <MagneticHover> en JS; este CSS solo maneja
+   color, hover, y la flecha animada.                                         */
+
+.hold-btn-root {
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+.hold-btn {
+  --btn-accent: var(--accent, #E96951);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: var(--pad-btn-y, 14px) var(--pad-btn-x, 24px);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--dur-base) var(--ease-hold),
+    color var(--dur-base) var(--ease-hold),
+    border-color var(--dur-base) var(--ease-hold);
+  will-change: transform;
+}
+
+.hold-btn__label {
+  display: inline-block;
+}
+
+.hold-btn__arrow {
+  transition: transform var(--dur-base) var(--ease-hold);
+}
+
+.hold-btn[data-arrow]:hover .hold-btn__arrow {
+  transform: translateX(4px);
+}
+
+/* Variante --large — más padding y peso para protagonismo en hero / banda. */
+.hold-btn--large {
+  padding: 18px 32px;
+  font-size: 16px;
+  gap: 16px;
+  letter-spacing: -0.01em;
+}
+
+.hold-btn--large .hold-btn__arrow {
+  transition: transform var(--dur-base) var(--ease-hold);
+}
+
+.hold-btn--large[data-arrow]:hover .hold-btn__arrow {
+  transform: translateX(6px);
+}
+
+/* Primary — base negro · hover acento (DS) */
+.hold-btn--primary {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+.hold-btn--primary:hover {
+  background: var(--btn-accent);
+  border-color: var(--btn-accent);
+  color: #fff;
+}
+
+/* Secondary — outline · hover invertido */
+.hold-btn--secondary {
+  background: transparent;
+  color: var(--fg);
+  border-color: var(--fg);
+}
+.hold-btn--secondary:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* Ghost — sin borde, hover sutil */
+.hold-btn--ghost {
+  background: transparent;
+  color: var(--fg);
+  border-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+.hold-btn--ghost:hover {
+  color: var(--btn-accent);
+}
+
+/* Link — texto subrayado, sin padding ni borde */
+.hold-btn--link {
+  background: transparent;
+  color: var(--fg);
+  border-color: transparent;
+  padding: 0;
+  text-decoration: none;
+  position: relative;
+  gap: 6px;
+}
+.hold-btn--link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left;
+  transform: scaleX(1);
+  transition: transform var(--dur-base) var(--ease-hold);
+}
+.hold-btn--link:hover {
+  color: var(--btn-accent);
+}
+.hold-btn--link:hover::after {
+  background: var(--btn-accent);
+}

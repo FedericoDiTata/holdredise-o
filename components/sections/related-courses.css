@@ -1,0 +1,181 @@
+/* HOLD RelatedCourses — grid 3-col con otros cursos para mostrar al
+   final del detalle. Cards simples con hover de acento. */
+
+.hold-related {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+}
+
+.hold-related__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  text-decoration: none;
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color var(--dur-base) var(--ease-hold);
+}
+
+.hold-related__card:hover {
+  border-color: var(--accent);
+}
+
+.hold-related__media {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(29, 29, 27, 0.06) 0 8px,
+      transparent 8px 16px
+    ),
+    var(--surface);
+  overflow: hidden;
+}
+
+.hold-related__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition: opacity var(--dur-base) var(--ease-hold);
+}
+
+.hold-related__card:hover .hold-related__media::after {
+  opacity: 0.15;
+}
+
+.hold-related__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 1.8vw, 28px);
+  flex: 1;
+}
+
+.hold-related__nombre {
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--fg);
+  transition: color var(--dur-fast) var(--ease-hold);
+}
+
+.hold-related__card:hover .hold-related__nombre {
+  color: var(--accent);
+}
+
+.hold-related__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  margin-top: auto;
+  border-top: 1px solid var(--hairline);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.hold-related__arrow {
+  color: var(--muted);
+  transition:
+    transform var(--dur-fast) var(--ease-hold),
+    color var(--dur-fast) var(--ease-hold);
+}
+
+.hold-related__card:hover .hold-related__arrow {
+  transform: translate(4px, -4px);
+  color: var(--accent);
+}
+
+/* ── Card especial CTA (sexta celda · capacitaciones a medida) ───── */
+.hold-related__card--cta {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.hold-related__card--cta:hover {
+  border-color: var(--accent);
+  /* Sin border-color de hover distinto — el bg azul ya es el énfasis. */
+}
+
+.hold-related__cta-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(20px, 1.8vw, 28px);
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.hold-related__cta-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hold-related__cta-title {
+  font-size: clamp(22px, 2.1vw, 28px);
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0;
+  max-width: 14ch;
+}
+
+.hold-related__cta-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: #fff;
+}
+
+.hold-related__cta-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  max-width: 36ch;
+}
+
+.hold-related__cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: #fff;
+  transition: gap var(--dur-fast) var(--ease-hold);
+}
+
+.hold-related__card--cta:hover .hold-related__cta-link {
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .hold-related {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .hold-related {
+    grid-template-columns: 1fr;
+  }
+}

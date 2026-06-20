@@ -1,0 +1,296 @@
+/* HOLD Header — sticky con blur sobre scroll + nav con wipe de color por servicio.
+   El comportamiento responsive cambia el desktop nav por el hamburger. */
+
+.hold-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--hold-header-h, 72px);
+  padding-inline: var(--gutter, 48px);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background var(--dur-base) var(--ease-hold),
+    border-color var(--dur-base) var(--ease-hold),
+    backdrop-filter var(--dur-base) var(--ease-hold);
+}
+
+.hold-header[data-scrolled="true"] {
+  background: rgba(250, 255, 250, 0.85);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom-color: var(--hairline);
+}
+
+/* === DARK MODE: cuando hay una sección oscura debajo del nav (ej: HeroShader).
+   El texto pasa a blanco, el logo también. El bg queda transparente (o blur
+   muy sutil al scrollear) para que se siga viendo la animación detrás. */
+.hold-header[data-on-dark] {
+  color: var(--bg);
+}
+
+.hold-header[data-on-dark] .hold-header__logo {
+  color: var(--bg);
+}
+
+.hold-header[data-on-dark] .hold-header__link {
+  color: var(--bg);
+}
+
+.hold-header[data-on-dark][data-scrolled="true"] {
+  background: rgba(29, 29, 27, 0.6);
+  border-bottom-color: rgba(250, 255, 250, 0.12);
+}
+
+.hold-header[data-on-dark] .hold-header__burger-bar {
+  background: var(--bg);
+}
+
+.hold-header__logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--fg);
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+/* ® supercript chiquito arriba a la derecha del wordmark. Cumple con
+   la indicación del agente INPI: "colocar la letra R que define que
+   la marca está registrada — en la parte superior derecha". */
+.hold-header__logo-r {
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+.hold-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Link con wipe vertical de color. Servicios usan --accent global,
+   neutros (Nosotros/Clientes) usan --fg. */
+.hold-header__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid transparent;
+  transition:
+    color var(--dur-base) var(--ease-hold),
+    border-color var(--dur-base) var(--ease-hold);
+}
+
+.hold-header__link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateY(101%);
+  transition: transform var(--dur-base) var(--ease-hold);
+  z-index: -1;
+}
+
+.hold-header__link[data-neutral="true"]::before {
+  background: var(--fg);
+}
+
+/* Dot a la izquierda del label en estado base */
+.hold-header__link-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  flex-shrink: 0;
+  transition:
+    width var(--dur-base) var(--ease-hold),
+    background var(--dur-base) var(--ease-hold);
+}
+
+.hold-header__link:hover,
+.hold-header__link[data-active="true"] {
+  color: #fff;
+}
+
+.hold-header__link:hover::before,
+.hold-header__link[data-active="true"]::before {
+  transform: translateY(0);
+}
+
+.hold-header__link:hover .hold-header__link-dot,
+.hold-header__link[data-active="true"] .hold-header__link-dot {
+  background: #fff;
+  width: 16px;
+}
+
+/* Dot blanco neutro cuando el servicio no tiene color (Nosotros / Clientes)    */
+.hold-header__link[data-neutral="true"] .hold-header__link-dot {
+  background: var(--hairline);
+}
+.hold-header__link[data-neutral="true"]:hover .hold-header__link-dot,
+.hold-header__link[data-neutral="true"][data-active="true"] .hold-header__link-dot {
+  background: #fff;
+}
+
+.hold-header__cta {
+  display: flex;
+  align-items: center;
+}
+
+/* Hamburger button */
+.hold-header__burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  z-index: 60;
+}
+
+.hold-header__burger-bar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 1.5px;
+  background: var(--fg);
+  transition:
+    transform var(--dur-base) var(--ease-hold),
+    top var(--dur-base) var(--ease-hold),
+    background var(--dur-base) var(--ease-hold);
+}
+
+.hold-header__burger-bar:nth-child(1) { top: 14px; }
+.hold-header__burger-bar:nth-child(2) { top: 20px; }
+.hold-header__burger-bar:nth-child(3) { top: 26px; }
+
+.hold-header__burger[data-open="true"] .hold-header__burger-bar {
+  background: var(--bg);
+}
+.hold-header__burger[data-open="true"] .hold-header__burger-bar:nth-child(1) {
+  top: 20px;
+  transform: rotate(45deg);
+}
+.hold-header__burger[data-open="true"] .hold-header__burger-bar:nth-child(2) {
+  opacity: 0;
+}
+.hold-header__burger[data-open="true"] .hold-header__burger-bar:nth-child(3) {
+  top: 20px;
+  transform: rotate(-45deg);
+}
+
+/* Mobile panel — el panel rojo full-screen del DS */
+.hold-mobile-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: var(--c-pantone-warm-red, #F9423A);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-inline: var(--gutter, 24px);
+  padding-block: 120px;
+}
+
+.hold-mobile-panel__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hold-mobile-panel__link {
+  color: #fff;
+  text-decoration: none;
+  font-size: clamp(40px, 9vw, 64px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.hold-mobile-panel__link[data-active="true"] {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.hold-mobile-panel__link-num {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.hold-mobile-panel__cta {
+  margin-top: 48px;
+}
+
+.hold-mobile-panel__cta a {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 16px 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition:
+    background var(--dur-base) var(--ease-hold),
+    color var(--dur-base) var(--ease-hold);
+}
+
+.hold-mobile-panel__cta a:hover {
+  background: #fff;
+  color: var(--c-pantone-warm-red, #F9423A);
+}
+
+.hold-mobile-panel__footer {
+  position: absolute;
+  bottom: 24px;
+  left: var(--gutter, 24px);
+  right: var(--gutter, 24px);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .hold-header__nav,
+  .hold-header__cta {
+    display: none;
+  }
+  .hold-header__burger {
+    display: block;
+  }
+}

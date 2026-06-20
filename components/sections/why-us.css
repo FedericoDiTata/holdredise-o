@@ -1,0 +1,86 @@
+/* HOLD WhyUs — sección editorial sin bloques.
+   Manifiesto en cuatro párrafos, el último en bold/accent para cerrar
+   fuerte. Layout asimétrico: el texto se reduce a un bloque max-width
+   60ch alineado al center-left para que respire. */
+
+.hold-whyus {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+  padding-block: clamp(40px, 8vh, 80px);
+}
+
+.hold-whyus__head {
+  position: sticky;
+  top: calc(var(--hold-header-h, 72px) + 32px);
+}
+
+.hold-whyus__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.hold-whyus__heading {
+  font-size: clamp(36px, 4.5vw, 64px);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  color: var(--fg);
+  margin: 0;
+  max-width: 14ch;
+}
+
+.hold-whyus__heading em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.hold-whyus__body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 60ch;
+}
+
+.hold-whyus__body p {
+  font-size: clamp(17px, 1.7vw, 22px);
+  line-height: 1.55;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  margin: 0;
+}
+
+.hold-whyus__body p:not(:last-child) {
+  color: var(--muted);
+}
+
+.hold-whyus__body p:last-child {
+  font-weight: 500;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  margin-top: 12px;
+}
+
+.hold-whyus__body p:last-child em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .hold-whyus {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .hold-whyus__head {
+    position: static;
+  }
+}

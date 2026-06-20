@@ -1,0 +1,212 @@
+/* HOLD TestimoniosAccordion — 6 cards en fila, una activa al hover/focus.
+   La activa se expande a 4-6× el ancho de las inactivas. */
+
+.hold-test-acc {
+  display: flex;
+  width: 100%;
+  height: clamp(320px, 44vh, 440px);
+  gap: 6px;
+  overflow: hidden;
+}
+
+.hold-test-acc__card {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #fff;
+  font-family: inherit;
+  text-align: left;
+  background: transparent;
+  transition: flex-grow var(--dur-slow) var(--ease-hold);
+}
+
+.hold-test-acc__card[data-active] {
+  flex-grow: 5;
+}
+
+/* Capa 0 — placeholder hatch del acento. */
+.hold-test-acc__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--accent);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.10) 0 14px,
+    transparent 14px 28px
+  );
+  transition: filter var(--dur-base) var(--ease-hold);
+}
+
+.hold-test-acc__card[data-active] .hold-test-acc__media {
+  filter: saturate(1.1);
+}
+
+/* Capa 1 — gradient overlay para texto legible. */
+.hold-test-acc__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.20) 55%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity var(--dur-base) var(--ease-hold);
+}
+
+.hold-test-acc__card[data-active] .hold-test-acc__overlay {
+  opacity: 1;
+}
+
+/* === ESTADO BASE: label vertical rotado === */
+.hold-test-acc__base-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  z-index: 2;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.95);
+  /* Limitamos el ancho del texto rotado (= alto efectivo de la card)
+     y truncamos con ellipsis. Necesario porque algunos rubros son
+     largos ("Marca Personal · Abogado corporativo" no entra). */
+  max-width: clamp(240px, 38vh, 360px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+  opacity: 1;
+  transition: opacity 0.25s var(--ease-hold);
+  pointer-events: none;
+}
+
+.hold-test-acc__card[data-active] .hold-test-acc__base-label {
+  opacity: 0;
+}
+
+/* === CONTENIDO COMPLETO (visible si active) === */
+.hold-test-acc__content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.35s var(--ease-hold) 0.1s,
+    transform 0.45s var(--ease-hold) 0.1s;
+  pointer-events: none;
+}
+
+.hold-test-acc__card[data-active] .hold-test-acc__content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hold-test-acc__chip {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  white-space: nowrap;
+  margin-bottom: auto;
+}
+
+.hold-test-acc__quote {
+  font-size: clamp(14px, 1.1vw, 17px);
+  line-height: 1.45;
+  font-weight: 400;
+  font-style: italic;
+  color: #fff;
+  margin: 0 0 18px;
+  max-width: 50ch;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.hold-test-acc__person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hold-test-acc__avatar {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.hold-test-acc__person-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hold-test-acc__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.hold-test-acc__rol {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.78);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+@media (max-width: 768px) {
+  .hold-test-acc {
+    flex-direction: column;
+    height: auto;
+  }
+  .hold-test-acc__card {
+    height: 100px;
+    flex: 1 1 100px;
+  }
+  .hold-test-acc__card[data-active] {
+    flex: 1 1 300px;
+  }
+  .hold-test-acc__base-label {
+    transform: translate(-50%, -50%);
+  }
+  .hold-test-acc__content {
+    padding: 20px;
+  }
+}

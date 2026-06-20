@@ -1,0 +1,80 @@
+/* HOLD FloatingWhatsApp — FAB en esquina inferior-derecha.
+   Verde de marca WhatsApp (#25D366) — esta es una excepción explícita al
+   monocromo + 1 acento porque el verde de WhatsApp es señal universal y
+   se reconoce instantáneamente. */
+
+.hold-fab-whatsapp {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 70;
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #25D366;
+  color: #fff;
+  border-radius: 999px; /* círculo — excepción al r:0 del DS, FAB ya es convención */
+  box-shadow:
+    0 8px 24px rgba(37, 211, 102, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+  text-decoration: none;
+  transition:
+    transform var(--dur-base) var(--ease-hold),
+    box-shadow var(--dur-base) var(--ease-hold),
+    background var(--dur-base) var(--ease-hold);
+}
+
+.hold-fab-whatsapp:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: #1FB855;
+  box-shadow:
+    0 12px 32px rgba(37, 211, 102, 0.5),
+    0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.hold-fab-whatsapp:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 4px;
+}
+
+.hold-fab-whatsapp svg {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+/* Pulse ring — anillo expandiendo con opacidad para llamar la atención. */
+.hold-fab-whatsapp__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid #25D366;
+  animation: hold-fab-pulse 2.4s var(--ease-hold) infinite;
+  pointer-events: none;
+}
+
+@keyframes hold-fab-pulse {
+  0%   { transform: scale(1);    opacity: 0.6; }
+  70%  { transform: scale(1.6);  opacity: 0;   }
+  100% { transform: scale(1.6);  opacity: 0;   }
+}
+
+@media (max-width: 768px) {
+  .hold-fab-whatsapp {
+    bottom: 16px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-fab-whatsapp__pulse {
+    animation: none;
+  }
+  .hold-fab-whatsapp:hover {
+    transform: none;
+  }
+}

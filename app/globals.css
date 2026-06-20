@@ -1,0 +1,406 @@
+@import "tailwindcss";
+
+/* ─── HOLD DESIGN SYSTEM — TOKEN LAYER ───────────────────────────────────── */
+
+@theme inline {
+  /* COLORES PANTONE HOLD */
+  --color-star-white:       #FAFFFA;
+  --color-black:            #1D1D1B;
+  --color-pantone-420:      #C7C9C7; /* Cool Gray */
+  --color-pantone-486:      #E96951; /* Coral · Academy */
+  --color-pantone-warm-red: #F9423A; /* Warm Red · Performance */
+  --color-pantone-243:      #EBBDD9; /* Soft Pink */
+  --color-pantone-285:      #2B63FF; /* Bright Blue · Redes (Pantone HOLD · CMYK 83/61/0/0) */
+
+  /* TIPOGRAFÍA */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ─── CUSTOM PROPERTIES SEMÁNTICAS ────────────────────────────────────────── */
+
+:root {
+  /* Surfaces */
+  --bg:        #FAFFFA;
+  --fg:        #1D1D1B;
+  --muted:     rgba(29, 29, 27, 0.55);
+  --hairline:  rgba(29, 29, 27, 0.14);
+  --surface:   rgba(29, 29, 27, 0.04);
+  --surface-2: rgba(29, 29, 27, 0.07);
+
+  /* Acento global del sitio: Bright Blue 285 C (Pantone HOLD).
+     Las chicas de HOLD decidieron quedarse con un único acento azul,
+     así que toda la paleta del sitio se reduce a blanco / negro / azul. */
+  --accent:    #2B63FF;
+  --accent-fg: #FFFFFF;
+  /* Alpha helpers del acento — derivados via color-mix para tintes sutiles. */
+  --accent-08: color-mix(in srgb, var(--accent) 8%, transparent);
+  --accent-14: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-22: color-mix(in srgb, var(--accent) 22%, transparent);
+
+  /* Bordes — 0px (marca cuadrada y estructurada) */
+  --r-sm:   0px;
+  --r-md:   0px;
+  --r-pill: 0px;
+
+  /* Espaciado */
+  --pad-card:  28px;
+  --pad-btn-y: 14px;
+  --pad-btn-x: 24px;
+  --gap-sect:  120px;
+  --gap-block: 48px;
+  --gutter:    48px;
+  --max:       1440px;
+
+  /* Motion — DS: "firme, no pesado" → 0.25–0.5s */
+  --ease-hold:  cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast:   0.25s;
+  --dur-base:   0.4s;
+  --dur-slow:   0.5s;
+
+  /* Header height — referenciado por el padding-top del <main> */
+  --hold-header-h: 72px;
+}
+
+/* ─── BASE ─────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: auto; /* Lenis maneja el scroll */
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* ─── SKIP-TO-CONTENT (a11y) ──────────────────────────────────────────────── */
+
+.hold-skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform var(--dur-fast) var(--ease-hold);
+}
+
+.hold-skip-link:focus,
+.hold-skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── ESCALA TIPOGRÁFICA (del DS) ─────────────────────────────────────────── */
+/* Helvetica Neue · 4 pesos: 300 / 400 / 500 / 700                           */
+
+.t-display {
+  font-size: clamp(64px, 9vw, 128px);
+  line-height: 0.92;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+
+.t-h1 {
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: 0.99;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.t-h2 {
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.04;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.t-h3 {
+  font-size: 28px;
+  line-height: 1.14;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.t-lead {
+  font-size: 22px;
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+.t-body {
+  font-size: 16px;
+  line-height: 1.56;
+  font-weight: 400;
+}
+
+.t-small {
+  font-size: 13px;
+  line-height: 1.54;
+  font-weight: 400;
+}
+
+.t-micro {
+  font-size: 11px;
+  line-height: 1.36;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── REVEAL ON SCROLL (DS · 0.4s firme) ──────────────────────────────────── */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--dur-base) var(--ease-hold),
+    transform var(--dur-base) var(--ease-hold);
+}
+
+[data-reveal].in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-reveal-delay="0.1"] { transition-delay: 0.1s; }
+[data-reveal-delay="0.2"] { transition-delay: 0.2s; }
+[data-reveal-delay="0.3"] { transition-delay: 0.3s; }
+[data-reveal-delay="0.4"] { transition-delay: 0.4s; }
+[data-reveal-delay="0.5"] { transition-delay: 0.5s; }
+
+/* ─── LAYOUT HELPERS ──────────────────────────────────────────────────────── */
+
+.section-container {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-block: var(--gap-sect);
+}
+
+.section-container--tight {
+  padding-block: calc(var(--gap-sect) * 0.5);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --gutter:    24px;
+    --gap-sect:  80px;
+    --gap-block: 32px;
+  }
+}
+
+/* ─── SERVICE THEMING ──────────────────────────────────────────────────────
+   Paleta única: blanco / negro / azul. Cada página de servicio tiene un
+   color predominante MUY distinto para que se reconozca entre sí en una
+   ojeada.
+
+   - Academy → BLANCO predominante: HeroScroll Section2 invertida a
+     blanco con grid azul, CoursesBento blanco, CustomTraining split
+     (default). CTABand de cierre negro como contraste.
+
+   - Redes Sociales → AZUL predominante: HeroScroll Section1 en azul
+     fuerte, ServiceProcess en azul fuerte, PacksGrid Pro destacado en
+     azul, CTABand en azul. Páginas con mucho azul.
+
+   - Performance → NEGRO predominante: HeroScroll Section1 invertida
+     a negro, BentoTeach todo en negro, ServiceProcess en negro,
+     ServicePlanFeature split (parte negra). Casi todo oscuro. */
+
+/* ─ HEROSCROLL · Academy: Section2 invertida a blanco con grid azul ─ */
+[data-service="academy"] .hold-hero-scroll {
+  background: var(--bg);
+}
+
+[data-service="academy"] .hold-hero-scroll__gallery {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+[data-service="academy"] .hold-hero-scroll__grid--dark {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--accent) 18%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--accent) 18%, transparent) 1px, transparent 1px);
+}
+
+[data-service="academy"] .hold-hero-scroll__gallery-title {
+  color: var(--fg);
+}
+
+[data-service="academy"] .hold-hero-scroll__gallery-meta {
+  color: var(--muted);
+}
+
+[data-service="academy"] .hold-hero-scroll__gallery-card {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(29, 29, 27, 0.06) 0 8px,
+      transparent 8px 16px
+    ),
+    var(--surface);
+  border-color: var(--hairline);
+}
+
+[data-service="academy"] .hold-hero-scroll__gallery-card-label {
+  color: var(--muted);
+}
+
+/* ─ HEROSCROLL · Redes: Section1 pasa a AZUL fuerte ────────────────── */
+[data-service="redes-sociales"] .hold-hero-scroll__intro {
+  background: var(--accent);
+  color: #fff;
+}
+
+[data-service="redes-sociales"] .hold-hero-scroll__grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+}
+
+[data-service="redes-sociales"] .hold-hero-scroll__intro-eyebrow {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+[data-service="redes-sociales"] .hold-hero-scroll__intro-eyebrow::before {
+  background: #fff;
+}
+
+[data-service="redes-sociales"] .hold-hero-scroll__intro-title,
+[data-service="redes-sociales"] .hold-hero-scroll__intro-title em {
+  color: #fff;
+}
+
+[data-service="redes-sociales"] .hold-hero-scroll__intro-sub {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ─ HEROSCROLL · Performance: Section1 pasa a NEGRO ────────────────── */
+[data-service="performance"] .hold-hero-scroll__intro {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+[data-service="performance"] .hold-hero-scroll__grid {
+  background-image:
+    linear-gradient(to right, rgba(250, 255, 250, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(250, 255, 250, 0.1) 1px, transparent 1px);
+}
+
+[data-service="performance"] .hold-hero-scroll__intro-eyebrow {
+  color: rgba(250, 255, 250, 0.75);
+}
+
+[data-service="performance"] .hold-hero-scroll__intro-title {
+  color: var(--bg);
+}
+
+[data-service="performance"] .hold-hero-scroll__intro-title em {
+  color: var(--accent);
+}
+
+[data-service="performance"] .hold-hero-scroll__intro-sub {
+  color: rgba(250, 255, 250, 0.7);
+}
+
+/* ─ REDES (azul predominante) ─────────────────────────────────────── */
+
+/* ─ REDES (azul predominante) ─────────────────────────────────────── */
+/* El bloque "Cómo trabajamos" usa ProcessSteps3D — el wrapper se pinta
+   de azul fuerte vía override en process-steps-3d.css. */
+
+/* ─ PERFORMANCE (negro predominante) ──────────────────────────────── */
+/* BentoTeach invertido a panel oscuro (todas las celdas en bg fg con
+   texto blanco) — refuerza el feel de dashboard/data. */
+[data-service="performance"] .hold-bento-teach__cell {
+  background: var(--fg);
+  border-color: rgba(250, 255, 250, 0.1);
+  color: var(--bg);
+}
+
+[data-service="performance"] .hold-bento-teach__cell:hover {
+  border-color: var(--accent);
+}
+
+[data-service="performance"] .hold-bento-teach__media {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(250, 255, 250, 0.06) 0 8px,
+      transparent 8px 16px
+    ),
+    rgba(250, 255, 250, 0.03);
+}
+
+[data-service="performance"] .hold-bento-teach__content {
+  color: var(--bg);
+}
+
+[data-service="performance"] .hold-bento-teach__num {
+  color: rgba(250, 255, 250, 0.55);
+}
+
+[data-service="performance"] .hold-bento-teach__category {
+  background: transparent;
+  color: var(--bg);
+  border-color: rgba(250, 255, 250, 0.3);
+}
+
+[data-service="performance"] .hold-bento-teach__title {
+  color: var(--bg);
+}
+
+[data-service="performance"] .hold-bento-teach__desc {
+  color: rgba(250, 255, 250, 0.7);
+}
+
+/* ServiceProcess también invertido en Performance — ahora se usa
+   ProcessSteps3D que maneja su propio bg via process-steps-3d.css. */
+
+/* ─ CTABand · Redes pasa a AZUL ───────────────────────────────────── */
+[data-service="redes-sociales"] .hold-cta-band:not([data-variant="accent"]) {
+  background: var(--accent);
+  color: #fff;
+}
+
+[data-service="redes-sociales"] .hold-cta-band:not([data-variant="accent"]) .hold-btn--primary {
+  background: var(--bg);
+  color: var(--accent);
+}
+
+[data-service="redes-sociales"] .hold-cta-band:not([data-variant="accent"]) .hold-btn--secondary {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+[data-service="redes-sociales"] .hold-cta-band:not([data-variant="accent"]) .hold-btn--secondary:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}

@@ -1,0 +1,146 @@
+/* HOLD ClientesTabs — barra de filtro + grilla de testimonios.
+   La barra es sticky-ish (no sticky, solo separada por hairlines).
+   La grilla es responsive 3 → 2 → 1 con altura uniforme. */
+
+.hold-clientes-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.hold-clientes-tabs__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.hold-clientes-tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background var(--dur-fast) var(--ease-hold),
+    border-color var(--dur-fast) var(--ease-hold),
+    color var(--dur-fast) var(--ease-hold);
+}
+
+.hold-clientes-tabs__tab:hover {
+  border-color: var(--fg);
+}
+
+.hold-clientes-tabs__tab[data-active="true"] {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+.hold-clientes-tabs__count {
+  font-size: 11px;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+.hold-clientes-tabs__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 20px);
+}
+
+.hold-clientes-tabs__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding-block: 80px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ── Botón "Ver más" (revela el resto de testimonios) ──────────────── */
+.hold-clientes-tabs__more-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: clamp(28px, 4vh, 48px);
+}
+
+.hold-clientes-tabs__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 28px;
+  background: var(--fg);
+  color: var(--bg);
+  border: 1px solid var(--fg);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  transition: color var(--dur-base) var(--ease-hold);
+}
+
+.hold-clientes-tabs__more::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateY(101%);
+  transition: transform var(--dur-base) var(--ease-hold);
+  z-index: -1;
+}
+
+.hold-clientes-tabs__more:hover::before {
+  transform: translateY(0);
+}
+
+.hold-clientes-tabs__more:hover {
+  border-color: var(--accent);
+}
+
+.hold-clientes-tabs__more-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.hold-clientes-tabs__more-count {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.hold-clientes-tabs__more-icon {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform var(--dur-base) var(--ease-hold);
+}
+
+.hold-clientes-tabs__more:hover .hold-clientes-tabs__more-icon {
+  transform: translateY(3px);
+}
+
+@media (max-width: 1000px) {
+  .hold-clientes-tabs__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .hold-clientes-tabs__grid {
+    grid-template-columns: 1fr;
+  }
+}

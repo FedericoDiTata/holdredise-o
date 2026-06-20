@@ -1,0 +1,159 @@
+/* HOLD CourseHero — hero editorial split para la página de detalle de
+   un curso. Distinto del PageHeroTextured (que es oscuro con shader):
+   este es claro, más sobrio, con info inline. Lado izquierdo info,
+   lado derecho imagen placeholder vertical. */
+
+.hold-course-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(40px, 5vw, 96px);
+  align-items: stretch;
+  padding-top: clamp(48px, 8vh, 96px);
+  padding-bottom: clamp(48px, 8vh, 96px);
+}
+
+/* ── Lado izquierdo: info del curso ────────────────────────────────── */
+.hold-course-hero__main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+
+.hold-course-hero__back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition:
+    color var(--dur-fast) var(--ease-hold),
+    gap var(--dur-fast) var(--ease-hold);
+}
+
+.hold-course-hero__back-link:hover {
+  color: var(--accent);
+  gap: 12px;
+}
+
+.hold-course-hero__title {
+  font-size: clamp(40px, 5.4vw, 84px);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  margin: 0;
+  max-width: 18ch;
+}
+
+.hold-course-hero__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.hold-course-hero__lead {
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 50ch;
+  margin: 0;
+}
+
+/* ── Meta: estado · formato · precio en línea ─────────────────────── */
+.hold-course-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+}
+
+.hold-course-hero__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hold-course-hero__meta-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hold-course-hero__meta-value {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+}
+
+.hold-course-hero__meta-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hold-course-hero__meta-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  background: var(--fg);
+}
+
+.hold-course-hero__meta-dot[data-estado="Inscripción abierta"] {
+  background: #1FAB54;
+}
+.hold-course-hero__meta-dot[data-estado="Próximamente"] {
+  background: var(--muted);
+}
+.hold-course-hero__meta-dot[data-estado="Cupo limitado"] {
+  background: var(--accent);
+}
+
+.hold-course-hero__cta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* ── Lado derecho: imagen placeholder ──────────────────────────────── */
+.hold-course-hero__media-wrap {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hold-course-hero__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(29, 29, 27, 0.06) 0 8px,
+      transparent 8px 16px
+    ),
+    var(--surface);
+  border: 1px solid var(--hairline);
+}
+
+@media (max-width: 900px) {
+  .hold-course-hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hold-course-hero__media-wrap {
+    min-height: auto;
+  }
+}

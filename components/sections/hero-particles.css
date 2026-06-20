@@ -1,0 +1,182 @@
+/* HOLD HeroParticles — canvas full-bleed cubriendo TODA la pantalla
+   (incluso detrás del nav transparente). Contenido superpuesto encima. */
+
+.hold-hero-particles {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  /* Anula el padding-top del wrapper del layout para que el canvas
+     cubra el área detrás del nav transparente. */
+  margin-top: calc(-1 * var(--hold-header-h, 72px));
+  background: var(--bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Visually-hidden h1 — accesibilidad + SEO. */
+.hold-hero-particles__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Canvas: capa 0 absolutely-positioned llenando el viewport entero. */
+.hold-hero-particles__canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hold-hero-particles__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fallback (reduced motion) */
+.hold-hero-particles__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(56px, 9vw, 128px);
+  line-height: 0.95;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  text-align: center;
+  margin: 0;
+  color: var(--fg);
+  max-width: 14ch;
+  padding-inline: 16px;
+}
+
+.hold-hero-particles__fallback em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Content overlay: capa 1 relative, flex column space-between
+   (eyebrow arriba, bottom abajo, partículas en el medio). */
+.hold-hero-particles__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* Padding-top considera el alto del nav fixed para que el eyebrow no quede tapado. */
+  padding-top: calc(var(--hold-header-h, 72px) + 24px);
+  padding-bottom: clamp(40px, 7vh, 88px);
+  padding-inline: var(--gutter, 48px);
+  pointer-events: none;
+}
+
+/* Solo los elementos interactuables reciben pointer events
+   (el resto se transparenta para no interceptar interacciones del canvas). */
+.hold-hero-particles__eyebrow,
+.hold-hero-particles__bottom {
+  pointer-events: auto;
+}
+
+/* ─── EYEBROW · PÍLDORA RODEADA QUE CYCLA COLOR ───────────────────── */
+/* Excepción explícita al border-radius 0 del DS: este eyebrow es
+   intencionalmente distinto a los chips del nav para llamar la atención. */
+.hold-hero-particles__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 22px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--fg);
+  border-radius: 999px;
+  margin: 0;
+  white-space: nowrap;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  animation: hold-eyebrow-bg 7s ease-in-out infinite;
+  transition: transform var(--dur-base) var(--ease-hold);
+}
+
+.hold-hero-particles__eyebrow:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+@keyframes hold-eyebrow-bg {
+  0%   { background: #1D1D1B; }
+  25%  { background: #E96951; }
+  50%  { background: #F08A3E; }
+  75%  { background: #F9423A; }
+  100% { background: #1D1D1B; }
+}
+
+/* ─── BOTTOM · Solo CTAs (subtagline removida) ──────────────────────── */
+.hold-hero-particles__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.hold-hero-particles__ctas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Wrapper que aplica float continuo al botón sin chocar con el magnetic
+   transform (que está en un wrapper más interno). */
+.hold-hero-particles__cta-float {
+  animation: hold-cta-float 3.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hold-hero-particles__cta-float--delayed {
+  animation-delay: 1.8s;
+}
+
+@keyframes hold-cta-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hold-hero-particles__content {
+    padding-top: calc(var(--hold-header-h, 72px) + 16px);
+    padding-bottom: 32px;
+    padding-inline: 20px;
+  }
+  .hold-hero-particles__bottom {
+    gap: 18px;
+  }
+  .hold-hero-particles__eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-hero-particles__eyebrow,
+  .hold-hero-particles__cta-float,
+  .hold-hero-particles__cta-float--delayed {
+    animation: none;
+  }
+  .hold-hero-particles__eyebrow {
+    background: var(--fg);
+    color: #fff;
+  }
+}

@@ -1,0 +1,229 @@
+/* HOLD CoursesBento — fusión de bento asimétrico + info de curso.
+   Layout 12-col asimétrico, cada celda muestra siempre ID, badge de
+   estado, nombre del curso, precio y formato. Al hover: media scale,
+   accent overlay, border accent y arrow translate.
+   La celda hero (primera, span 7×2) muestra además la descripción. */
+
+.hold-courses-bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: minmax(280px, auto);
+  gap: clamp(10px, 1.2vw, 16px);
+}
+
+.hold-courses-bento__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  text-decoration: none;
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color var(--dur-base) var(--ease-hold);
+}
+
+.hold-courses-bento__card:hover {
+  border-color: var(--accent);
+}
+
+/* Layout asimétrico fijo para los 6 cursos:
+   Row 1-2: card1 (col 1-7, 2 rows) + card2 (col 8-12) + card3 (col 8-12)
+   Row 3:   card4 (4) + card5 (4) + card6 (4) */
+.hold-courses-bento__card:nth-child(1) { grid-column: span 7; grid-row: span 2; }
+.hold-courses-bento__card:nth-child(2) { grid-column: span 5; }
+.hold-courses-bento__card:nth-child(3) { grid-column: span 5; }
+.hold-courses-bento__card:nth-child(4) { grid-column: span 4; }
+.hold-courses-bento__card:nth-child(5) { grid-column: span 4; }
+.hold-courses-bento__card:nth-child(6) { grid-column: span 4; }
+
+/* ── Capas decorativas ─────────────────────────────────────────────── */
+.hold-courses-bento__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(29, 29, 27, 0.06) 0 8px,
+      transparent 8px 16px
+    ),
+    var(--surface);
+  transition: transform 0.7s var(--ease-hold);
+}
+
+.hold-courses-bento__card:hover .hold-courses-bento__media {
+  transform: scale(1.05);
+}
+
+.hold-courses-bento__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--accent);
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition: opacity var(--dur-base) var(--ease-hold);
+}
+
+.hold-courses-bento__card:hover .hold-courses-bento__overlay {
+  opacity: 0.15;
+}
+
+/* ── Cabezal: status badge a la derecha ───────────────────────────── */
+.hold-courses-bento__head {
+  position: relative;
+  z-index: 2;
+  padding: clamp(18px, 1.8vw, 24px);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.hold-courses-bento__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+  background: var(--bg);
+  padding: 4px 10px;
+  border: 1px solid var(--hairline);
+}
+
+.hold-courses-bento__status-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  background: var(--fg);
+}
+
+.hold-courses-bento__status-dot[data-estado="Inscripción abierta"] {
+  background: #1FAB54;
+}
+.hold-courses-bento__status-dot[data-estado="Próximamente"] {
+  background: var(--muted);
+}
+.hold-courses-bento__status-dot[data-estado="Cupo limitado"] {
+  background: var(--accent);
+}
+
+/* ── Body: nombre + descripción (hero only) + meta ─────────────────── */
+.hold-courses-bento__body {
+  position: relative;
+  z-index: 2;
+  padding: 0 clamp(18px, 1.8vw, 24px) clamp(18px, 1.8vw, 24px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+.hold-courses-bento__nombre {
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+  margin: 0;
+  max-width: 18ch;
+  transition: color var(--dur-fast) var(--ease-hold);
+}
+
+.hold-courses-bento__card:hover .hold-courses-bento__nombre {
+  color: var(--accent);
+}
+
+/* La celda hero (primera) tiene título más grande */
+.hold-courses-bento__card:nth-child(1) .hold-courses-bento__nombre {
+  font-size: clamp(32px, 3.4vw, 44px);
+  letter-spacing: -0.025em;
+  max-width: 16ch;
+}
+
+.hold-courses-bento__desc {
+  display: none;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  max-width: 42ch;
+}
+
+/* Descripción visible solo en la celda hero */
+.hold-courses-bento__card:nth-child(1) .hold-courses-bento__desc {
+  display: block;
+}
+
+.hold-courses-bento__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+}
+
+.hold-courses-bento__precio {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hold-courses-bento__precio-amount {
+  font-size: clamp(15px, 1.4vw, 17px);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.hold-courses-bento__precio-formato {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.hold-courses-bento__arrow {
+  color: var(--muted);
+  transition:
+    transform var(--dur-fast) var(--ease-hold),
+    color var(--dur-fast) var(--ease-hold);
+  flex-shrink: 0;
+}
+
+.hold-courses-bento__card:hover .hold-courses-bento__arrow {
+  transform: translate(4px, -4px);
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .hold-courses-bento {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: minmax(220px, auto);
+  }
+  .hold-courses-bento__card:nth-child(1) { grid-column: span 6; grid-row: span 1; }
+  .hold-courses-bento__card:nth-child(2) { grid-column: span 3; }
+  .hold-courses-bento__card:nth-child(3) { grid-column: span 3; }
+  .hold-courses-bento__card:nth-child(4) { grid-column: span 6; }
+  .hold-courses-bento__card:nth-child(5) { grid-column: span 3; }
+  .hold-courses-bento__card:nth-child(6) { grid-column: span 3; }
+  .hold-courses-bento__card:nth-child(1) .hold-courses-bento__desc {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .hold-courses-bento {
+    grid-template-columns: 1fr;
+  }
+  .hold-courses-bento__card:nth-child(n) {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+}

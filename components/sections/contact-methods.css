@@ -1,0 +1,108 @@
+/* HOLD ContactMethods — 3 cards grandes para los canales de contacto.
+   Cada card: icono (top-left) + label + valor + arrow (bottom-right).
+   Hover: card se llena de acento con texto blanco. */
+
+.hold-contact-methods {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 1.8vw, 24px);
+}
+
+.hold-contact-method {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 64px;
+  padding: clamp(32px, 3.5vw, 48px);
+  min-height: 320px;
+  background: var(--bg);
+  border: 1px solid var(--fg);
+  color: var(--fg);
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color var(--dur-base) var(--ease-hold);
+}
+
+.hold-contact-method::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateY(101%);
+  transition: transform var(--dur-base) var(--ease-hold);
+  z-index: -1;
+}
+
+.hold-contact-method:hover {
+  color: #fff;
+}
+
+.hold-contact-method:hover::before {
+  transform: translateY(0);
+}
+
+.hold-contact-method__icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+}
+
+.hold-contact-method__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hold-contact-method__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin: 0;
+}
+
+.hold-contact-method__value {
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  margin: 0;
+  word-break: break-word;
+}
+
+.hold-contact-method__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-top: auto;
+}
+
+.hold-contact-method__arrow {
+  position: absolute;
+  bottom: clamp(28px, 3vw, 40px);
+  right: clamp(28px, 3vw, 40px);
+  transition: transform var(--dur-fast) var(--ease-hold);
+}
+
+.hold-contact-method:hover .hold-contact-method__arrow {
+  transform: translate(4px, -4px);
+}
+
+@media (max-width: 900px) {
+  .hold-contact-methods {
+    grid-template-columns: 1fr;
+  }
+  .hold-contact-method {
+    min-height: 220px;
+    gap: 32px;
+  }
+}

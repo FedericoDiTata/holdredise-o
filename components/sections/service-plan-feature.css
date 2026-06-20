@@ -1,0 +1,214 @@
+/* HOLD ServicePlanFeature — pricing editorial split.
+   Layout 2 columnas:
+   - Izquierda: bloque oscuro full-bleed (var(--fg)) con precio gigante
+     en blanco/acento + eyebrow + nota.
+   - Derecha: tarjeta blanca con lista de incluye con bullets cuadrados
+     en acento + CTA grande.
+
+   Más impactante que la versión "todo plano sobre blanco". Mantiene
+   border 0px del DS. */
+
+.hold-plan-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 0;
+  border: 1px solid var(--hairline);
+  background: var(--bg);
+  isolation: isolate;
+}
+
+/* ── Lado IZQUIERDO: panel oscuro con el monto ─────────────────────── */
+.hold-plan-feature__price {
+  position: relative;
+  padding: clamp(40px, 5vw, 64px);
+  background: var(--fg);
+  color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+  min-height: 520px;
+  overflow: hidden;
+}
+
+/* Pattern decorativo: marca de agua del acento muy sutil */
+.hold-plan-feature__price::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 100% 100%,
+      var(--accent-22) 0%,
+      transparent 60%
+    );
+  pointer-events: none;
+}
+
+.hold-plan-feature__price-label {
+  position: relative;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.hold-plan-feature__price-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hold-plan-feature__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  line-height: 0.92;
+  color: var(--bg);
+}
+
+.hold-plan-feature__from {
+  font-size: clamp(16px, 1.5vw, 20px);
+  font-weight: 400;
+  opacity: 0.55;
+  letter-spacing: -0.01em;
+}
+
+.hold-plan-feature__currency {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.hold-plan-feature__amount {
+  font-size: clamp(96px, 13vw, 184px);
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.hold-plan-feature__period {
+  font-size: clamp(16px, 1.5vw, 20px);
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+.hold-plan-feature__note {
+  position: relative;
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 36ch;
+  opacity: 0.75;
+  margin: 0;
+}
+
+.hold-plan-feature__meta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(250, 255, 250, 0.15);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.hold-plan-feature__meta-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+}
+
+/* ── Lado DERECHO: lista de incluye + CTA ──────────────────────────── */
+.hold-plan-feature__details {
+  padding: clamp(40px, 5vw, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  background: var(--bg);
+}
+
+.hold-plan-feature__details-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+.hold-plan-feature__details-title {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin: 0;
+  max-width: 18ch;
+}
+
+.hold-plan-feature__details-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.hold-plan-feature__includes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hold-plan-feature__include {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: baseline;
+  gap: 20px;
+  padding-block: 20px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.45;
+  color: var(--fg);
+  transition: padding-left var(--dur-fast) var(--ease-hold);
+}
+
+.hold-plan-feature__include:hover {
+  padding-left: 8px;
+}
+
+.hold-plan-feature__include:last-child {
+  border-bottom: none;
+}
+
+.hold-plan-feature__include-num {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  align-self: center;
+}
+
+.hold-plan-feature__cta {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .hold-plan-feature {
+    grid-template-columns: 1fr;
+  }
+  .hold-plan-feature__price {
+    min-height: 380px;
+  }
+}

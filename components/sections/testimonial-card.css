@@ -1,0 +1,98 @@
+/* HOLD TestimonialCard — card editorial uniforme para grilla.
+   Diferente del masonry y del accordion: aspect-ratio libre, altura
+   pareja en grid, peso visual en la comilla + el quote. */
+
+.hold-testimonial {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: clamp(28px, 3vw, 40px);
+  background: var(--bg);
+  border: 1px solid var(--hairline);
+  height: 100%;
+  transition:
+    border-color var(--dur-fast) var(--ease-hold),
+    background var(--dur-fast) var(--ease-hold);
+}
+
+.hold-testimonial:hover {
+  border-color: var(--accent);
+  background: var(--accent-08);
+}
+
+.hold-testimonial__chip {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: transparent;
+}
+
+.hold-testimonial__quote-mark {
+  font-family: serif;
+  font-size: 88px;
+  line-height: 0.7;
+  font-weight: 400;
+  color: var(--accent);
+  user-select: none;
+  margin-bottom: -32px;
+  margin-top: -8px;
+}
+
+.hold-testimonial__quote {
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.5;
+  color: var(--fg);
+  margin: 0;
+  flex: 1;
+}
+
+.hold-testimonial__author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  margin-top: auto;
+}
+
+.hold-testimonial__avatar {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.hold-testimonial__meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hold-testimonial__name {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+}
+
+.hold-testimonial__rol {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}

@@ -1,0 +1,58 @@
+import type { CSSProperties } from "react"
+import { Button } from "@/components/ui/Button"
+import { WHATSAPP_URL } from "@/data/content"
+import "./hero-shader.css"
+
+/**
+ * Hero simple editorial. Título en 2 renglones forzados (cada span es
+ * display:block):
+ * - Línea 1: "No solo hacemos contenido," — regular, "solo" en italic
+ *   (mismo color, sin accent azul)
+ * - Línea 2: "construimos marcas." — bold para cerrar fuerte
+ * Animación de fade-up por palabra al cargar.
+ */
+export function HeroShader() {
+  return (
+    <section className="hold-hero-shader" aria-label="Inicio">
+      <h1 className="hold-hero-shader__sr">
+        No solo hacemos contenido, construimos marcas.
+      </h1>
+
+      <div className="hold-hero-shader__content">
+        <h2 className="hold-hero-shader__title" aria-hidden>
+          <span
+            className="hold-hero-shader__word"
+            style={{ "--i": 0 } as CSSProperties}
+          >
+            No <em>solo</em> hacemos contenido,
+          </span>
+          <span
+            className="hold-hero-shader__word hold-hero-shader__word--strong"
+            style={{ "--i": 1 } as CSSProperties}
+          >
+            construimos marcas.
+          </span>
+        </h2>
+
+        <div className="hold-hero-shader__cta">
+          <Button
+            size="large"
+            href={WHATSAPP_URL}
+            external
+            ariaLabel="Hablemos por WhatsApp"
+          >
+            Hablemos
+          </Button>
+          <Button
+            size="large"
+            variant="secondary"
+            href="#servicios"
+            arrow={false}
+          >
+            Servicios
+          </Button>
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,80 @@
+/* HOLD CTABand — banda de cierre full-width.
+   Bg en negro (var(--fg)) por default — variant="accent" usa --accent.
+   Tipografía grande, dos CTAs centrados. Sale del flujo del container
+   normal para tocar los bordes del viewport. */
+
+.hold-cta-band {
+  position: relative;
+  width: 100%;
+  padding-block: clamp(80px, 14vh, 160px);
+  padding-inline: var(--gutter, 48px);
+  background: var(--fg);
+  color: var(--bg);
+  overflow: hidden;
+}
+
+.hold-cta-band[data-variant="accent"] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.hold-cta-band__inner {
+  max-width: 960px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  text-align: center;
+}
+
+.hold-cta-band__eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.hold-cta-band__title {
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 0.98;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  margin: 0;
+  max-width: 18ch;
+}
+
+.hold-cta-band__title em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.hold-cta-band__sub {
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.5;
+  opacity: 0.7;
+  max-width: 52ch;
+  margin: 0;
+}
+
+.hold-cta-band__actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* Cuando el band va en negro, los botones primary del DS quedan invisibles
+   (bg fg sobre bg fg). Override: vuelvan blancos con texto negro. */
+.hold-cta-band:not([data-variant="accent"]) .hold-btn--primary {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.hold-cta-band:not([data-variant="accent"]) .hold-btn--secondary {
+  border-color: rgba(250, 255, 250, 0.4);
+  color: var(--bg);
+}

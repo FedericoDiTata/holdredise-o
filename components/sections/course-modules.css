@@ -1,0 +1,178 @@
+/* HOLD CourseModules — split editorial con módulos del curso a la izquierda
+   y "para quién es + qué incluye" a la derecha. */
+
+.hold-course-modules {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(48px, 6vw, 96px);
+  align-items: start;
+}
+
+/* ── Bloque módulos (izquierda) ────────────────────────────────────── */
+.hold-course-modules__main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.hold-course-modules__head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hold-course-modules__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hold-course-modules__title {
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin: 0;
+  max-width: 18ch;
+}
+
+.hold-course-modules__title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.hold-course-modules__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--hairline);
+}
+
+.hold-course-modules__item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  padding-block: clamp(20px, 2.5vh, 28px);
+  border-bottom: 1px solid var(--hairline);
+  transition: padding-left var(--dur-fast) var(--ease-hold);
+}
+
+.hold-course-modules__item:hover {
+  padding-left: 8px;
+}
+
+.hold-course-modules__item-num {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.hold-course-modules__item-text {
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  margin: 0;
+}
+
+/* ── Sidebar derecho ───────────────────────────────────────────────── */
+.hold-course-modules__side {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: clamp(28px, 3vw, 40px);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  position: sticky;
+  top: calc(var(--hold-header-h, 72px) + 24px);
+}
+
+.hold-course-modules__side-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hold-course-modules__side-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+.hold-course-modules__destinatario {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg);
+  margin: 0;
+}
+
+.hold-course-modules__incluye {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hold-course-modules__incluye-row {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--fg);
+}
+
+.hold-course-modules__incluye-row:last-child {
+  border-bottom: none;
+}
+
+.hold-course-modules__incluye-bullet {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.hold-course-modules__fecha {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 0;
+  border-top: 1px solid var(--hairline);
+  margin-top: -8px;
+}
+
+.hold-course-modules__fecha-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+@media (max-width: 1000px) {
+  .hold-course-modules {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hold-course-modules__side {
+    position: static;
+  }
+}

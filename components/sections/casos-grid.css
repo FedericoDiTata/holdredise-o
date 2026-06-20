@@ -1,0 +1,97 @@
+/* HOLD CasosGrid — grilla de casos de éxito (placeholder).
+   Cada caso: imagen placeholder + servicio chip + título + métrica grande.
+   Layout 2 cols desktop, 1 mobile. */
+
+.hold-casos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 2.5vw, 32px);
+}
+
+.hold-caso {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: var(--bg);
+  transition: transform var(--dur-base) var(--ease-hold);
+}
+
+.hold-caso:hover {
+  transform: translateY(-4px);
+}
+
+.hold-caso__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.hold-caso__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-inline: 4px;
+}
+
+.hold-caso__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hold-caso__chip {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+}
+
+.hold-caso__brand {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.hold-caso__title {
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.18;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+  margin: 0;
+}
+
+.hold-caso__metric {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline);
+}
+
+.hold-caso__metric-value {
+  font-size: clamp(40px, 4.5vw, 56px);
+  line-height: 0.95;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.hold-caso__metric-label {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  max-width: 18ch;
+}
+
+@media (max-width: 768px) {
+  .hold-casos {
+    grid-template-columns: 1fr;
+  }
+}

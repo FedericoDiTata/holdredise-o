@@ -1,0 +1,269 @@
+/* HOLD ProcessSteps3D — cards 3D con bg image + overlay editorial.
+   Adaptación del gradient-card de ravikatiyar (21st.dev) al DS HOLD:
+   - Wrapper de sección con bg negro (var(--fg)) o azul según servicio
+   - Cards con tilt 3D al mousemove (max 4°), lift -4px al hover
+   - Imagen de fondo desaturada con overlay oscuro/azul
+   - Glow radial del accent abajo (intensifica al hover)
+   - Border-bottom iluminado tipo LED
+   - Texto centrado (sin numeración) */
+
+.hold-steps3d-wrap {
+  position: relative;
+  padding: clamp(48px, 7vh, 96px) clamp(28px, 5vw, 80px);
+  background: var(--fg);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Override por servicio: redes en azul fuerte, performance en negro */
+[data-service="redes-sociales"] .hold-steps3d-wrap {
+  background: var(--accent);
+}
+
+[data-service="performance"] .hold-steps3d-wrap {
+  background: var(--fg);
+}
+
+/* ── Header inline (título + intro dentro del wrapper oscuro) ────── */
+.hold-steps3d-header {
+  max-width: 1280px;
+  margin: 0 auto clamp(40px, 5vh, 64px);
+  padding-bottom: clamp(28px, 4vh, 48px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hold-steps3d-header__title {
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 1.04;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: var(--bg);
+  margin: 0;
+  max-width: 22ch;
+}
+
+.hold-steps3d-header__intro {
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+  margin: 20px 0 0;
+  max-width: 56ch;
+}
+
+.hold-steps3d {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+  perspective: 1200px;
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+/* ── Card individual ──────────────────────────────────────────────── */
+.hold-step3d {
+  position: relative;
+  padding: clamp(32px, 4vw, 56px) clamp(28px, 3.4vw, 44px);
+  min-height: 320px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--bg);
+  overflow: hidden;
+  isolation: isolate;
+  will-change: transform;
+  transform-style: preserve-3d;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+[data-service="performance"] .hold-step3d {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+[data-service="redes-sociales"] .hold-step3d {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ── BG IMAGE (capa más baja) ──────────────────────────────────────── */
+.hold-step3d__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Desaturada + un toque más oscura para que el texto blanco se lea
+     y el azul brand mande sobre cualquier color de la foto. */
+  filter: grayscale(0.85) brightness(0.55) contrast(1.05);
+  opacity: 0.65;
+  transform: scale(1.04);
+  transition:
+    transform 0.6s var(--ease-hold),
+    opacity var(--dur-base) var(--ease-hold),
+    filter var(--dur-base) var(--ease-hold);
+}
+
+.hold-step3d:hover .hold-step3d__bg {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+/* ── Shade: tinte de marca sobre la imagen ─────────────────────────── */
+.hold-step3d__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+[data-service="redes-sociales"] .hold-step3d__shade {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 35%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 55%, rgba(0, 0, 0, 0.5)) 100%
+  );
+  mix-blend-mode: normal;
+}
+
+[data-service="performance"] .hold-step3d__shade {
+  background: linear-gradient(
+    180deg,
+    rgba(29, 29, 27, 0.5) 0%,
+    rgba(29, 29, 27, 0.25) 45%,
+    rgba(29, 29, 27, 0.75) 100%
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ── Glow radial del accent abajo ──────────────────────────────────── */
+.hold-step3d__glow {
+  position: absolute;
+  inset: -30%;
+  z-index: 2;
+  background: radial-gradient(
+    circle at 50% 100%,
+    var(--accent) 0%,
+    transparent 55%
+  );
+  opacity: 0.28;
+  filter: blur(40px);
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-hold);
+}
+
+.hold-step3d:hover .hold-step3d__glow {
+  opacity: 0.5;
+}
+
+[data-service="redes-sociales"] .hold-step3d__glow {
+  background: radial-gradient(
+    circle at 50% 100%,
+    #fff 0%,
+    transparent 50%
+  );
+  opacity: 0.15;
+}
+
+[data-service="redes-sociales"] .hold-step3d:hover .hold-step3d__glow {
+  opacity: 0.28;
+}
+
+/* ── Grano sutil ──────────────────────────────────────────────────── */
+.hold-step3d__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 240px;
+  pointer-events: none;
+}
+
+/* ── Border-bottom iluminado tipo LED ─────────────────────────────── */
+.hold-step3d__beam {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 50%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 12px 2px var(--accent),
+    0 0 28px 6px rgba(43, 99, 255, 0.4);
+  opacity: 0.45;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-hold);
+}
+
+.hold-step3d:hover .hold-step3d__beam {
+  opacity: 0.95;
+}
+
+[data-service="redes-sociales"] .hold-step3d__beam {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #fff 50%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 12px 2px rgba(255, 255, 255, 0.7),
+    0 0 28px 6px rgba(255, 255, 255, 0.35);
+}
+
+/* ── Contenido centrado encima de las capas ─────────────────────── */
+.hold-step3d__content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  max-width: 32ch;
+}
+
+.hold-step3d__title {
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--bg);
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+}
+
+.hold-step3d__desc {
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 768px) {
+  .hold-steps3d {
+    grid-template-columns: 1fr;
+  }
+  .hold-step3d {
+    min-height: 260px;
+  }
+}
