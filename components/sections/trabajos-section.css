@@ -1,0 +1,27 @@
+/* HOLD TrabajosSection — marquee TRABAJOS gigante + grid 3-col de
+   project cards con hover-cycle. Reutiliza MarqueeBand para la palabra
+   gigante en italic. */
+
+.hold-trabajos {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vh, 64px);
+}
+
+.hold-trabajos__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2vw, 28px);
+}
+
+@media (max-width: 900px) {
+  .hold-trabajos__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .hold-trabajos__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,73 @@
+/* HOLD ContadoresAnimados — 3 números grandes que cuentan 0 → valor
+   cuando entran al viewport. Layout: intro arriba ("Sí, nuestro nombre
+   es inglés y…") + grid 3-col con los contadores. */
+
+.hold-contadores {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6vh, 72px);
+}
+
+.hold-contadores__intro {
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+  margin: 0;
+  max-width: 32ch;
+}
+
+.hold-contadores__intro em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hold-contadores__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 40px);
+  border-top: 1px solid var(--hairline);
+  padding-top: clamp(40px, 5vh, 64px);
+}
+
+.hold-contador {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hold-contador__valor {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: clamp(56px, 9vw, 144px);
+  line-height: 0.9;
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.hold-contador__suffix {
+  font-size: 0.6em;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+
+.hold-contador__label {
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.4;
+  color: var(--muted);
+  max-width: 22ch;
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline);
+}
+
+@media (max-width: 768px) {
+  .hold-contadores__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}

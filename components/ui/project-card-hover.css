@@ -1,0 +1,107 @@
+/* HOLD ProjectCardHover — card de trabajo con foto que cicla en hover.
+   N fotos placeholder absolutas apiladas con opacity 0/1 controlada
+   por state. En mobile (touch) cicla cuando entra al viewport. */
+
+.hold-project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.hold-project-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  transition:
+    border-color var(--dur-base) var(--ease-hold),
+    transform var(--dur-base) var(--ease-hold);
+}
+
+.hold-project-card:hover .hold-project-card__media,
+.hold-project-card[data-active="true"] .hold-project-card__media {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+}
+
+.hold-project-card__photo {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-hold);
+}
+
+.hold-project-card__photo[data-visible="true"] {
+  opacity: 1;
+}
+
+/* Indicador de la cantidad de fotos (puntos al bottom) */
+.hold-project-card__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.hold-project-card__dot {
+  width: 22px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  transition: background var(--dur-fast) var(--ease-hold);
+}
+
+.hold-project-card__dot[data-active="true"] {
+  background: #fff;
+}
+
+/* Logo placeholder en la esquina superior izquierda */
+.hold-project-card__logo {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg);
+  background: var(--bg);
+  padding: 5px 10px;
+}
+
+/* Body de la card (cliente + rubro) */
+.hold-project-card__body {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.hold-project-card__cliente {
+  font-size: clamp(15px, 1.3vw, 17px);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  transition: color var(--dur-fast) var(--ease-hold);
+}
+
+.hold-project-card:hover .hold-project-card__cliente,
+.hold-project-card[data-active="true"] .hold-project-card__cliente {
+  color: var(--accent);
+}
+
+.hold-project-card__rubro {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
