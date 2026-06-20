@@ -1,0 +1,155 @@
+/* HOLD BloqueCita — sección editorial bajo el hero.
+   Cita grande a la izquierda + grilla de "ejemplos" (mini tarjetas
+   con nombre cliente + rubro placeholder) a la derecha. Layout split
+   en desktop, stack en mobile. */
+
+.hold-bloque-cita {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(48px, 6vw, 96px);
+  align-items: start;
+}
+
+.hold-bloque-cita__main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hold-bloque-cita__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hold-bloque-cita__eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.hold-bloque-cita__titulo {
+  font-size: clamp(32px, 4.2vw, 64px);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  margin: 0;
+  max-width: 22ch;
+}
+
+.hold-bloque-cita__bajada {
+  font-size: clamp(17px, 1.6vw, 22px);
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  color: var(--muted);
+  margin: 0;
+  max-width: 36ch;
+}
+
+.hold-bloque-cita__bajada em {
+  font-style: italic;
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* ── Grilla de ejemplos (4-6 tarjetitas con cliente + rubro) ──────── */
+.hold-bloque-cita__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.4vw, 18px);
+}
+
+.hold-bloque-cita__card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(16px, 1.8vw, 22px);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color var(--dur-base) var(--ease-hold),
+    transform var(--dur-base) var(--ease-hold);
+}
+
+.hold-bloque-cita__card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.hold-bloque-cita__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(29, 29, 27, 0.05) 0 8px,
+      transparent 8px 16px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hold-bloque-cita__card-meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hold-bloque-cita__card-cliente {
+  font-size: clamp(14px, 1.2vw, 16px);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  line-height: 1.2;
+}
+
+.hold-bloque-cita__card-rubro {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hold-bloque-cita__card-num {
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  align-self: flex-end;
+}
+
+@media (max-width: 900px) {
+  .hold-bloque-cita {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 500px) {
+  .hold-bloque-cita__grid {
+    grid-template-columns: 1fr;
+  }
+  .hold-bloque-cita__card {
+    aspect-ratio: 2 / 1;
+  }
+}

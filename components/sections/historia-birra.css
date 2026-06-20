@@ -1,0 +1,104 @@
+/* HOLD HistoriaBirra — cita + 2 fotos placeholder side-by-side.
+   "Las mejores decisiones se toman con una birra de por medio…"
+   Layout: cita arriba en una col centrada; debajo grid 2-col con
+   las fotos (Birra 2021 + Equipo 2026) + labels de años. */
+
+.hold-birra {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 6vh, 80px);
+}
+
+.hold-birra__cita-wrap {
+  max-width: 880px;
+  margin-inline: auto;
+  text-align: center;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+.hold-birra__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.hold-birra__eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.hold-birra__cita {
+  font-size: clamp(24px, 2.8vw, 40px);
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin: 0;
+}
+
+.hold-birra__cita em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+/* ── Grid de 2 fotos ──────────────────────────────────────────────── */
+.hold-birra__fotos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 2vw, 24px);
+  align-items: end;
+}
+
+.hold-birra__foto-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hold-birra__foto {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Foto "ahora" (la segunda) es más ancha — efecto editorial:
+   el "antes" más íntimo, el "ahora" del equipo más amplio. */
+.hold-birra__foto-wrap--ancha .hold-birra__foto {
+  aspect-ratio: 1 / 1;
+}
+
+.hold-birra__foto-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hold-birra__foto-year {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+  .hold-birra__fotos {
+    grid-template-columns: 1fr;
+  }
+  .hold-birra__foto-wrap--ancha .hold-birra__foto {
+    aspect-ratio: 4 / 5;
+  }
+}

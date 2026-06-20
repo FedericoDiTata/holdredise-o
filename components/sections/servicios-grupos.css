@@ -1,0 +1,84 @@
+/* HOLD ServiciosGrupos — 3 macro-bloques (BRANDS / TALENTS / PERFORMANCE).
+   Grid 3-col desktop, stack mobile. Cada grupo: número grande +
+   título + descripción + bullets numeradas. */
+
+.hold-grupos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.4vw, 36px);
+  border-top: 1px solid var(--hairline);
+  padding-top: clamp(40px, 6vh, 80px);
+}
+
+.hold-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-block: 8px;
+}
+
+.hold-grupo__num {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.hold-grupo__titulo {
+  font-size: clamp(28px, 2.8vw, 40px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin: 0;
+}
+
+.hold-grupo__desc {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+  max-width: 38ch;
+}
+
+.hold-grupo__bullets {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--hairline);
+}
+
+.hold-grupo__bullet {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--fg);
+}
+
+.hold-grupo__bullet:last-child {
+  border-bottom: none;
+}
+
+.hold-grupo__bullet::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  align-self: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1000px) {
+  .hold-grupos {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+}
