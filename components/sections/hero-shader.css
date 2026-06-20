@@ -1,7 +1,6 @@
 /* HOLD HeroShader — versión simple editorial.
    Bg Star White, texto negro display, CTAs centrados. Sin decoraciones
-   extra. La altura la maneja el sticky parent (HeroScrollStack) que
-   está recortado para mostrar peek de la siguiente sección. */
+   extra. Ocupa 100svh propio (sin parent sticky). */
 
 .hold-hero-shader {
   position: relative;

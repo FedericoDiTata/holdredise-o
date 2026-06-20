@@ -550,8 +550,6 @@ export const founders: readonly MiembroEquipo[] = [
   },
 ] as const
 
-/* Alias retro-compatible — uso interno en NosotrosPreview de la home. */
-export const equipo = founders
 
 /* ─── EQUIPO EXTENDIDO ────────────────────────────────────────────────────────
    Lista plana del equipo (sin dividir por áreas). El rol concreto de cada

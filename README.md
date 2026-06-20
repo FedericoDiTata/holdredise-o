@@ -33,7 +33,7 @@ components/
 ├── ui/                      # Button, Eyebrow, Chip, Badge, PageHero, SectionHeader, Placeholder
 ├── layout/                  # Header (sticky + dark mode detection), Footer
 ├── sections/                # Bloques composables: ServiceItems, ServiceProcess, ServicePlan, CoursesTable, CTABand, Founders, TeamRoster, PhotoGallery, ClientesTabs, CasosGrid, ContactMethods, etc.
-└── effects/                 # SmoothScroll, RevealOnScroll, PageTransition, MagneticHover, AccentSwitcher, FloatingWhatsApp, MarqueeBand, HeroScrollStack
+└── effects/                 # SmoothScroll, RevealOnScroll, PageTransition, MagneticHover, FloatingWhatsApp, MarqueeBand
 
 data/content.ts              # WhatsApp/IG/mail · servicios · cursos · testimonios · founders · team
 types/index.ts               # Tipos TS
