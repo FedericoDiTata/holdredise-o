@@ -1,9 +1,13 @@
 import type {
+  Contador,
   Curso,
   MiembroEquipo,
   NavLink,
   Servicio,
+  ServicioGrupo,
+  ServicioHomeItem,
   Testimonio,
+  Trabajo,
 } from "@/types"
 
 /* ─── CONTACTO ─────────────────────────────────────────────────────────────── */
@@ -584,3 +588,211 @@ export const STATS = [
 /* ─── COPY GENERAL ────────────────────────────────────────────────────────── */
 
 export const TAGLINE = "No solo hacemos contenido, construimos marcas."
+
+/* ─── HOME (rediseño 2026) ─────────────────────────────────────────────────── */
+
+/* Marquees grandes que viven en la home. */
+export const MARQUEE_LO_QUE_HACEMOS = "Lo que hacemos ↓"
+export const MARQUEE_TRABAJOS = "TRABAJOS"
+export const MARQUEE_QUIENES_SOMOS = "¿Quiénes somos?"
+
+/* Bloque editorial bajo el hero (copy REAL del PDF). */
+export const BLOQUE_CITA = {
+  titulo:
+    "Algún día alguien te va a querer cobrar caro por decirte awareness, engagement y funnel.",
+  bajada:
+    "Nosotras preferimos no venderte humo, nos involucramos en tu negocio.",
+} as const
+
+/* Contadores animados (copy REAL del PDF). */
+export const contadoresHome: readonly Contador[] = [
+  { valor: 30,  suffix: "+", label: "Marcas de distintos rubros" },
+  { valor: 15,  suffix: "+", label: "Profesionales en un equipo multidisciplinario" },
+  { valor: 100, suffix: "+", label: "Proyectos en menos de cuatro años" },
+] as const
+
+/* Intro de la sección de contadores (copy REAL del PDF). */
+export const CONTADORES_INTRO = "Sí, nuestro nombre es inglés y…"
+
+/* Grilla de trabajos (LOREM por ahora — placeholders + clientes ficticios
+   con rubros variados para que las cards no se vean todas iguales). */
+export const trabajos: readonly Trabajo[] = [
+  {
+    cliente: "Cliente 01",
+    rubro: "Real Estate",
+    fotos: ["Cover · 01.1", "Cover · 01.2", "Cover · 01.3"],
+    logo: "Logo · 01",
+  },
+  {
+    cliente: "Cliente 02",
+    rubro: "Indumentaria",
+    fotos: ["Cover · 02.1", "Cover · 02.2", "Cover · 02.3"],
+    logo: "Logo · 02",
+  },
+  {
+    cliente: "Cliente 03",
+    rubro: "Talent",
+    fotos: ["Cover · 03.1", "Cover · 03.2", "Cover · 03.3"],
+    logo: "Logo · 03",
+  },
+  {
+    cliente: "Cliente 04",
+    rubro: "Gastronomía",
+    fotos: ["Cover · 04.1", "Cover · 04.2", "Cover · 04.3"],
+    logo: "Logo · 04",
+  },
+  {
+    cliente: "Cliente 05",
+    rubro: "Health & Wellness",
+    fotos: ["Cover · 05.1", "Cover · 05.2", "Cover · 05.3"],
+    logo: "Logo · 05",
+  },
+  {
+    cliente: "Cliente 06",
+    rubro: "Legal",
+    fotos: ["Cover · 06.1", "Cover · 06.2", "Cover · 06.3"],
+    logo: "Logo · 06",
+  },
+] as const
+
+/* Accordion de 6 servicios — títulos REALES del PDF, copy detallado
+   LOREM por ahora hasta que las chicas pasen el copy de cada uno.
+   Los 3 que tienen página propia incluyen href interno. */
+export const serviciosHome: readonly ServicioHomeItem[] = [
+  {
+    slug: "redes-sociales",
+    nombre: "Redes Sociales",
+    descripcion:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
+    bullets: [
+      "Lorem ipsum dolor sit amet",
+      "Consectetur adipiscing elit",
+      "Sed do eiusmod tempor incididunt",
+      "Ut labore et dolore magna aliqua",
+      "Ut enim ad minim veniam",
+    ],
+    href: "/redes-sociales",
+  },
+  {
+    slug: "estrategia-contenido",
+    nombre: "Estrategia de Contenido",
+    descripcion:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    bullets: [
+      "Lorem ipsum dolor sit amet",
+      "Consectetur adipiscing elit",
+      "Duis aute irure dolor",
+      "In reprehenderit in voluptate",
+      "Velit esse cillum dolore",
+    ],
+  },
+  {
+    slug: "marca-personal",
+    nombre: "Marca Personal",
+    descripcion:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    bullets: [
+      "Excepteur sint occaecat cupidatat",
+      "Non proident sunt in culpa",
+      "Qui officia deserunt mollit",
+      "Anim id est laborum",
+      "Lorem ipsum dolor",
+    ],
+  },
+  {
+    slug: "posicionamiento-digital",
+    nombre: "Posicionamiento Digital",
+    descripcion:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.",
+    bullets: [
+      "Nemo enim ipsam voluptatem",
+      "Quia voluptas sit aspernatur",
+      "Aut odit aut fugit",
+      "Sed quia consequuntur",
+      "Magni dolores eos qui ratione",
+    ],
+  },
+  {
+    slug: "performance-ads",
+    nombre: "Performance & Ads",
+    descripcion:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    bullets: [
+      "Neque porro quisquam est",
+      "Qui dolorem ipsum quia dolor",
+      "Sit amet consectetur",
+      "Adipisci velit sed quia",
+      "Non numquam eius modi tempora",
+    ],
+    href: "/performance",
+  },
+  {
+    slug: "academy",
+    nombre: "HOLD Academy",
+    descripcion:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.",
+    bullets: [
+      "At vero eos et accusamus",
+      "Et iusto odio dignissimos",
+      "Ducimus qui blanditiis",
+      "Praesentium voluptatum",
+      "Deleniti atque corrupti quos",
+    ],
+    href: "/academy",
+  },
+] as const
+
+/* Macro-grupos de servicios (copy REAL completo del PDF). */
+export const serviciosGrupos: readonly ServicioGrupo[] = [
+  {
+    numero: "01",
+    titulo: "HOLD BRANDS",
+    descripcion:
+      "Para negocios que quieren construir su marca con estrategia. Nos involucramos en el negocio y construimos la comunicación desde adentro.",
+    bullets: [
+      "Branding e identidad de marca",
+      "Estrategia y planificación de comunicación",
+      "Campañas y lanzamientos",
+      "Gestión de redes sociales",
+      "Producción audiovisual",
+      "Desarrollo web",
+    ],
+  },
+  {
+    numero: "02",
+    titulo: "HOLD TALENTS",
+    descripcion:
+      "Para figuras públicas y creadores que quieren monetizar su marca personal. Construcción de identidad, estrategia de contenido, gestión de comunidad y vinculación con marcas.",
+    bullets: [
+      "Estrategia de marca personal",
+      "Management",
+      "Gestión con marcas",
+      "Dirección creativa",
+      "Gestión de redes y comunidad",
+      "Producción de contenido",
+    ],
+  },
+  {
+    numero: "03",
+    titulo: "HOLD PERFORMANCE",
+    descripcion:
+      "Generamos oportunidades comerciales reales para tu negocio. Implementamos campañas en Meta, Google, LinkedIn y TikTok, según tu marca necesite, integradas con CRM y automatizaciones, para captar, gestionar y convertir contactos en potenciales clientes.",
+    bullets: [
+      "Campañas en Meta, Google, LinkedIn y Tiktok",
+      "Comunicación estratégica para pauta",
+      "Implementación de CRM",
+      "Automatizaciones de captación y seguimiento",
+      "Base de datos propia para tu negocio",
+      "Gestión de redes y comunidad",
+      "Reportes y optimización mensual",
+    ],
+  },
+] as const
+
+/* Historia birra (copy REAL del PDF). */
+export const HISTORIA_BIRRA = {
+  cita:
+    "Las mejores decisiones se toman con una birra de por medio. La nuestra fue dejar de buscar la agencia que queríamos y construirla nosotras.",
+  fotoBirra: "Birra · 2021",
+  fotoEquipo: "Equipo · 2026",
+} as const

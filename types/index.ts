@@ -72,3 +72,61 @@ export interface NavLink {
   label: string
   href: string
 }
+
+/* ─── HOME (rediseño 2026) ──────────────────────────────────────────── */
+
+/**
+ * Slugs de servicios visibles en el accordion de la home — set EXTENDIDO
+ * de `ServicioSlug`. Incluye los 3 con página interna (academy,
+ * redes-sociales, performance/performance-ads) + 3 nuevos que solo
+ * viven en la home (estrategia-contenido, marca-personal,
+ * posicionamiento-digital).
+ *
+ * Es un type distinto del `ServicioSlug` original para no romper el
+ * shape de `Testimonio.servicio` ni los routes internos.
+ */
+export type ServicioHomeSlug =
+  | "redes-sociales"
+  | "estrategia-contenido"
+  | "marca-personal"
+  | "posicionamiento-digital"
+  | "performance-ads"
+  | "academy"
+
+/** Item del accordion de servicios de la home. */
+export interface ServicioHomeItem {
+  slug: ServicioHomeSlug
+  nombre: string
+  /** Párrafo intro que aparece al expandir. */
+  descripcion: string
+  /** Bullets de lo que incluye el servicio. */
+  bullets: readonly string[]
+  /** Link a la página interna del servicio, si existe. */
+  href?: string
+}
+
+/** Macro-bloque de servicios (HOLD BRANDS / TALENTS / PERFORMANCE). */
+export interface ServicioGrupo {
+  numero: string
+  titulo: string
+  descripcion: string
+  bullets: readonly string[]
+}
+
+/** Proyecto / trabajo del cliente para la grilla TRABAJOS de la home. */
+export interface Trabajo {
+  cliente: string
+  rubro: string
+  /** Labels de placeholders (2-3) que ciclan en hover. */
+  fotos: readonly string[]
+  /** Label del logo placeholder. */
+  logo: string
+}
+
+/** Contador animado de la home (anima de 0 al valor). */
+export interface Contador {
+  valor: number
+  /** Sufijo opcional ("+"). */
+  suffix?: string
+  label: string
+}
