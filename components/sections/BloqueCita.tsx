@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { BLOQUE_CITA, trabajos } from "@/data/content"
+import { Eye, Filter, MessageCircle } from "lucide-react"
 import {
   blurFadeUp,
   cardReveal,
@@ -11,69 +11,78 @@ import {
 } from "@/lib/motion"
 import "./bloque-cita.css"
 
+/* Las 3 buzzwords del bloque cita — con íconos editoriales que las
+ * "anclan" sin caer en clichés tech (megáfono / cohete / gráfico). */
+const KEYWORDS = [
+  { Icon: Eye, label: "awareness" },
+  { Icon: MessageCircle, label: "engagement" },
+  { Icon: Filter, label: "funnel" },
+] as const
+
 /**
- * Sección editorial bajo el hero. Cita REAL del PDF a la izquierda,
- * grilla de 4 ejemplos a la derecha. La cita entra con blur-fade-up
- * editorial; los 4 cards a la derecha con spring stagger.
+ * Sección editorial bajo el hero, rediseñada:
+ *
+ *   "Algún día alguien te va a querer cobrar caro por decirte"
+ *
+ *   [Eye · awareness]  [MessageCircle · engagement]  [Filter · funnel]
+ *
+ *   ┌─────────────────────────────────────────────────────────┐
+ *   │  Nosotras preferimos {no venderte humo},                │
+ *   │  {nos involucramos en tu negocio}.                      │
+ *   └─────────────────────────────────────────────────────────┘
+ *
+ * Las tarjetas de clientes salieron — eso ya está en TRABAJOS.
  */
 export function BloqueCita() {
-  const ejemplos = trabajos.slice(0, 4)
-
   return (
     <section className="hold-bloque-cita">
-      <motion.div
-        className="hold-bloque-cita__main"
+      <motion.h2
+        className="hold-bloque-cita__titulo"
         initial="hidden"
         whileInView="visible"
         viewport={VIEWPORT_DEFAULT}
-        variants={makeStagger(0.12, 0)}
+        variants={blurFadeUp}
       >
-        <motion.p
-          className="hold-bloque-cita__eyebrow"
-          variants={fadeUp}
-        >
-          Manifiesto
-        </motion.p>
-        <motion.h2
-          className="hold-bloque-cita__titulo"
-          variants={blurFadeUp}
-        >
-          {BLOQUE_CITA.titulo}
-        </motion.h2>
-        <motion.p
-          className="hold-bloque-cita__bajada"
-          variants={fadeUp}
-        >
-          Nosotras preferimos <em>no venderte humo</em>, nos involucramos en
-          tu negocio.
-        </motion.p>
-      </motion.div>
+        Algún día alguien te va a querer cobrar caro por decirte
+      </motion.h2>
 
       <motion.div
-        className="hold-bloque-cita__grid"
+        className="hold-bloque-cita__keywords"
         initial="hidden"
         whileInView="visible"
         viewport={VIEWPORT_DEFAULT}
-        variants={makeStagger(0.08, 0.25)}
+        variants={makeStagger(0.12, 0.18)}
       >
-        {ejemplos.map((ej, i) => (
+        {KEYWORDS.map(({ Icon, label }) => (
           <motion.article
-            key={ej.cliente}
-            className="hold-bloque-cita__card"
+            key={label}
+            className="hold-bloque-cita__keyword"
             variants={cardReveal}
           >
-            <span className="hold-bloque-cita__card-num">
-              {String(i + 1).padStart(2, "0")}
+            <span className="hold-bloque-cita__keyword-icon" aria-hidden>
+              <Icon size={28} strokeWidth={1.4} />
             </span>
-            <div className="hold-bloque-cita__card-meta">
-              <span className="hold-bloque-cita__card-cliente">
-                {ej.cliente}
-              </span>
-              <span className="hold-bloque-cita__card-rubro">{ej.rubro}</span>
-            </div>
+            <span className="hold-bloque-cita__keyword-label">{label}</span>
           </motion.article>
         ))}
       </motion.div>
+
+      <motion.aside
+        className="hold-bloque-cita__panel"
+        initial="hidden"
+        whileInView="visible"
+        viewport={VIEWPORT_DEFAULT}
+        variants={fadeUp}
+      >
+        <p className="hold-bloque-cita__panel-text">
+          Nosotras preferimos{" "}
+          <em className="hold-bloque-cita__hl">no venderte humo</em>,{" "}
+          <em className="hold-bloque-cita__hl">
+            nos involucramos en tu negocio
+          </em>
+          .
+        </p>
+      </motion.aside>
     </section>
   )
 }

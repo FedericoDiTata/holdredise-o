@@ -22,7 +22,6 @@ export function HistoriaBirra() {
         viewport={VIEWPORT_DEFAULT}
         variants={makeStagger(0.2, 0)}
       >
-        <p className="hold-birra__eyebrow">El origen</p>
         <h3 className="hold-birra__cita">
           <span className="hold-birra__cita-clip">
             <motion.span

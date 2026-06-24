@@ -1,32 +1,25 @@
 /* HOLD ServiciosGrupos — 3 macro-bloques (BRANDS / TALENTS / PERFORMANCE).
-   Layout con subgrid: cada grupo ocupa 1 columna × 3 filas del padre,
-   forzando alineación cross-columns en heading / descripción / bullets
-   aunque "HOLD PERFORMANCE" rompa en 2 líneas. */
+   Layout 3-col simple. Cada heading tiene min-height fijo de 2 líneas
+   para alinear los 3 desde el principio: si "HOLD PERFORMANCE" rompe
+   en 2 líneas, los otros 2 también reservan ese mismo espacio aunque
+   sean 1 sola, así descripciones y bullets quedan alineados por fila. */
 
 .hold-grupos {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: auto auto 1fr;
-  gap: clamp(20px, 2.6vh, 36px) clamp(20px, 2vw, 32px);
-  border-top: 1px solid var(--fg);
-  padding-top: clamp(32px, 5vh, 64px);
+  gap: clamp(20px, 2.4vw, 36px);
 }
 
 .hold-grupo {
-  /* Subgrid: el grupo es un grid container que hereda las row tracks
-     del padre, así sus 3 hijos quedan alineados con los 3 hijos de los
-     otros grupos en cada fila. */
-  display: grid;
-  grid-template-rows: subgrid;
-  grid-row: span 3;
-  /* Sin gap interno — el row gap del padre maneja la separación. */
   position: relative;
-  padding: clamp(20px, 1.8vw, 28px) clamp(16px, 1.4vw, 24px) clamp(24px, 2vw, 32px);
-  background: transparent;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 1.8vw, 30px) clamp(18px, 1.4vw, 24px)
+    clamp(26px, 2vw, 32px);
   border-top: 1px solid var(--fg);
+  background: transparent;
   isolation: isolate;
-  transition:
-    background var(--dur-base) var(--ease-hold);
+  transition: background var(--dur-base) var(--ease-hold);
 }
 
 /* Línea inferior accent que aparece en hover con scaleX. */
@@ -53,32 +46,35 @@
 
 .hold-grupo__titulo {
   font-size: clamp(26px, 2.6vw, 36px);
-  line-height: 1.05;
+  line-height: 1.08;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--fg);
   margin: 0;
-  /* Que pueda romper en 2 líneas — el subgrid alinea igual. */
-  text-wrap: balance;
+  /* Altura fija de 2 líneas — alinea los 3 títulos cross-columns
+     aunque "HOLD PERFORMANCE" rompa y los otros no. El texto baseline
+     queda al fondo, así títulos de 1 línea aparecen "abajo" del slot
+     reservado (look intencional, no roto). */
+  min-height: calc(1.08em * 2);
+  display: flex;
+  align-items: flex-end;
 }
 
 .hold-grupo__desc {
   font-size: 15px;
   line-height: 1.55;
   color: var(--muted);
-  margin: 0;
+  margin: 24px 0 0;
   max-width: 38ch;
-  align-self: start;
 }
 
 .hold-grupo__bullets {
   list-style: none;
-  margin: 0;
+  margin: 28px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--hairline);
-  align-self: stretch;
 }
 
 .hold-grupo__bullet {
@@ -116,15 +112,10 @@
 @media (max-width: 1000px) {
   .hold-grupos {
     grid-template-columns: 1fr;
-    grid-template-rows: none;
-    gap: 32px;
+    gap: 24px;
   }
-  .hold-grupo {
-    /* Subgrid se desactiva en stack mobile — vuelve a layout natural. */
-    grid-template-rows: none;
-    grid-row: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  .hold-grupo__titulo {
+    /* En mobile no necesitamos forzar 2 líneas porque cada card stackea. */
+    min-height: 0;
   }
 }

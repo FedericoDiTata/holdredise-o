@@ -54,7 +54,6 @@ export default function Home() {
       </section>
 
       <CTABand
-        eyebrow="Próximo paso"
         title={
           <>
             ¿Hablamos sobre <em>tu marca?</em>

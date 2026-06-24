@@ -164,8 +164,10 @@
   letter-spacing: -0.055em;
 }
 
-/* Cursor editorial · NO de typing — blink lento + accent azul. Aparece
-   recién después del fade-in inicial del título (delay 1.4s). */
+/* Cursor del typing — sólido mientras tipea/borra (la lógica de
+   typing avanza visualmente sola), blink lento SOLO en pausa con la
+   palabra completa. Ese contraste se siente editorial: el cursor
+   "espera" pacientemente, no parpadea como un terminal. */
 .hold-hero-shader__cursor {
   display: inline-block;
   width: 0.06em;
@@ -174,9 +176,13 @@
   vertical-align: baseline;
   transform: translateY(0.02em);
   opacity: 0;
+  animation: hold-hero-cursor-in 0.4s var(--ease-hold) 1.4s forwards;
+}
+
+.hold-hero-shader__cursor--blink {
   animation:
     hold-hero-cursor-in 0.4s var(--ease-hold) 1.4s forwards,
-    hold-hero-cursor-blink 1.1s ease-in-out 1.8s infinite;
+    hold-hero-cursor-blink 1.05s ease-in-out 1.8s infinite;
 }
 
 @keyframes hold-hero-cursor-in {

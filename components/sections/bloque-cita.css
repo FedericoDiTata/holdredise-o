@@ -1,155 +1,144 @@
-/* HOLD BloqueCita — sección editorial bajo el hero.
-   Cita grande a la izquierda + grilla de "ejemplos" (mini tarjetas
-   con nombre cliente + rubro placeholder) a la derecha. Layout split
-   en desktop, stack en mobile. */
+/* HOLD BloqueCita rediseñado — manifiesto editorial bajo el hero.
+   Stack vertical centrado:
+     1) Título grande con la frase corta
+     2) 3 keyword cards horizontales (awareness/engagement/funnel)
+     3) Panel grande negro con la frase "no venderte humo" resaltada */
 
 .hold-bloque-cita {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: clamp(48px, 6vw, 96px);
-  align-items: start;
-}
-
-.hold-bloque-cita__main {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-}
-
-.hold-bloque-cita__eyebrow {
-  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.hold-bloque-cita__eyebrow::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  flex-shrink: 0;
+  gap: clamp(40px, 6vh, 80px);
 }
 
 .hold-bloque-cita__titulo {
-  font-size: clamp(32px, 4.2vw, 64px);
-  line-height: 1.05;
+  font-size: clamp(30px, 4.2vw, 60px);
+  line-height: 1.08;
   font-weight: 400;
   letter-spacing: -0.03em;
   color: var(--fg);
   margin: 0;
+  text-align: center;
   max-width: 22ch;
+  text-wrap: balance;
 }
 
-.hold-bloque-cita__bajada {
-  font-size: clamp(17px, 1.6vw, 22px);
-  line-height: 1.5;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  color: var(--muted);
-  margin: 0;
-  max-width: 36ch;
-}
-
-.hold-bloque-cita__bajada em {
-  font-style: italic;
-  color: var(--fg);
-  font-weight: 500;
-}
-
-/* ── Grilla de ejemplos (4-6 tarjetitas con cliente + rubro) ──────── */
-.hold-bloque-cita__grid {
+/* ── 3 keyword cards ──────────────────────────────────────────────── */
+.hold-bloque-cita__keywords {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(12px, 1.4vw, 18px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 24px);
+  width: 100%;
+  max-width: 1040px;
 }
 
-.hold-bloque-cita__card {
+.hold-bloque-cita__keyword {
   position: relative;
-  aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(16px, 1.8vw, 22px);
-  background: var(--surface);
+  align-items: center;
+  gap: 18px;
+  padding: clamp(28px, 3vw, 44px) clamp(20px, 2vw, 32px);
+  background: var(--bg);
   border: 1px solid var(--hairline);
-  overflow: hidden;
+  text-align: center;
   isolation: isolate;
   transition:
     border-color var(--dur-base) var(--ease-hold),
     transform var(--dur-base) var(--ease-hold);
 }
 
-.hold-bloque-cita__card:hover {
+.hold-bloque-cita__keyword:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
-.hold-bloque-cita__card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(29, 29, 27, 0.05) 0 8px,
-      transparent 8px 16px
-    );
-  pointer-events: none;
-  z-index: 0;
+.hold-bloque-cita__keyword-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  color: var(--accent);
+  border: 1px solid var(--accent-22);
+  background: transparent;
+  transition:
+    background var(--dur-base) var(--ease-hold),
+    color var(--dur-base) var(--ease-hold),
+    border-color var(--dur-base) var(--ease-hold);
 }
 
-.hold-bloque-cita__card-meta {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.hold-bloque-cita__keyword:hover .hold-bloque-cita__keyword-icon {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 
-.hold-bloque-cita__card-cliente {
-  font-size: clamp(14px, 1.2vw, 16px);
+.hold-bloque-cita__keyword-label {
+  font-size: clamp(16px, 1.6vw, 22px);
   font-weight: 500;
   letter-spacing: -0.005em;
   color: var(--fg);
-  line-height: 1.2;
+  font-style: italic;
 }
 
-.hold-bloque-cita__card-rubro {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.hold-bloque-cita__card-num {
+/* ── Panel grande negro con highlight ─────────────────────────────── */
+.hold-bloque-cita__panel {
   position: relative;
-  z-index: 1;
-  font-size: 11px;
+  width: 100%;
+  padding: clamp(44px, 7vh, 88px) clamp(28px, 5vw, 80px);
+  background: var(--fg);
+  color: var(--bg);
+  text-align: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Hatch sutil de fondo (textura editorial) — apenas perceptible */
+.hold-bloque-cita__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(250, 255, 250, 0.025) 0 10px,
+    transparent 10px 20px
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hold-bloque-cita__panel-text {
+  font-size: clamp(22px, 2.8vw, 40px);
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 30ch;
+  margin-inline: auto;
+  color: var(--bg);
+}
+
+/* Highlight con underline grueso accent + italic. La gradient-line es
+   más editorial que un border-bottom porque se ajusta al texto y deja
+   un offset pequeño al baseline. */
+.hold-bloque-cita__hl {
+  font-style: italic;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-  align-self: flex-end;
+  color: var(--accent);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  padding-bottom: 4px;
 }
 
-@media (max-width: 900px) {
-  .hold-bloque-cita {
+@media (max-width: 820px) {
+  .hold-bloque-cita__keywords {
     grid-template-columns: 1fr;
-    gap: 40px;
+    max-width: 380px;
   }
-}
-
-@media (max-width: 500px) {
-  .hold-bloque-cita__grid {
-    grid-template-columns: 1fr;
-  }
-  .hold-bloque-cita__card {
-    aspect-ratio: 2 / 1;
+  .hold-bloque-cita__panel-text {
+    font-size: clamp(18px, 4vw, 24px);
   }
 }

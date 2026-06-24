@@ -11,43 +11,28 @@
 }
 
 .hold-birra__cita-wrap {
-  max-width: 920px;
-  margin-inline: auto;
+  /* Sin max-width: el wrapper ocupa todo el container para que cada
+     línea de la cita quepa en 1 solo renglón en desktop. */
+  width: 100%;
   text-align: center;
-  padding-inline: clamp(16px, 4vw, 48px);
-}
-
-.hold-birra__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 20px;
-}
-
-.hold-birra__eyebrow::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  flex-shrink: 0;
 }
 
 .hold-birra__cita {
-  font-size: clamp(24px, 2.8vw, 40px);
-  line-height: 1.2;
+  /* Font-size escalado a viewport para que la línea más larga
+     ("La nuestra fue dejar de buscar la agencia que queríamos y
+     construirla nosotras.") quepa en 1 renglón en desktop. */
+  font-size: clamp(15px, 1.65vw, 26px);
+  line-height: 1.25;
   font-weight: 400;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   color: var(--fg);
   margin: 0;
   /* Container de las 2 líneas — cada __cita-clip es display:block. */
   display: flex;
   flex-direction: column;
-  gap: 0.18em;
+  gap: 0.3em;
+  /* En desktop forzamos 1 renglón por línea; en mobile se afloja. */
+  white-space: nowrap;
 }
 
 .hold-birra__cita-clip {
@@ -112,6 +97,16 @@
 .hold-birra__foto-year {
   color: var(--accent);
   font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  /* En mobile/tablet afloja el nowrap y deja que las líneas se
+     wrappeen naturalmente — sino habría overflow horizontal. */
+  .hold-birra__cita {
+    white-space: normal;
+    font-size: clamp(18px, 3.6vw, 22px);
+    text-wrap: balance;
+  }
 }
 
 @media (max-width: 720px) {

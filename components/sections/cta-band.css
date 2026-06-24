@@ -19,7 +19,7 @@
 }
 
 .hold-cta-band__inner {
-  max-width: 960px;
+  max-width: 1280px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
@@ -38,12 +38,15 @@
 }
 
 .hold-cta-band__title {
-  font-size: clamp(40px, 6vw, 88px);
-  line-height: 0.98;
+  /* Font-size acotado para que "¿Hablamos sobre tu marca?" quepa en 1
+     renglón en desktop (25 chars × ~0.5em × 72px ≈ 900px ≤ 1280px). */
+  font-size: clamp(36px, 5.2vw, 72px);
+  line-height: 1.02;
   font-weight: 300;
   letter-spacing: -0.04em;
   margin: 0;
-  max-width: 18ch;
+  /* Sin max-width: el inner controla el ancho total y el font-size
+     garantiza que entre en 1 renglón. */
 }
 
 .hold-cta-band__title em {
@@ -68,10 +71,29 @@
 }
 
 /* Cuando el band va en negro, los botones primary del DS quedan invisibles
-   (bg fg sobre bg fg). Override: vuelvan blancos con texto negro. */
+   (bg fg sobre bg fg). Override: vuelvan blancos con texto negro. Hover
+   profesional: bg blanco → bg azul accent, texto negro → blanco, con un
+   sutil scale para sentir el peso del CTA en el cierre de la home. */
 .hold-cta-band:not([data-variant="accent"]) .hold-btn--primary {
   background: var(--bg);
   color: var(--fg);
+  border-color: var(--bg);
+  transition:
+    background var(--dur-base) var(--ease-hold),
+    color var(--dur-base) var(--ease-hold),
+    border-color var(--dur-base) var(--ease-hold),
+    transform var(--dur-base) var(--ease-hold),
+    box-shadow var(--dur-base) var(--ease-hold);
+}
+
+.hold-cta-band:not([data-variant="accent"]) .hold-btn--primary:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  /* Sutil "lift" + halo accent para que el hover se sienta más físico
+     que solo cambio de color. */
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px -12px color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .hold-cta-band:not([data-variant="accent"]) .hold-btn--secondary {

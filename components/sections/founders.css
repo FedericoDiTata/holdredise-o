@@ -67,21 +67,39 @@
   margin: 0;
 }
 
-/* ── Variante compact (home): foto cuadrada, gaps menores ─────────── */
+/* ── Variante compact (home): foto cuadrada con max-width acotado para
+   que la sección no ocupe medio viewport. Los 2 founders quedan en
+   un row horizontal compacto, no en un layout editorial alto. */
 .hold-founders--compact {
-  gap: clamp(28px, 4vw, 56px);
+  gap: clamp(20px, 3vw, 40px);
+  /* Centrar el bloque entero cuando las fotos son acotadas. */
+  justify-content: center;
 }
 
 .hold-founders--compact .hold-founder {
-  gap: 20px;
+  gap: 18px;
+  align-items: center;
+  text-align: center;
 }
 
 .hold-founders--compact .hold-founder__photo-wrap {
   aspect-ratio: 1 / 1;
+  /* Acotar el tamaño físico de la foto — antes ocupaba el 100% del
+     ancho de la columna (~500px en desktop), ahora máx 320px. */
+  max-width: 320px;
+  width: 100%;
+}
+
+.hold-founders--compact .hold-founder__meta {
+  align-items: center;
 }
 
 .hold-founders--compact .hold-founder__name {
-  font-size: clamp(28px, 3.4vw, 44px);
+  font-size: clamp(22px, 2.6vw, 32px);
+}
+
+.hold-founders--compact .hold-founder__role {
+  text-align: center;
 }
 
 .hold-founders--compact .hold-founder__bio {
