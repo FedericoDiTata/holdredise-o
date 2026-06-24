@@ -47,11 +47,15 @@ export default function Home() {
       <MarqueeBand items={[MARQUEE_QUIENES_SOMOS]} accent durationSec={28} />
 
       <section className="section-container section-container--tight">
-        <FoundersHome />
+        <SectionWipe>
+          <FoundersHome />
+        </SectionWipe>
       </section>
 
       <section className="section-container section-container--tight">
-        <HistoriaBirra />
+        <SectionWipe>
+          <HistoriaBirra />
+        </SectionWipe>
       </section>
 
       <SectionWipe>

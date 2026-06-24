@@ -1,6 +1,7 @@
 "use client"
 
 import { motion, useReducedMotion, type Variants } from "framer-motion"
+import { Fragment } from "react"
 import { EASE_HOLD } from "@/lib/motion"
 import "./split-text.css"
 
@@ -64,15 +65,20 @@ export function SplitText({
       aria-label={text}
     >
       {tokens.map((token, i) => (
-        <span key={i} className="hold-split-text__row" aria-hidden>
-          <motion.span
-            className="hold-split-text__item"
-            variants={itemVariants}
-          >
-            {token}
-            {granularity === "word" && i < tokens.length - 1 ? " " : ""}
-          </motion.span>
-        </span>
+        <Fragment key={i}>
+          <span className="hold-split-text__row" aria-hidden>
+            <motion.span
+              className="hold-split-text__item"
+              variants={itemVariants}
+            >
+              {token}
+            </motion.span>
+          </span>
+          {/* Espacio FUERA del row (text node entre siblings inline-block)
+            para que no lo coma el `overflow: hidden` del row.
+            Mantiene line-break naturales en mobile. */}
+          {granularity === "word" && i < tokens.length - 1 ? " " : null}
+        </Fragment>
       ))}
     </motion.span>
   )

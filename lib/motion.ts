@@ -128,6 +128,50 @@ export const cardReveal3D: Variants = {
   },
 }
 
+/* Card con border glow accent al entrar — el contorno "se pinta" del
+ * estado transparente al accent azul brand. Usa box-shadow inset 1px
+ * en lugar de border para NO afectar layout (border cambia dimensiones).
+ * Inspirado en el border resaltado de SpotGames. */
+export const cardRevealLight: Variants = {
+  hidden: {
+    y: 48,
+    opacity: 0,
+    boxShadow: "0 0 0 1px rgba(43, 99, 255, 0)",
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    boxShadow: "0 0 0 1px rgba(43, 99, 255, 1)",
+    transition: {
+      y: { type: "spring", stiffness: 88, damping: 18 },
+      opacity: { duration: 0.5 },
+      boxShadow: { duration: 1.0, ease: [0.62, 0.04, 0.36, 0.97], delay: 0.3 },
+    },
+  },
+}
+
+/* Combinación 3D + border glow — para project cards (TrabajosSection). */
+export const cardReveal3DLight: Variants = {
+  hidden: {
+    y: 56,
+    opacity: 0,
+    rotateX: -16,
+    boxShadow: "0 0 0 1px rgba(43, 99, 255, 0)",
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    rotateX: 0,
+    boxShadow: "0 0 0 1px rgba(43, 99, 255, 1)",
+    transition: {
+      y: { type: "spring", stiffness: 88, damping: 18, mass: 0.95 },
+      opacity: { duration: 0.5 },
+      rotateX: { type: "spring", stiffness: 88, damping: 18, mass: 0.95 },
+      boxShadow: { duration: 1.0, ease: [0.62, 0.04, 0.36, 0.97], delay: 0.3 },
+    },
+  },
+}
+
 /* Curva del wipe — más drámatica que la EASE_HOLD: arranca rápido, frena
  * en el peak (donde reveal el contenido), termina rápido. */
 export const EASE_WIPE = [0.62, 0.04, 0.36, 0.97] as const

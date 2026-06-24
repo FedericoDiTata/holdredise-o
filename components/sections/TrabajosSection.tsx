@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { MarqueeBand } from "@/components/effects/MarqueeBand"
 import { ProjectCardHover } from "@/components/ui/ProjectCardHover"
 import { trabajos } from "@/data/content"
-import { cardReveal3D, makeStagger, VIEWPORT_DEFAULT } from "@/lib/motion"
+import { cardReveal3DLight, makeStagger, VIEWPORT_DEFAULT } from "@/lib/motion"
 import "./trabajos-section.css"
 
 /**
@@ -34,7 +34,7 @@ export function TrabajosSection() {
           <motion.div
             key={t.cliente}
             className="hold-trabajos__card"
-            variants={cardReveal3D}
+            variants={cardReveal3DLight}
           >
             <ProjectCardHover trabajo={t} />
           </motion.div>

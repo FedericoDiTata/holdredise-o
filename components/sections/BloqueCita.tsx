@@ -5,7 +5,7 @@ import { Eye, Filter, MessageCircle } from "lucide-react"
 import { SectionWipe } from "@/components/effects/SectionWipe"
 import { SplitText } from "@/components/effects/SplitText"
 import {
-  cardReveal,
+  cardRevealLight,
   fadeUp,
   makeStagger,
   VIEWPORT_DEFAULT,
@@ -58,7 +58,7 @@ export function BloqueCita() {
           <motion.article
             key={label}
             className="hold-bloque-cita__keyword"
-            variants={cardReveal}
+            variants={cardRevealLight}
           >
             <span className="hold-bloque-cita__keyword-icon" aria-hidden>
               <Icon size={28} strokeWidth={1.4} />
@@ -78,12 +78,35 @@ export function BloqueCita() {
         <p className="hold-bloque-cita__panel-text">
           <span className="hold-bloque-cita__panel-line">
             Nosotras preferimos{" "}
-            <em className="hold-bloque-cita__hl">no venderte humo</em>,
+            <motion.em
+              className="hold-bloque-cita__hl"
+              initial={{ backgroundSize: "0% 100%" }}
+              whileInView={{ backgroundSize: "100% 100%" }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{
+                duration: 0.95,
+                ease: [0.62, 0.04, 0.36, 0.97],
+                delay: 0.35,
+              }}
+            >
+              no venderte humo
+            </motion.em>
+            ,
           </span>
           <span className="hold-bloque-cita__panel-line">
-            <em className="hold-bloque-cita__hl">
+            <motion.em
+              className="hold-bloque-cita__hl"
+              initial={{ backgroundSize: "0% 100%" }}
+              whileInView={{ backgroundSize: "100% 100%" }}
+              viewport={{ once: true, margin: "-15%" }}
+              transition={{
+                duration: 0.95,
+                ease: [0.62, 0.04, 0.36, 0.97],
+                delay: 0.7,
+              }}
+            >
               nos involucramos en tu negocio
-            </em>
+            </motion.em>
             .
           </span>
         </p>
