@@ -21,24 +21,22 @@ type Props = {
 }
 
 /**
- * SectionWipe rediseñado — en vez de un rectángulo accent horizontal,
- * ahora son 5 stripes verticales accent que colapsan hacia arriba en
- * cascada de izquierda a derecha (delay escalonado). El efecto se siente
- * como una persiana editorial subiéndose, mucho más print-design / magazine.
+ * SectionWipe horizontal — 5 stripes accent que ocupan filas horizontales
+ * y colapsan en zigzag: las stripes pares contraen desde la izquierda
+ * (originX 100% → scaleX 0), las impares desde la derecha (originX 0% →
+ * scaleX 0). El stagger entre stripes y la alternancia de dirección
+ * crea un efecto de tejido / persianas que se abren editorialmente.
  *
- * Las stripes pares tienen un hatch diagonal sutil para textura tactil
- * (no es un bloque plano de color).
- *
- * El contenido emerge cuando ~la mitad de las stripes ya colapsaron.
+ * Stripes pares con hatch diagonal para textura.
  *
  * Respeta prefers-reduced-motion: stripes hidden, contenido visible directo.
  */
 export function SectionWipe({
   children,
   color = "var(--accent)",
-  duration = 0.75,
+  duration = 0.85,
   delay = 0,
-  stripeStagger = 0.08,
+  stripeStagger = 0.07,
   className,
 }: Props) {
   const reduce = useReducedMotion()
@@ -46,21 +44,27 @@ export function SectionWipe({
   return (
     <div className={"hold-section-wipe" + (className ? ` ${className}` : "")}>
       <div className="hold-section-wipe__stripes" aria-hidden>
-        {Array.from({ length: STRIPES }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="hold-section-wipe__stripe"
-            style={{ background: color, originY: 0 }}
-            initial={{ scaleY: reduce ? 0 : 1 }}
-            whileInView={{ scaleY: 0 }}
-            viewport={{ once: true, margin: "-12%" }}
-            transition={{
-              duration,
-              delay: delay + i * stripeStagger,
-              ease: EASE_WIPE,
-            }}
-          />
-        ))}
+        {Array.from({ length: STRIPES }).map((_, i) => {
+          /* Alterna el origin: par anclado al lado derecho (colapsa hacia
+           * la derecha), impar anclado a la izquierda (colapsa hacia la
+           * izquierda). Da efecto zigzag editorial. */
+          const originX = i % 2 === 0 ? "100%" : "0%"
+          return (
+            <motion.div
+              key={i}
+              className="hold-section-wipe__stripe"
+              style={{ background: color, originX }}
+              initial={{ scaleX: reduce ? 0 : 1 }}
+              whileInView={{ scaleX: 0 }}
+              viewport={{ once: true, margin: "-12%" }}
+              transition={{
+                duration,
+                delay: delay + i * stripeStagger,
+                ease: EASE_WIPE,
+              }}
+            />
+          )
+        })}
       </div>
       <motion.div
         className="hold-section-wipe__content"

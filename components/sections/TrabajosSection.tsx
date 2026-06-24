@@ -1,7 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { BorderTrace } from "@/components/effects/BorderTrace"
 import { MarqueeBand } from "@/components/effects/MarqueeBand"
 import { ProjectCardHover } from "@/components/ui/ProjectCardHover"
 import { trabajos } from "@/data/content"
@@ -38,8 +37,7 @@ export function TrabajosSection() {
             className="hold-trabajos__card"
             variants={cardReveal3D}
           >
-            <BorderTrace delay={0.25 + i * 0.08} duration={1.4} fadeOut />
-            <ProjectCardHover trabajo={t} />
+            <ProjectCardHover trabajo={t} traceDelay={0.2 + i * 0.06} />
           </motion.div>
         ))}
       </motion.div>

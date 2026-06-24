@@ -1,5 +1,6 @@
-/* HOLD SectionWipe — stripes verticales accent que colapsan hacia arriba
-   en cascada de izquierda a derecha, revelando el contenido detrás. */
+/* HOLD SectionWipe — stripes horizontales accent que colapsan en zigzag.
+   Las stripes pares contraen hacia la derecha, las impares hacia la
+   izquierda — tejido editorial que abre el contenido. */
 
 .hold-section-wipe {
   position: relative;
@@ -10,7 +11,8 @@
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  /* Stripes en filas horizontales — apiladas verticalmente. */
+  grid-template-rows: repeat(5, 1fr);
   z-index: 2;
   pointer-events: none;
 }
@@ -26,7 +28,7 @@
 .hold-section-wipe__stripe:nth-child(even) {
   background-image: repeating-linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.1) 0 6px,
+    rgba(255, 255, 255, 0.12) 0 6px,
     transparent 6px 12px
   );
   background-blend-mode: overlay;

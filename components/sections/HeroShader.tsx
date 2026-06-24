@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react"
 import { Button } from "@/components/ui/Button"
+import { HeroParticles3D } from "@/components/effects/HeroParticles3D"
 import { WHATSAPP_URL } from "@/data/content"
 import { HeroRotatingWord } from "./HeroRotatingWord"
 import "./hero-shader.css"
@@ -16,6 +17,8 @@ import "./hero-shader.css"
 export function HeroShader() {
   return (
     <section className="hold-hero-shader" aria-label="Inicio">
+      <HeroParticles3D />
+
       <h1 className="hold-hero-shader__sr">
         No solo hacemos contenido, construimos marcas.
       </h1>

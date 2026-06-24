@@ -79,31 +79,5 @@
   padding: 4px 8px;
 }
 
-/* Body de la card (cliente + rubro) */
-.hold-project-card__body {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.hold-project-card__cliente {
-  font-size: clamp(13px, 1.05vw, 15px);
-  font-weight: 500;
-  letter-spacing: -0.005em;
-  color: var(--fg);
-  transition: color var(--dur-fast) var(--ease-hold);
-}
-
-.hold-project-card:hover .hold-project-card__cliente,
-.hold-project-card[data-active="true"] .hold-project-card__cliente {
-  color: var(--accent);
-}
-
-.hold-project-card__rubro {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+/* Body cliente/rubro removido — la card ahora es solo media (imagen)
+   con el trace de border accent encima. */

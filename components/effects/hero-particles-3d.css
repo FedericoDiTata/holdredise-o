@@ -1,0 +1,23 @@
+/* HOLD HeroParticles3D — canvas full-bleed detrás del content del hero. */
+
+.hold-hero-particles-3d {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Mix-blend para que las partículas integren con el bg star-white
+     sin verse "encima" como overlay. */
+  mix-blend-mode: multiply;
+}
+
+.hold-hero-particles-3d canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-hero-particles-3d {
+    display: none;
+  }
+}

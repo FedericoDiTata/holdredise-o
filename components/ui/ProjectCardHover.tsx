@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { BorderTrace } from "@/components/effects/BorderTrace"
 import { Placeholder } from "@/components/ui/Placeholder"
 import type { Trabajo } from "@/types"
 import "./project-card-hover.css"
@@ -9,6 +10,8 @@ type Props = {
   trabajo: Trabajo
   /** Velocidad del cycle entre fotos en ms (default 800). */
   intervalMs?: number
+  /** Delay del trace del borde accent al entrar al viewport. */
+  traceDelay?: number
 }
 
 /**
@@ -17,11 +20,18 @@ type Props = {
  * (IntersectionObserver, sin hover possible en touch), las fotos
  * ciclan cada `intervalMs`. Al soltar el hover, vuelve a la foto 0.
  *
+ * El border trace accent (BorderTrace) se renderiza solo sobre el media
+ * (la foto), NO sobre el card entero — para que el recorrido bordee la
+ * imagen sin pisar el body de texto.
+ *
  * Cuando lleguen las fotos reales, reemplazar el `<Placeholder>` por
- * `<Image>` de next/image con `loading="lazy"`. La capa stack y el
- * fade ya están listos.
+ * `<Image>` de next/image con `loading="lazy"`.
  */
-export function ProjectCardHover({ trabajo, intervalMs = 800 }: Props) {
+export function ProjectCardHover({
+  trabajo,
+  intervalMs = 800,
+  traceDelay = 0,
+}: Props) {
   const [activeIdx, setActiveIdx] = useState(0)
   const [autoplay, setAutoplay] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -78,6 +88,7 @@ export function ProjectCardHover({ trabajo, intervalMs = 800 }: Props) {
     >
       <div className="hold-project-card__media">
         <span className="hold-project-card__logo">{trabajo.logo}</span>
+        <BorderTrace delay={traceDelay} duration={0.7} fadeOut />
 
         {trabajo.fotos.map((label, i) => (
           <div
@@ -100,11 +111,6 @@ export function ProjectCardHover({ trabajo, intervalMs = 800 }: Props) {
             ))}
           </div>
         ) : null}
-      </div>
-
-      <div className="hold-project-card__body">
-        <span className="hold-project-card__cliente">{trabajo.cliente}</span>
-        <span className="hold-project-card__rubro">{trabajo.rubro}</span>
       </div>
     </article>
   )

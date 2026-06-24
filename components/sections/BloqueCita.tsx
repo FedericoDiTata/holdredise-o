@@ -61,7 +61,7 @@ export function BloqueCita() {
             className="hold-bloque-cita__keyword"
             variants={cardReveal}
           >
-            <BorderTrace delay={0.3 + i * 0.1} duration={1.3} fadeOut />
+            <BorderTrace delay={0.25 + i * 0.07} duration={0.75} fadeOut />
             <span className="hold-bloque-cita__keyword-icon" aria-hidden>
               <Icon size={28} strokeWidth={1.4} />
             </span>
