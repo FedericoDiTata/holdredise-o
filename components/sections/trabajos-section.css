@@ -19,7 +19,9 @@
 
 .hold-trabajos__card {
   /* preserve-3d permite que el rotateX del child se proyecte respeto
-     a la perspectiva del grid. */
+     a la perspectiva del grid. position: relative para anclar el
+     BorderTrace overlay (SVG absolute inset 0). */
+  position: relative;
   transform-style: preserve-3d;
   will-change: transform, opacity;
 }

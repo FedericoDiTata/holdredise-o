@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion"
 import { Eye, Filter, MessageCircle } from "lucide-react"
+import { BorderTrace } from "@/components/effects/BorderTrace"
 import { SectionWipe } from "@/components/effects/SectionWipe"
 import { SplitText } from "@/components/effects/SplitText"
 import {
-  cardRevealLight,
+  cardReveal,
   fadeUp,
   makeStagger,
   VIEWPORT_DEFAULT,
@@ -54,12 +55,13 @@ export function BloqueCita() {
         viewport={VIEWPORT_DEFAULT}
         variants={makeStagger(0.12, 0.18)}
       >
-        {KEYWORDS.map(({ Icon, label }) => (
+        {KEYWORDS.map(({ Icon, label }, i) => (
           <motion.article
             key={label}
             className="hold-bloque-cita__keyword"
-            variants={cardRevealLight}
+            variants={cardReveal}
           >
+            <BorderTrace delay={0.3 + i * 0.1} duration={1.3} fadeOut />
             <span className="hold-bloque-cita__keyword-icon" aria-hidden>
               <Icon size={28} strokeWidth={1.4} />
             </span>

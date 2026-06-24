@@ -1,10 +1,11 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { BorderTrace } from "@/components/effects/BorderTrace"
 import { MarqueeBand } from "@/components/effects/MarqueeBand"
 import { ProjectCardHover } from "@/components/ui/ProjectCardHover"
 import { trabajos } from "@/data/content"
-import { cardReveal3DLight, makeStagger, VIEWPORT_DEFAULT } from "@/lib/motion"
+import { cardReveal3D, makeStagger, VIEWPORT_DEFAULT } from "@/lib/motion"
 import "./trabajos-section.css"
 
 /**
@@ -29,13 +30,15 @@ export function TrabajosSection() {
         whileInView="visible"
         viewport={VIEWPORT_DEFAULT}
         variants={makeStagger(0.11, 0.08)}
+        style={{ position: "relative" }}
       >
-        {trabajos.map((t) => (
+        {trabajos.map((t, i) => (
           <motion.div
             key={t.cliente}
             className="hold-trabajos__card"
-            variants={cardReveal3DLight}
+            variants={cardReveal3D}
           >
+            <BorderTrace delay={0.25 + i * 0.08} duration={1.4} fadeOut />
             <ProjectCardHover trabajo={t} />
           </motion.div>
         ))}

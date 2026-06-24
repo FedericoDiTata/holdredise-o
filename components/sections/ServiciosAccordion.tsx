@@ -4,10 +4,11 @@ import { useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
+import { SplitText } from "@/components/effects/SplitText"
 import {
   EASE_HOLD,
-  fadeUp,
   makeStagger,
+  slideFromRight,
   VIEWPORT_DEFAULT,
 } from "@/lib/motion"
 import type { ServicioHomeItem } from "@/types"
@@ -50,7 +51,7 @@ export function ServiciosAccordion({ items }: Props) {
             className="hold-acc__item"
             data-open={isOpen ? "true" : undefined}
             role="listitem"
-            variants={fadeUp}
+            variants={slideFromRight}
           >
             <button
               type="button"
@@ -59,7 +60,14 @@ export function ServiciosAccordion({ items }: Props) {
               aria-expanded={isOpen}
               aria-controls={`acc-panel-${item.slug}`}
             >
-              <span className="hold-acc__btn-name">{item.nombre}</span>
+              <span className="hold-acc__btn-name">
+                <SplitText
+                  text={item.nombre}
+                  granularity="word"
+                  stagger={0.05}
+                  delayChildren={0.1}
+                />
+              </span>
               <span className="hold-acc__chevron" aria-hidden />
             </button>
 

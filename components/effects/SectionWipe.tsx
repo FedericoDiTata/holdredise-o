@@ -1,90 +1,75 @@
 "use client"
 
-import { motion, useInView, useReducedMotion } from "framer-motion"
-import { useRef, type ReactNode } from "react"
+import { motion, useReducedMotion } from "framer-motion"
+import { type ReactNode } from "react"
 import { EASE_WIPE } from "@/lib/motion"
 import "./section-wipe.css"
 
+const STRIPES = 5
+
 type Props = {
   children: ReactNode
-  /** Color del rectángulo del wipe. Default: --accent azul. */
+  /** Color de las stripes. Default: accent azul. */
   color?: string
-  /** Duración total del wipe en s. Default 1.1s. */
+  /** Duración del colapso de cada stripe en s. */
   duration?: number
-  /** Delay antes de empezar (s). */
+  /** Delay inicial antes de empezar el cascada. */
   delay?: number
+  /** Delay entre stripes (cascada). */
+  stripeStagger?: number
   className?: string
 }
 
 /**
- * SectionWipe — el efecto "shockeante" de agencia top.
+ * SectionWipe rediseñado — en vez de un rectángulo accent horizontal,
+ * ahora son 5 stripes verticales accent que colapsan hacia arriba en
+ * cascada de izquierda a derecha (delay escalonado). El efecto se siente
+ * como una persiana editorial subiéndose, mucho más print-design / magazine.
  *
- * Un rectángulo del color accent cruza la sección de izquierda a derecha:
- * primero crece desde el borde izquierdo hasta cubrir todo (scaleX 0→1
- * con origin left), después se contrae hacia el borde derecho (scaleX
- * 1→0 con origin right). El contenido aparece detrás justo cuando el
- * cover está completamente extendido (~50% del tiempo total) — antes
- * está visualmente tapado por el rectángulo.
+ * Las stripes pares tienen un hatch diagonal sutil para textura tactil
+ * (no es un bloque plano de color).
  *
- * Es el wipe clásico de motion design editorial: limpio, dramático,
- * inequívocamente intencional. Lo usan agencias top en transitions de
- * page / section reveals.
+ * El contenido emerge cuando ~la mitad de las stripes ya colapsaron.
  *
- * Respeta `prefers-reduced-motion` (saltea el wipe, muestra el contenido
- * directo) y `once: true` (solo dispara la primera vez que se ve).
+ * Respeta prefers-reduced-motion: stripes hidden, contenido visible directo.
  */
 export function SectionWipe({
   children,
   color = "var(--accent)",
-  duration = 1.05,
+  duration = 0.75,
   delay = 0,
+  stripeStagger = 0.08,
   className,
 }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
-  const inView = useInView(ref, { once: true, margin: "-12%" })
-  const shouldAnimate = inView && !reduce
 
   return (
-    <div
-      ref={ref}
-      className={"hold-section-wipe" + (className ? ` ${className}` : "")}
-    >
-      <motion.div
-        className="hold-section-wipe__cover"
-        style={{ background: color }}
-        initial={{ scaleX: 0, transformOrigin: "0% 50%" }}
-        animate={
-          shouldAnimate
-            ? {
-                scaleX: [0, 1, 1, 0],
-                transformOrigin: [
-                  "0% 50%",
-                  "0% 50%",
-                  "100% 50%",
-                  "100% 50%",
-                ],
-              }
-            : { scaleX: 0 }
-        }
-        transition={{
-          duration,
-          times: [0, 0.46, 0.5, 1],
-          ease: EASE_WIPE,
-          delay,
-        }}
-      />
+    <div className={"hold-section-wipe" + (className ? ` ${className}` : "")}>
+      <div className="hold-section-wipe__stripes" aria-hidden>
+        {Array.from({ length: STRIPES }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="hold-section-wipe__stripe"
+            style={{ background: color, originY: 0 }}
+            initial={{ scaleY: reduce ? 0 : 1 }}
+            whileInView={{ scaleY: 0 }}
+            viewport={{ once: true, margin: "-12%" }}
+            transition={{
+              duration,
+              delay: delay + i * stripeStagger,
+              ease: EASE_WIPE,
+            }}
+          />
+        ))}
+      </div>
       <motion.div
         className="hold-section-wipe__content"
-        initial={{ opacity: 0, y: 16 }}
-        animate={
-          shouldAnimate
-            ? { opacity: 1, y: 0 }
-            : { opacity: reduce ? 1 : 0, y: reduce ? 0 : 16 }
-        }
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-12%" }}
         transition={{
-          duration: 0.5,
-          delay: delay + duration * 0.46,
+          duration: 0.6,
+          delay: delay + STRIPES * stripeStagger * 0.55,
           ease: [0.2, 0.8, 0.2, 1],
         }}
       >

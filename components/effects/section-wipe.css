@@ -1,18 +1,35 @@
-/* HOLD SectionWipe — wrapper que aplica el rectángulo accent wipe sobre
-   la sección antes de revelar el contenido. */
+/* HOLD SectionWipe — stripes verticales accent que colapsan hacia arriba
+   en cascada de izquierda a derecha, revelando el contenido detrás. */
 
 .hold-section-wipe {
   position: relative;
   isolation: isolate;
 }
 
-.hold-section-wipe__cover {
+.hold-section-wipe__stripes {
   position: absolute;
   inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   z-index: 2;
   pointer-events: none;
+}
+
+.hold-section-wipe__stripe {
+  height: 100%;
+  width: 100%;
   will-change: transform;
-  /* Solid fill, no transition extra. La animación viene de framer-motion. */
+}
+
+/* Stripes pares con un hatch diagonal sutil — textura editorial,
+   evita que se vea como un bloque plano accent. */
+.hold-section-wipe__stripe:nth-child(even) {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0 6px,
+    transparent 6px 12px
+  );
+  background-blend-mode: overlay;
 }
 
 .hold-section-wipe__content {
