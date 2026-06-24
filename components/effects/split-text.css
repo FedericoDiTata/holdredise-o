@@ -1,0 +1,22 @@
+/* HOLD SplitText — cada palabra (o letra) entra con wipe-up dentro de
+   su propio row con overflow:hidden. */
+
+.hold-split-text {
+  display: inline-block;
+}
+
+.hold-split-text__row {
+  /* Inline-block + overflow hidden clipea el y:115% inicial — efecto
+     mask reveal por palabra. Padding-bottom + margin-bottom negativos
+     para no clipear descendientes (g, p, y). */
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.hold-split-text__item {
+  display: inline-block;
+  will-change: transform;
+}

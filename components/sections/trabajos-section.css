@@ -12,6 +12,16 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(20px, 2vw, 28px);
+  /* Perspective para que el rotateX 3D del entry de cada card se vea
+     editorial cinematográfico (sino el rotateX queda plano). */
+  perspective: 1200px;
+}
+
+.hold-trabajos__card {
+  /* preserve-3d permite que el rotateX del child se proyecte respeto
+     a la perspectiva del grid. */
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 @media (max-width: 900px) {

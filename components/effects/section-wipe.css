@@ -1,0 +1,21 @@
+/* HOLD SectionWipe — wrapper que aplica el rectángulo accent wipe sobre
+   la sección antes de revelar el contenido. */
+
+.hold-section-wipe {
+  position: relative;
+  isolation: isolate;
+}
+
+.hold-section-wipe__cover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform;
+  /* Solid fill, no transition extra. La animación viene de framer-motion. */
+}
+
+.hold-section-wipe__content {
+  position: relative;
+  z-index: 1;
+}

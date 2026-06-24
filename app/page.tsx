@@ -8,6 +8,7 @@ import { FoundersHome } from "@/components/sections/FoundersHome"
 import { HistoriaBirra } from "@/components/sections/HistoriaBirra"
 import { CTABand } from "@/components/sections/CTABand"
 import { MarqueeBand } from "@/components/effects/MarqueeBand"
+import { SectionWipe } from "@/components/effects/SectionWipe"
 import {
   CONTADORES_INTRO,
   MARQUEE_LO_QUE_HACEMOS,
@@ -53,14 +54,16 @@ export default function Home() {
         <HistoriaBirra />
       </section>
 
-      <CTABand
-        title={
-          <>
-            ¿Hablamos sobre <em>tu marca?</em>
-          </>
-        }
-        sub="Te respondemos en menos de 24 hs hábiles."
-      />
+      <SectionWipe>
+        <CTABand
+          title={
+            <>
+              ¿Hablamos sobre <em>tu marca?</em>
+            </>
+          }
+          sub="Te respondemos en menos de 24 hs hábiles."
+        />
+      </SectionWipe>
     </>
   )
 }

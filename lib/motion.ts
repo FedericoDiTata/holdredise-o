@@ -115,3 +115,29 @@ export const makeStagger = (childDelay = 0.1, initial = 0.15): Variants => ({
 /* Viewport por defecto del sitio — siempre `once: true` para no re-disparar
  * en scroll-up, con margin negativo para que arranque antes de entrar full. */
 export const VIEWPORT_DEFAULT = { once: true, margin: "-80px" } as const
+
+/* Card con rotateX + perspective para sensación 3D editorial. El padre
+ * tiene que tener `perspective: 1200px` para que se vea el tilt. */
+export const cardReveal3D: Variants = {
+  hidden: { y: 64, opacity: 0, rotateX: -16 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    rotateX: 0,
+    transition: { type: "spring", stiffness: 88, damping: 18, mass: 0.95 },
+  },
+}
+
+/* Curva del wipe — más drámatica que la EASE_HOLD: arranca rápido, frena
+ * en el peak (donde reveal el contenido), termina rápido. */
+export const EASE_WIPE = [0.62, 0.04, 0.36, 0.97] as const
+
+/* Letter / word reveal — stagger fino para SplitText. */
+export const splitItem: Variants = {
+  hidden: { y: "100%", opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.55, ease: EASE_HOLD },
+  },
+}

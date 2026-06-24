@@ -82,17 +82,14 @@
   overflow: hidden;
 }
 
-/* Track: flex SIN gap. El spacing entre items lo da `margin-right` de cada item. */
+/* Track: flex SIN gap. El spacing entre items lo da `margin-right` de cada item.
+   La animación ahora es JS-driven (framer-motion) para que reaccione al
+   scroll-velocity — no hay CSS animation activa. */
 .hold-marquee__track {
   display: flex;
   align-items: center;
   width: max-content;
-  animation: hold-marquee-loop var(--marquee-duration, 22s) linear infinite;
   will-change: transform;
-}
-
-.hold-marquee:hover .hold-marquee__track {
-  animation-play-state: paused;
 }
 
 .hold-marquee__item {
@@ -125,19 +122,8 @@
   flex-shrink: 0;
 }
 
-@keyframes hold-marquee-loop {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
-}
-
 @media (max-width: 768px) {
   .hold-marquee {
     --marquee-gap: 20px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hold-marquee__track {
-    animation: none;
   }
 }

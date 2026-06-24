@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion"
 import { Eye, Filter, MessageCircle } from "lucide-react"
+import { SectionWipe } from "@/components/effects/SectionWipe"
+import { SplitText } from "@/components/effects/SplitText"
 import {
-  blurFadeUp,
   cardReveal,
   fadeUp,
   makeStagger,
@@ -35,16 +36,16 @@ const KEYWORDS = [
  */
 export function BloqueCita() {
   return (
-    <section className="hold-bloque-cita">
-      <motion.h2
-        className="hold-bloque-cita__titulo"
-        initial="hidden"
-        whileInView="visible"
-        viewport={VIEWPORT_DEFAULT}
-        variants={blurFadeUp}
-      >
-        Algún día alguien te va a querer cobrar caro por decirte
-      </motion.h2>
+    <SectionWipe>
+      <section className="hold-bloque-cita">
+        <h2 className="hold-bloque-cita__titulo">
+          <SplitText
+            text="Algún día alguien te va a querer cobrar caro por decirte"
+            granularity="word"
+            stagger={0.055}
+            delayChildren={0.1}
+          />
+        </h2>
 
       <motion.div
         className="hold-bloque-cita__keywords"
@@ -87,6 +88,7 @@ export function BloqueCita() {
           </span>
         </p>
       </motion.aside>
-    </section>
+      </section>
+    </SectionWipe>
   )
 }

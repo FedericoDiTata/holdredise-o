@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { SplitText } from "@/components/effects/SplitText"
 import { serviciosGrupos } from "@/data/content"
 import {
   fadeUp,
@@ -33,7 +34,14 @@ export function ServiciosGrupos() {
           variants={fadeUp}
         >
           <h3 className="hold-grupo__titulo">
-            <span className="hold-grupo__titulo-text">{grupo.titulo}</span>
+            <span className="hold-grupo__titulo-text">
+              <SplitText
+                text={grupo.titulo}
+                granularity="word"
+                stagger={0.07}
+                delayChildren={0.05}
+              />
+            </span>
           </h3>
           <p className="hold-grupo__desc">{grupo.descripcion}</p>
           <motion.ul
