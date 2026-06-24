@@ -124,6 +124,70 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Rotator: slot de la última palabra del título ─────────────────────
+   "construimos [marcas. / negocios. / comunidades. / equipos. /
+   contenido. / talents.]"
+   Inline-flex baseline para que el cursor quede a la misma línea base
+   que la palabra. */
+.hold-hero-shader__rotator {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.12em;
+}
+
+.hold-hero-shader__rotator-track {
+  /* Slot que clipea las animaciones de y dentro de un alto fijo. */
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  vertical-align: baseline;
+  /* Reserva ancho para evitar layout shift entre palabras de largo
+     distinto. ~11ch cubre la palabra más larga ("comunidades.") con un
+     pelín de aire. */
+  min-width: 7.5ch;
+  /* Padding vertical extra para no clipear descendientes de la fuente. */
+  padding-bottom: 0.05em;
+}
+
+.hold-hero-shader__rotator-word {
+  display: inline-block;
+  color: var(--fg);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  will-change: transform, opacity, filter;
+}
+
+.hold-hero-shader__rotator--static {
+  display: inline;
+  color: var(--fg);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+}
+
+/* Cursor editorial · NO de typing — blink lento + accent azul. Aparece
+   recién después del fade-in inicial del título (delay 1.4s). */
+.hold-hero-shader__cursor {
+  display: inline-block;
+  width: 0.06em;
+  height: 0.78em;
+  background: var(--accent);
+  vertical-align: baseline;
+  transform: translateY(0.02em);
+  opacity: 0;
+  animation:
+    hold-hero-cursor-in 0.4s var(--ease-hold) 1.4s forwards,
+    hold-hero-cursor-blink 1.1s ease-in-out 1.8s infinite;
+}
+
+@keyframes hold-hero-cursor-in {
+  to { opacity: 1; }
+}
+
+@keyframes hold-hero-cursor-blink {
+  0%, 55%   { opacity: 1; }
+  56%, 100% { opacity: 0.2; }
+}
+
 @media (max-width: 768px) {
   .hold-hero-shader__title {
     font-size: clamp(38px, 11vw, 88px);
@@ -141,5 +205,8 @@
     transform: none;
     filter: none;
     animation: none;
+  }
+  .hold-hero-shader__cursor {
+    display: none;
   }
 }

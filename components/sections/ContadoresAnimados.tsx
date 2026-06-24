@@ -1,6 +1,13 @@
 "use client"
 
+import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
+import {
+  blurFadeUp,
+  cardReveal,
+  makeStagger,
+  VIEWPORT_DEFAULT,
+} from "@/lib/motion"
 import type { Contador } from "@/types"
 import "./contadores-animados.css"
 
@@ -19,7 +26,6 @@ function useCountUp(target: number, durationMs = 1500) {
     const el = ref.current
     if (!el) return
 
-    // Reduced motion → mostrar target directo, no animar.
     if (
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -38,7 +44,6 @@ function useCountUp(target: number, durationMs = 1500) {
         const tick = (now: number) => {
           const elapsed = now - start
           const progress = Math.min(elapsed / durationMs, 1)
-          // easeOutCubic
           const eased = 1 - Math.pow(1 - progress, 3)
           setValue(Math.round(target * eased))
           if (progress < 1) requestAnimationFrame(tick)
@@ -58,7 +63,7 @@ function useCountUp(target: number, durationMs = 1500) {
 function ContadorCard({ contador }: { contador: Contador }) {
   const { value, ref } = useCountUp(contador.valor)
   return (
-    <div className="hold-contador" data-reveal>
+    <div className="hold-contador">
       <span ref={ref} className="hold-contador__valor">
         {value}
         {contador.suffix ? (
@@ -78,22 +83,33 @@ type Props = {
 /**
  * Sección de 3 contadores animados ("30+ Marcas / 15+ Profesionales /
  * 100+ Proyectos"). Cuenta de 0 al target con easeOutCubic una sola
- * vez al entrar al viewport. Server-safe: el valor inicial es 0
- * tanto en server como en client → sin hydration mismatch.
+ * vez al entrar al viewport. Centrada en la página, con entrada
+ * stagger por contador.
  */
 export function ContadoresAnimados({ intro, items }: Props) {
   return (
-    <section className="hold-contadores">
-      <p className="hold-contadores__intro" data-reveal>
+    <motion.section
+      className="hold-contadores"
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT_DEFAULT}
+      variants={makeStagger(0.12, 0)}
+    >
+      <motion.p className="hold-contadores__intro" variants={blurFadeUp}>
         {intro.replace("…", "")}
         <em>…</em>
-      </p>
+      </motion.p>
 
-      <div className="hold-contadores__grid">
+      <motion.div
+        className="hold-contadores__grid"
+        variants={makeStagger(0.14, 0.2)}
+      >
         {items.map((c) => (
-          <ContadorCard key={c.label} contador={c} />
+          <motion.div key={c.label} variants={cardReveal}>
+            <ContadorCard contador={c} />
+          </motion.div>
         ))}
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   )
 }

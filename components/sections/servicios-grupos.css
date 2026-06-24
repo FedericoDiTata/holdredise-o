@@ -1,37 +1,65 @@
 /* HOLD ServiciosGrupos — 3 macro-bloques (BRANDS / TALENTS / PERFORMANCE).
-   Grid 3-col desktop, stack mobile. Cada grupo: número grande +
-   título + descripción + bullets numeradas. */
+   Layout con subgrid: cada grupo ocupa 1 columna × 3 filas del padre,
+   forzando alineación cross-columns en heading / descripción / bullets
+   aunque "HOLD PERFORMANCE" rompa en 2 líneas. */
 
 .hold-grupos {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 2.4vw, 36px);
-  border-top: 1px solid var(--hairline);
-  padding-top: clamp(40px, 6vh, 80px);
+  grid-template-rows: auto auto 1fr;
+  gap: clamp(20px, 2.6vh, 36px) clamp(20px, 2vw, 32px);
+  border-top: 1px solid var(--fg);
+  padding-top: clamp(32px, 5vh, 64px);
 }
 
 .hold-grupo {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding-block: 8px;
+  /* Subgrid: el grupo es un grid container que hereda las row tracks
+     del padre, así sus 3 hijos quedan alineados con los 3 hijos de los
+     otros grupos en cada fila. */
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  /* Sin gap interno — el row gap del padre maneja la separación. */
+  position: relative;
+  padding: clamp(20px, 1.8vw, 28px) clamp(16px, 1.4vw, 24px) clamp(24px, 2vw, 32px);
+  background: transparent;
+  border-top: 1px solid var(--fg);
+  isolation: isolate;
+  transition:
+    background var(--dur-base) var(--ease-hold);
 }
 
-.hold-grupo__num {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+/* Línea inferior accent que aparece en hover con scaleX. */
+.hold-grupo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s var(--ease-hold);
+}
+
+.hold-grupo:hover {
+  background: color-mix(in srgb, var(--bg) 92%, #ffffff);
+}
+
+.hold-grupo:hover::after {
+  transform: scaleX(1);
 }
 
 .hold-grupo__titulo {
-  font-size: clamp(28px, 2.8vw, 40px);
-  line-height: 1;
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.05;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--fg);
   margin: 0;
+  /* Que pueda romper en 2 líneas — el subgrid alinea igual. */
+  text-wrap: balance;
 }
 
 .hold-grupo__desc {
@@ -40,15 +68,17 @@
   color: var(--muted);
   margin: 0;
   max-width: 38ch;
+  align-self: start;
 }
 
 .hold-grupo__bullets {
   list-style: none;
-  margin: 16px 0 0;
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--hairline);
+  align-self: stretch;
 }
 
 .hold-grupo__bullet {
@@ -56,11 +86,13 @@
   grid-template-columns: 16px 1fr;
   gap: 12px;
   align-items: baseline;
-  padding-block: 12px;
+  padding-block: 13px;
   border-bottom: 1px solid var(--hairline);
   font-size: 14px;
   line-height: 1.45;
+  letter-spacing: -0.005em;
   color: var(--fg);
+  transition: color var(--dur-fast) var(--ease-hold);
 }
 
 .hold-grupo__bullet:last-child {
@@ -74,11 +106,25 @@
   background: var(--accent);
   align-self: center;
   flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-hold);
+}
+
+.hold-grupo:hover .hold-grupo__bullet::before {
+  transform: scale(1.6);
 }
 
 @media (max-width: 1000px) {
   .hold-grupos {
     grid-template-columns: 1fr;
-    gap: 56px;
+    grid-template-rows: none;
+    gap: 32px;
+  }
+  .hold-grupo {
+    /* Subgrid se desactiva en stack mobile — vuelve a layout natural. */
+    grid-template-rows: none;
+    grid-row: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 }

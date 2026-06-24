@@ -67,9 +67,33 @@
   margin: 0;
 }
 
+/* ── Variante compact (home): foto cuadrada, gaps menores ─────────── */
+.hold-founders--compact {
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.hold-founders--compact .hold-founder {
+  gap: 20px;
+}
+
+.hold-founders--compact .hold-founder__photo-wrap {
+  aspect-ratio: 1 / 1;
+}
+
+.hold-founders--compact .hold-founder__name {
+  font-size: clamp(28px, 3.4vw, 44px);
+}
+
+.hold-founders--compact .hold-founder__bio {
+  margin-top: 8px;
+}
+
 @media (max-width: 900px) {
   .hold-founders {
     grid-template-columns: 1fr;
     gap: 64px;
+  }
+  .hold-founders--compact {
+    gap: 40px;
   }
 }

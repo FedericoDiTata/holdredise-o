@@ -1,11 +1,15 @@
 /* HOLD ContadoresAnimados — 3 números grandes que cuentan 0 → valor
-   cuando entran al viewport. Layout: intro arriba ("Sí, nuestro nombre
-   es inglés y…") + grid 3-col con los contadores. */
+   cuando entran al viewport. Centrado completo: intro arriba centrada,
+   grid 3-col con cada contador centrado dentro de su columna. */
 
 .hold-contadores {
   display: flex;
   flex-direction: column;
-  gap: clamp(40px, 6vh, 72px);
+  align-items: center;
+  gap: clamp(32px, 5vh, 56px);
+  max-width: 1240px;
+  margin-inline: auto;
+  text-align: center;
 }
 
 .hold-contadores__intro {
@@ -15,7 +19,7 @@
   letter-spacing: -0.015em;
   color: var(--fg);
   margin: 0;
-  max-width: 32ch;
+  max-width: 36ch;
 }
 
 .hold-contadores__intro em {
@@ -26,20 +30,24 @@
 .hold-contadores__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(16px, 2.4vw, 40px);
+  gap: clamp(20px, 2.4vw, 48px);
+  width: 100%;
   border-top: 1px solid var(--hairline);
-  padding-top: clamp(40px, 5vh, 64px);
+  padding-top: clamp(36px, 5vh, 56px);
 }
 
 .hold-contador {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 16px;
+  text-align: center;
 }
 
 .hold-contador__valor {
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
+  justify-content: center;
   gap: 4px;
   font-size: clamp(56px, 9vw, 144px);
   line-height: 0.9;
@@ -60,14 +68,17 @@
   font-size: clamp(13px, 1.1vw, 15px);
   line-height: 1.4;
   color: var(--muted);
-  max-width: 22ch;
-  padding-top: 8px;
+  max-width: 24ch;
+  padding-top: 12px;
   border-top: 1px solid var(--hairline);
+  /* Border-top puede leerse "alineado a la izq" si el label cae corto.
+     Como queremos centro, el label se autocentra por el flex padre +
+     el max-width que limita el ancho. */
 }
 
 @media (max-width: 768px) {
   .hold-contadores__grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 40px;
   }
 }

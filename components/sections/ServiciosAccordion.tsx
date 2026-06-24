@@ -4,7 +4,12 @@ import { useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
-import { EASE_HOLD } from "@/lib/motion"
+import {
+  EASE_HOLD,
+  fadeUp,
+  makeStagger,
+  VIEWPORT_DEFAULT,
+} from "@/lib/motion"
 import type { ServicioHomeItem } from "@/types"
 import "./servicios-accordion.css"
 
@@ -17,6 +22,7 @@ type Props = {
  * en el item abierto lo cierra. La animación de altura usa framer-
  * motion `AnimatePresence` + `height: auto ↔ 0` con easing HOLD.
  *
+ * Items entran con fadeUp stagger al hacer scroll a la sección.
  * Si el item tiene `href`, agrega un link "Ver más →" en el detalle
  * que navega a la página interna del servicio.
  */
@@ -28,15 +34,23 @@ export function ServiciosAccordion({ items }: Props) {
   }
 
   return (
-    <div className="hold-acc" role="list">
+    <motion.div
+      className="hold-acc"
+      role="list"
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT_DEFAULT}
+      variants={makeStagger(0.06, 0.05)}
+    >
       {items.map((item) => {
         const isOpen = openSlug === item.slug
         return (
-          <div
+          <motion.div
             key={item.slug}
             className="hold-acc__item"
             data-open={isOpen ? "true" : undefined}
             role="listitem"
+            variants={fadeUp}
           >
             <button
               type="button"
@@ -85,9 +99,9 @@ export function ServiciosAccordion({ items }: Props) {
                 </motion.div>
               ) : null}
             </AnimatePresence>
-          </div>
+          </motion.div>
         )
       })}
-    </div>
+    </motion.div>
   )
 }

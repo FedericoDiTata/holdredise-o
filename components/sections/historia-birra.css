@@ -1,16 +1,17 @@
-/* HOLD HistoriaBirra — cita + 2 fotos placeholder side-by-side.
-   "Las mejores decisiones se toman con una birra de por medio…"
-   Layout: cita arriba en una col centrada; debajo grid 2-col con
-   las fotos (Birra 2021 + Equipo 2026) + labels de años. */
+/* HOLD HistoriaBirra — cita en 2 líneas + 2 placeholders side-by-side.
+   Línea 1: "Las mejores decisiones…" en negro.
+   Línea 2: "La nuestra fue…" en italic accent azul.
+   Cada línea anima con wipe-up dentro de su propio __cita-clip
+   (overflow:hidden) para clipear el y:110% inicial. */
 
 .hold-birra {
   display: flex;
   flex-direction: column;
-  gap: clamp(48px, 6vh, 80px);
+  gap: clamp(36px, 5vh, 64px);
 }
 
 .hold-birra__cita-wrap {
-  max-width: 880px;
+  max-width: 920px;
   margin-inline: auto;
   text-align: center;
   padding-inline: clamp(16px, 4vw, 48px);
@@ -25,7 +26,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .hold-birra__eyebrow::before {
@@ -38,14 +39,33 @@
 
 .hold-birra__cita {
   font-size: clamp(24px, 2.8vw, 40px);
-  line-height: 1.25;
+  line-height: 1.2;
   font-weight: 400;
   letter-spacing: -0.02em;
   color: var(--fg);
   margin: 0;
+  /* Container de las 2 líneas — cada __cita-clip es display:block. */
+  display: flex;
+  flex-direction: column;
+  gap: 0.18em;
 }
 
-.hold-birra__cita em {
+.hold-birra__cita-clip {
+  /* Overflow hidden clipea el y:110% inicial del wipeUp variant; cada
+     línea aparece "desde abajo" del slot que ocupa. */
+  display: block;
+  overflow: hidden;
+  /* Padding-bottom mínimo para no clipear descendientes (g, p, y). */
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.hold-birra__cita-line {
+  display: inline-block;
+  will-change: transform;
+}
+
+.hold-birra__cita-line--accent {
   font-style: italic;
   font-weight: 500;
   color: var(--accent);
@@ -62,20 +82,20 @@
 .hold-birra__foto-wrap {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .hold-birra__foto {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  /* 3/2 horizontal — antes 4/5 vertical. Recorta altura de la sección
+     y deja la composición editorial más "anchura editorial revista". */
+  aspect-ratio: 3 / 2;
   position: relative;
   overflow: hidden;
 }
 
-/* Foto "ahora" (la segunda) es más ancha — efecto editorial:
-   el "antes" más íntimo, el "ahora" del equipo más amplio. */
 .hold-birra__foto-wrap--ancha .hold-birra__foto {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 2;
 }
 
 .hold-birra__foto-label {
@@ -98,7 +118,8 @@
   .hold-birra__fotos {
     grid-template-columns: 1fr;
   }
+  .hold-birra__foto,
   .hold-birra__foto-wrap--ancha .hold-birra__foto {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 4 / 3;
   }
 }

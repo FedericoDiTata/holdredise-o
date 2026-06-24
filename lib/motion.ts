@@ -74,3 +74,44 @@ export const tabSwap: Variants = {
     transition: { duration: DUR.fast, ease: EASE_HOLD },
   },
 }
+
+/* Wipe editorial — el padre debe tener overflow: hidden para que el
+ * y: 110% inicial quede oculto y la frase aparezca "desde abajo". */
+export const wipeUp: Variants = {
+  hidden: { y: "110%" },
+  visible: { y: 0, transition: { duration: 0.8, ease: EASE_HOLD } },
+}
+
+/* Spring para cards — más orgánico que duration-based. */
+export const cardReveal: Variants = {
+  hidden: { y: 56, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 90, damping: 18, mass: 0.9 },
+  },
+}
+
+/* Fade-up con blur — para bloques importantes (citas, subtítulos). */
+export const blurFadeUp: Variants = {
+  hidden: { y: 32, opacity: 0, filter: "blur(8px)" },
+  visible: {
+    y: 0,
+    opacity: 1,
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: EASE_HOLD },
+  },
+}
+
+/* Factory: stagger container con timings custom.
+ * makeStagger(0.1, 0.15) = 100ms entre children, 150ms de delay inicial. */
+export const makeStagger = (childDelay = 0.1, initial = 0.15): Variants => ({
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: childDelay, delayChildren: initial },
+  },
+})
+
+/* Viewport por defecto del sitio — siempre `once: true` para no re-disparar
+ * en scroll-up, con margin negativo para que arranque antes de entrar full. */
+export const VIEWPORT_DEFAULT = { once: true, margin: "-80px" } as const

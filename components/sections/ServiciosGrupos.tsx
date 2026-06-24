@@ -1,33 +1,56 @@
+"use client"
+
+import { motion } from "framer-motion"
 import { serviciosGrupos } from "@/data/content"
+import {
+  fadeUp,
+  makeStagger,
+  staggerItem,
+  VIEWPORT_DEFAULT,
+} from "@/lib/motion"
 import "./servicios-grupos.css"
 
 /**
  * Tres macro-bloques de servicios (HOLD BRANDS / TALENTS / PERFORMANCE)
- * en grid 3-col. Cada grupo lista sus items como bullets con dot azul.
- * Copy REAL completo del PDF — sin lorem acá.
+ * en grid 3-col con subgrid: títulos, descripciones y bullets quedan
+ * perfectamente alineados por fila aunque "HOLD PERFORMANCE" rompa en
+ * 2 líneas. Cards entran con stagger; bullets internos con stagger
+ * secundario. Copy REAL completo del PDF.
  */
 export function ServiciosGrupos() {
   return (
-    <div className="hold-grupos">
-      {serviciosGrupos.map((grupo, i) => (
-        <article
+    <motion.div
+      className="hold-grupos"
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT_DEFAULT}
+      variants={makeStagger(0.14, 0.1)}
+    >
+      {serviciosGrupos.map((grupo) => (
+        <motion.article
           key={grupo.titulo}
           className="hold-grupo"
-          data-reveal
-          data-reveal-delay={i === 0 ? undefined : i === 1 ? "0.1" : "0.2"}
+          variants={fadeUp}
         >
-          <span className="hold-grupo__num">{grupo.numero}</span>
           <h3 className="hold-grupo__titulo">{grupo.titulo}</h3>
           <p className="hold-grupo__desc">{grupo.descripcion}</p>
-          <ul className="hold-grupo__bullets" role="list">
+          <motion.ul
+            className="hold-grupo__bullets"
+            role="list"
+            variants={makeStagger(0.05, 0.2)}
+          >
             {grupo.bullets.map((b) => (
-              <li key={b} className="hold-grupo__bullet">
+              <motion.li
+                key={b}
+                className="hold-grupo__bullet"
+                variants={staggerItem}
+              >
                 <span>{b}</span>
-              </li>
+              </motion.li>
             ))}
-          </ul>
-        </article>
+          </motion.ul>
+        </motion.article>
       ))}
-    </div>
+    </motion.div>
   )
 }

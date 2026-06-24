@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react"
 import { Button } from "@/components/ui/Button"
 import { WHATSAPP_URL } from "@/data/content"
+import { HeroRotatingWord } from "./HeroRotatingWord"
 import "./hero-shader.css"
 
 /**
@@ -8,8 +9,9 @@ import "./hero-shader.css"
  * display:block):
  * - Línea 1: "No solo hacemos contenido," — regular, "solo" en italic
  *   (mismo color, sin accent azul)
- * - Línea 2: "construimos marcas." — bold para cerrar fuerte
- * Animación de fade-up por palabra al cargar.
+ * - Línea 2: "construimos [palabra rotativa]." — bold para cerrar fuerte,
+ *   la última palabra rota entre 6 términos del vocabulario de la marca.
+ * Animación de fade-up por palabra al cargar; rotator arranca después.
  */
 export function HeroShader() {
   return (
@@ -30,7 +32,7 @@ export function HeroShader() {
             className="hold-hero-shader__word hold-hero-shader__word--strong"
             style={{ "--i": 1 } as CSSProperties}
           >
-            construimos marcas.
+            construimos <HeroRotatingWord />
           </span>
         </h2>
 
