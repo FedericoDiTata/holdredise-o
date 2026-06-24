@@ -75,12 +75,16 @@ export function BloqueCita() {
         variants={fadeUp}
       >
         <p className="hold-bloque-cita__panel-text">
-          Nosotras preferimos{" "}
-          <em className="hold-bloque-cita__hl">no venderte humo</em>,{" "}
-          <em className="hold-bloque-cita__hl">
-            nos involucramos en tu negocio
-          </em>
-          .
+          <span className="hold-bloque-cita__panel-line">
+            Nosotras preferimos{" "}
+            <em className="hold-bloque-cita__hl">no venderte humo</em>,
+          </span>
+          <span className="hold-bloque-cita__panel-line">
+            <em className="hold-bloque-cita__hl">
+              nos involucramos en tu negocio
+            </em>
+            .
+          </span>
         </p>
       </motion.aside>
     </section>

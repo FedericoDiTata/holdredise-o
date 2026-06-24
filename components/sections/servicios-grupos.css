@@ -45,19 +45,24 @@
 }
 
 .hold-grupo__titulo {
+  /* Slot fijo de 2 líneas exactas — fuerza alineación cross-columns
+     aunque "HOLD PERFORMANCE" rompa y los otros sean 1 línea. Uso grid
+     + place-self en el span hijo para que el texto vaya al BOTTOM del
+     slot (anonymous flex items con text inline son impredecibles entre
+     browsers; el span explícito resuelve eso). */
+  margin: 0;
   font-size: clamp(26px, 2.6vw, 36px);
   line-height: 1.08;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--fg);
-  margin: 0;
-  /* Altura fija de 2 líneas — alinea los 3 títulos cross-columns
-     aunque "HOLD PERFORMANCE" rompa y los otros no. El texto baseline
-     queda al fondo, así títulos de 1 línea aparecen "abajo" del slot
-     reservado (look intencional, no roto). */
-  min-height: calc(1.08em * 2);
-  display: flex;
-  align-items: flex-end;
+  height: calc(1.08em * 2);
+  display: grid;
+}
+
+.hold-grupo__titulo-text {
+  display: block;
+  align-self: end;
 }
 
 .hold-grupo__desc {
@@ -116,6 +121,6 @@
   }
   .hold-grupo__titulo {
     /* En mobile no necesitamos forzar 2 líneas porque cada card stackea. */
-    min-height: 0;
+    height: auto;
   }
 }

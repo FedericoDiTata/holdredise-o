@@ -12,15 +12,18 @@
 }
 
 .hold-bloque-cita__titulo {
-  font-size: clamp(30px, 4.2vw, 60px);
-  line-height: 1.08;
+  /* Font-size acotado para que la frase entera (~52 chars) entre en 1
+     solo renglón en desktop. Cada char ~0.5em → 52 * 0.5 * 42px ≈ 1090px
+     que cabe en un viewport >= 1200px. En mobile baja a 22px. */
+  font-size: clamp(22px, 3.2vw, 42px);
+  line-height: 1.1;
   font-weight: 400;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
   color: var(--fg);
   margin: 0;
   text-align: center;
-  max-width: 22ch;
-  text-wrap: balance;
+  max-width: none;
+  white-space: nowrap;
 }
 
 /* ── 3 keyword cards ──────────────────────────────────────────────── */
@@ -82,11 +85,17 @@
   font-style: italic;
 }
 
-/* ── Panel grande negro con highlight ─────────────────────────────── */
+/* ── Panel grande negro con highlight — full-bleed ────────────────────
+   "Romper" el container padre (.section-container--tight) con margin
+   negativo para que el panel ocupe todo el ancho del viewport. Como el
+   body tiene overflow-x: hidden, no genera scroll horizontal. */
 .hold-bloque-cita__panel {
   position: relative;
-  width: 100%;
-  padding: clamp(44px, 7vh, 88px) clamp(28px, 5vw, 80px);
+  /* Truco: 100vw + margin-left negativo del 50% que falta para llegar
+     al borde izquierdo del viewport. Funciona con cualquier container. */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: clamp(56px, 9vh, 120px) clamp(28px, 6vw, 96px);
   background: var(--fg);
   color: var(--bg);
   text-align: center;
@@ -114,9 +123,14 @@
   font-weight: 400;
   letter-spacing: -0.02em;
   margin: 0;
-  max-width: 30ch;
-  margin-inline: auto;
   color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.18em;
+}
+
+.hold-bloque-cita__panel-line {
+  display: block;
 }
 
 /* Highlight con underline grueso accent + italic. La gradient-line es
@@ -134,6 +148,12 @@
 }
 
 @media (max-width: 820px) {
+  /* En mobile no hay ancho para meter 52 chars en 1 renglón — se afloja. */
+  .hold-bloque-cita__titulo {
+    white-space: normal;
+    text-wrap: balance;
+    font-size: clamp(22px, 5.5vw, 34px);
+  }
   .hold-bloque-cita__keywords {
     grid-template-columns: 1fr;
     max-width: 380px;

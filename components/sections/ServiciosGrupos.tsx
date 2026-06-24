@@ -32,7 +32,9 @@ export function ServiciosGrupos() {
           className="hold-grupo"
           variants={fadeUp}
         >
-          <h3 className="hold-grupo__titulo">{grupo.titulo}</h3>
+          <h3 className="hold-grupo__titulo">
+            <span className="hold-grupo__titulo-text">{grupo.titulo}</span>
+          </h3>
           <p className="hold-grupo__desc">{grupo.descripcion}</p>
           <motion.ul
             className="hold-grupo__bullets"
