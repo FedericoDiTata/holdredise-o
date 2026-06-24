@@ -20,8 +20,8 @@ const WORDS = [
  * - Pausa generosa cuando la palabra está completa (la audiencia la lee) */
 const TYPING_MS = 78
 const DELETING_MS = 38
-const PAUSE_AFTER_TYPED_MS = 2200
-const PAUSE_AFTER_DELETED_MS = 280
+const PAUSE_AFTER_TYPED_MS = 1100
+const PAUSE_AFTER_DELETED_MS = 200
 
 type Phase = "pause" | "typing" | "deleting"
 
