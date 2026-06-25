@@ -4,9 +4,9 @@ import { useEffect, useRef } from "react"
 import * as THREE from "three"
 import "./hero-particles-3d.css"
 
-const PARTICLE_COUNT = 2400
 /* Accent azul brand (Bright Blue Pantone 285) — mismo que --accent. */
 const ACCENT_COLOR = 0x2b63ff
+const MOBILE_BREAKPOINT = 768
 
 /**
  * Background 3D del hero: ~1400 partículas accent azul flotando en un
@@ -33,6 +33,14 @@ export function HeroParticles3D() {
       return
     }
 
+    /* Adaptación mobile: menos partículas + DPR cap más bajo + tamaño
+     * un toque más chico → el render WebGL no tira el framerate en
+     * dispositivos low-end (Android entry-level, viejos iPhones). */
+    const isMobile = window.innerWidth < 768
+    const PARTICLE_COUNT = isMobile ? 1200 : 2400
+    const DPR_CAP = isMobile ? 1.5 : 2
+    const PARTICLE_SIZE = isMobile ? 0.075 : 0.095
+
     const width = container.clientWidth
     const height = container.clientHeight
 
@@ -46,7 +54,7 @@ export function HeroParticles3D() {
       antialias: true,
     })
     renderer.setSize(width, height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, DPR_CAP))
     renderer.setClearColor(0x000000, 0)
     container.appendChild(renderer.domElement)
 
@@ -79,7 +87,7 @@ export function HeroParticles3D() {
 
     const material = new THREE.PointsMaterial({
       color: ACCENT_COLOR,
-      size: 0.095,
+      size: PARTICLE_SIZE,
       sizeAttenuation: true,
       map: particleTexture,
       transparent: true,
@@ -91,14 +99,17 @@ export function HeroParticles3D() {
     const points = new THREE.Points(geometry, material)
     scene.add(points)
 
-    /* Parallax sutil de mouse — clamped, no overreactive. */
+    /* Parallax sutil de mouse — clamped, no overreactive. En mobile
+     * (touch device) no agregamos el listener: no hay mouse. */
     let mouseX = 0
     let mouseY = 0
     const handleMouseMove = (e: MouseEvent) => {
       mouseX = (e.clientX / window.innerWidth - 0.5) * 0.35
       mouseY = (e.clientY / window.innerHeight - 0.5) * 0.35
     }
-    window.addEventListener("mousemove", handleMouseMove, { passive: true })
+    if (!isMobile) {
+      window.addEventListener("mousemove", handleMouseMove, { passive: true })
+    }
 
     let raf = 0
     const clock = new THREE.Clock()
@@ -124,7 +135,9 @@ export function HeroParticles3D() {
 
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener("mousemove", handleMouseMove)
+      if (!isMobile) {
+        window.removeEventListener("mousemove", handleMouseMove)
+      }
       window.removeEventListener("resize", handleResize)
       geometry.dispose()
       material.dispose()
