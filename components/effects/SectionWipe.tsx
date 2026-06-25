@@ -57,6 +57,13 @@ export function SectionWipe({
         style={
           {
             "--bloom-color": color,
+            /* x/y como motion values para que framer combine el centrado
+             * con el scale animado. Si lo dejábamos como `transform:
+             * translate(-50%, -50%)` en CSS, framer lo sobrescribía al
+             * aplicar `transform: scale(X)` inline → el bloom se iba a
+             * una esquina en vez de quedar centrado. */
+            x: "-50%",
+            y: "-50%",
           } as React.CSSProperties
         }
         initial={{ scale: 0.4, opacity: 0 }}
@@ -64,7 +71,7 @@ export function SectionWipe({
           scale: [0.4, 1.2, 1.5, 1.8],
           opacity: [0, 0.55, 0.35, 0],
         }}
-        viewport={{ once: true, margin: "-12%" }}
+        viewport={{ once: true, margin: "-10%", amount: 0.15 }}
         transition={{
           duration: 1.8,
           times: [0, 0.35, 0.65, 1],
@@ -77,7 +84,7 @@ export function SectionWipe({
         className="hold-section-wipe__content"
         initial={{ opacity: 0, scale: 0.92, y: 28, rotate: -1.2 }}
         whileInView={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
-        viewport={{ once: true, margin: "-12%" }}
+        viewport={{ once: true, margin: "-10%", amount: 0.15 }}
         transition={{
           opacity: { duration: 0.6, delay: delay + 0.15 },
           scale: {

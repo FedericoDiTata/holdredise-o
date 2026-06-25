@@ -24,11 +24,11 @@
     transparent 60%
   );
   filter: blur(90px);
-  transform: translate(-50%, -50%);
+  /* SIN transform: translate(-50%, -50%). El centrado lo aplica
+     framer-motion via style {x, y} para que se COMBINE con el scale
+     animado en un solo transform (sino el scale sobrescribe el translate). */
   pointer-events: none;
   z-index: 0;
-  /* Bloom queda detrás del contenido del padre, pero por encima del bg
-     del section-container (que es transparente). */
 }
 
 .hold-section-wipe__content {
