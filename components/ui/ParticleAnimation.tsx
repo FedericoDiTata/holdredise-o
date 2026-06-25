@@ -85,8 +85,11 @@ export function ParticleAnimation() {
         const particles: any[] = []
         const amount =
           p.windowWidth < 600 || p.windowHeight < 600 ? 1000 : 2000
-        const durationShrink = 8
-        const durationGrow = 8
+        /* Cycle más corto + ease sine.inOut → las partículas oscilan
+         * continuamente sin pausas estáticas en los extremos del
+         * ciclo (el elastic.in original las dejaba quietas un instante). */
+        const durationShrink = 4
+        const durationGrow = 4
         const total = durationShrink + durationGrow
 
         const proxy = { progress: 1, val: 0 }
@@ -156,12 +159,12 @@ export function ParticleAnimation() {
             .to(proxy, {
               val: 1,
               duration: durationShrink,
-              ease: "elastic.in(1.5, 0.15)",
+              ease: "sine.inOut",
             })
             .to(proxy, {
               val: 0,
               duration: durationGrow,
-              ease: "back.in(3)",
+              ease: "sine.inOut",
             })
 
           for (let i = 0; i < amount; i++) {
