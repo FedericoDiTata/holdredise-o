@@ -38,11 +38,31 @@ export function CTABand({
     <section className="hold-cta-band" data-variant={variant}>
       <div className="hold-cta-band__inner">
         {eyebrow ? (
-          <p className="hold-cta-band__eyebrow">{eyebrow}</p>
+          <p className="hold-cta-band__eyebrow" data-reveal="up">
+            {eyebrow}
+          </p>
         ) : null}
-        <h2 className="hold-cta-band__title">{title}</h2>
-        {sub ? <p className="hold-cta-band__sub">{sub}</p> : null}
-        <div className="hold-cta-band__actions">
+        <h2
+          className="hold-cta-band__title"
+          data-reveal="blur"
+          data-reveal-delay="0.1"
+        >
+          {title}
+        </h2>
+        {sub ? (
+          <p
+            className="hold-cta-band__sub"
+            data-reveal="up"
+            data-reveal-delay="0.3"
+          >
+            {sub}
+          </p>
+        ) : null}
+        <div
+          className="hold-cta-band__actions"
+          data-reveal="up"
+          data-reveal-delay="0.4"
+        >
           <Button
             size="large"
             href={ctaHref}

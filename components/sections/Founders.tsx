@@ -22,8 +22,13 @@ export function Founders({ showBio = true, compact = false }: Props = {}) {
   const ratio = compact ? "1/1" : "4/5"
   return (
     <div className={cn("hold-founders", compact && "hold-founders--compact")}>
-      {founders.map((f) => (
-        <article key={f.nombre} className="hold-founder">
+      {founders.map((f, i) => (
+        <article
+          key={f.nombre}
+          className="hold-founder"
+          data-reveal="up"
+          data-reveal-delay={i === 0 ? "0.1" : "0.3"}
+        >
           <div className="hold-founder__photo-wrap">
             <Placeholder ratio={ratio} label={`Foto · ${f.nombre}`} />
           </div>

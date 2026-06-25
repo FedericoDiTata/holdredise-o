@@ -1,16 +1,7 @@
-"use client"
-
-import { motion } from "framer-motion"
 import { Eye, Filter, MessageCircle } from "lucide-react"
 import { BorderTrace } from "@/components/effects/BorderTrace"
 import { SectionWipe } from "@/components/effects/SectionWipe"
 import { SplitText } from "@/components/effects/SplitText"
-import {
-  cardReveal,
-  fadeUp,
-  makeStagger,
-  VIEWPORT_DEFAULT,
-} from "@/lib/motion"
 import "./bloque-cita.css"
 
 /* Las 3 buzzwords del bloque cita — con íconos editoriales que las
@@ -22,7 +13,7 @@ const KEYWORDS = [
 ] as const
 
 /**
- * Sección editorial bajo el hero, rediseñada:
+ * Sección bajo el hero:
  *
  *   "Algún día alguien te va a querer cobrar caro por decirte"
  *
@@ -33,7 +24,9 @@ const KEYWORDS = [
  *   │  {nos involucramos en tu negocio}.                      │
  *   └─────────────────────────────────────────────────────────┘
  *
- * Las tarjetas de clientes salieron — eso ya está en TRABAJOS.
+ * Animaciones via `data-reveal` (CSS + IntersectionObserver, robusto
+ * en SSR). El título usa SplitText (motion propio), las cards el
+ * BorderTrace SVG, los highlights del panel un CSS background sweep.
  */
 export function BloqueCita() {
   return (
@@ -48,71 +41,52 @@ export function BloqueCita() {
           />
         </h2>
 
-      <motion.div
-        className="hold-bloque-cita__keywords"
-        initial="hidden"
-        whileInView="visible"
-        viewport={VIEWPORT_DEFAULT}
-        variants={makeStagger(0.12, 0.18)}
-      >
-        {KEYWORDS.map(({ Icon, label }, i) => (
-          <motion.article
-            key={label}
-            className="hold-bloque-cita__keyword"
-            variants={cardReveal}
-          >
-            <BorderTrace delay={0.25 + i * 0.07} duration={0.75} fadeOut />
-            <span className="hold-bloque-cita__keyword-icon" aria-hidden>
-              <Icon size={28} strokeWidth={1.4} />
-            </span>
-            <span className="hold-bloque-cita__keyword-label">{label}</span>
-          </motion.article>
-        ))}
-      </motion.div>
+        <div className="hold-bloque-cita__keywords">
+          {KEYWORDS.map(({ Icon, label }, i) => (
+            <article
+              key={label}
+              className="hold-bloque-cita__keyword"
+              data-reveal="scale"
+              data-reveal-delay={
+                i === 0 ? "0.2" : i === 1 ? "0.3" : "0.4"
+              }
+            >
+              <BorderTrace
+                delay={0.4 + i * 0.1}
+                duration={0.75}
+                fadeOut
+              />
+              <span
+                className="hold-bloque-cita__keyword-icon"
+                aria-hidden
+              >
+                <Icon size={28} strokeWidth={1.4} />
+              </span>
+              <span className="hold-bloque-cita__keyword-label">
+                {label}
+              </span>
+            </article>
+          ))}
+        </div>
 
-      <motion.aside
-        className="hold-bloque-cita__panel"
-        initial="hidden"
-        whileInView="visible"
-        viewport={VIEWPORT_DEFAULT}
-        variants={fadeUp}
-      >
-        <p className="hold-bloque-cita__panel-text">
-          <span className="hold-bloque-cita__panel-line">
-            Nosotras preferimos{" "}
-            <motion.em
-              className="hold-bloque-cita__hl"
-              initial={{ backgroundSize: "0% 100%" }}
-              whileInView={{ backgroundSize: "100% 100%" }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{
-                duration: 0.95,
-                ease: [0.62, 0.04, 0.36, 0.97],
-                delay: 0.35,
-              }}
-            >
-              no venderte humo
-            </motion.em>
-            ,
-          </span>
-          <span className="hold-bloque-cita__panel-line">
-            <motion.em
-              className="hold-bloque-cita__hl"
-              initial={{ backgroundSize: "0% 100%" }}
-              whileInView={{ backgroundSize: "100% 100%" }}
-              viewport={{ once: true, margin: "-15%" }}
-              transition={{
-                duration: 0.95,
-                ease: [0.62, 0.04, 0.36, 0.97],
-                delay: 0.7,
-              }}
-            >
-              nos involucramos en tu negocio
-            </motion.em>
-            .
-          </span>
-        </p>
-      </motion.aside>
+        <aside
+          className="hold-bloque-cita__panel"
+          data-reveal="up"
+          data-reveal-delay="0.2"
+        >
+          <p className="hold-bloque-cita__panel-text">
+            <span className="hold-bloque-cita__panel-line">
+              Nosotras preferimos{" "}
+              <em className="hold-bloque-cita__hl">no venderte humo</em>,
+            </span>
+            <span className="hold-bloque-cita__panel-line">
+              <em className="hold-bloque-cita__hl">
+                nos involucramos en tu negocio
+              </em>
+              .
+            </span>
+          </p>
+        </aside>
       </section>
     </SectionWipe>
   )
