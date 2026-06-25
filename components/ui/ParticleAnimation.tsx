@@ -88,11 +88,9 @@ export function ParticleAnimation() {
         const particles: any[] = []
         const amount =
           p.windowWidth < 600 || p.windowHeight < 600 ? 1000 : 2000
-        /* Cycle linear de 6s en loop infinito. NO usamos la timeline
-         * GSAP para `val` — el cálculo es inline en cada draw() con un
-         * sine wave per particle, así CADA partícula tiene su propio
-         * baseRadius + amplitud y ninguna converge a una pose estática. */
-        const cycleDuration = 6
+        /* Cycle linear de 8s — más calmado para que el "respiro" se
+         * sienta suave, no movimiento agresivo. */
+        const cycleDuration = 8
 
         const proxy = { progress: 0 }
         const TAU = Math.PI * 2
@@ -111,13 +109,14 @@ export function ParticleAnimation() {
             this.cos = p.cos(i * p.TWO_PI)
             this.sin = p.sin(i * p.TWO_PI)
             this.r = p.floor(p.random(2, 8))
-            /* baseRadius único por partícula → cuando todas oscilan,
-             * NO convergen al mismo radio (evita el efecto "columnas"
-             * estáticas reportado en el feedback). */
-            this.baseRadius = 0.34 + p.random(-0.05, 0.05)
-            /* Amplitud del pulse varía por partícula — algunas pulsan
-             * más, otras menos → orgánico, no uniforme. */
-            this.pulseAmp = p.random(0.18, 0.42)
+            /* baseRadius levemente único por partícula (rango chico)
+             * → leve dispersión sin que se vea explosión. */
+            this.baseRadius = 0.36 + p.random(-0.018, 0.018)
+            /* Amplitud MÍNIMA del pulse — las partículas "respiran" en
+             * su lugar, no recorren la pantalla. Antes 0.18-0.42
+             * (radio variaba 40%, vuelo amplio); ahora 0.03-0.08
+             * (radio varía ~5%, oscilación contenida). */
+            this.pulseAmp = p.random(0.03, 0.08)
             this.color = p.random(HOLD_THEME)
           }
 
