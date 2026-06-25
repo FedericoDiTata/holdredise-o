@@ -1,7 +1,7 @@
 import { Eye, Filter, MessageCircle } from "lucide-react"
 import { BorderTrace } from "@/components/effects/BorderTrace"
-import { SectionWipe } from "@/components/effects/SectionWipe"
 import { SplitText } from "@/components/effects/SplitText"
+import { ShaderAnimation } from "@/components/ui/ShaderAnimation"
 import "./bloque-cita.css"
 
 /* Las 3 buzzwords del bloque cita — con íconos editoriales que las
@@ -30,16 +30,15 @@ const KEYWORDS = [
  */
 export function BloqueCita() {
   return (
-    <SectionWipe>
-      <section className="hold-bloque-cita">
-        <h2 className="hold-bloque-cita__titulo">
-          <SplitText
-            text="Algún día alguien te va a querer cobrar caro por decirte"
-            granularity="word"
-            stagger={0.055}
-            delayChildren={0.1}
-          />
-        </h2>
+    <section className="hold-bloque-cita">
+      <h2 className="hold-bloque-cita__titulo">
+        <SplitText
+          text="Algún día alguien te va a querer cobrar caro por decirte"
+          granularity="word"
+          stagger={0.055}
+          delayChildren={0.1}
+        />
+      </h2>
 
         <div className="hold-bloque-cita__keywords">
           {KEYWORDS.map(({ Icon, label }, i) => (
@@ -69,11 +68,13 @@ export function BloqueCita() {
           ))}
         </div>
 
-        <aside
-          className="hold-bloque-cita__panel"
-          data-reveal="up"
-          data-reveal-delay="0.2"
-        >
+      <aside
+        className="hold-bloque-cita__panel"
+        data-reveal="up"
+        data-reveal-delay="0.2"
+      >
+        <ShaderAnimation opacity={0.85} />
+        <div className="hold-bloque-cita__panel-overlay">
           <p className="hold-bloque-cita__panel-text">
             <span className="hold-bloque-cita__panel-line">
               Nosotras preferimos{" "}
@@ -86,8 +87,8 @@ export function BloqueCita() {
               .
             </span>
           </p>
-        </aside>
-      </section>
-    </SectionWipe>
+        </div>
+      </aside>
+    </section>
   )
 }

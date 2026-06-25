@@ -86,13 +86,11 @@
 }
 
 /* ── Panel grande negro con highlight — full-bleed ────────────────────
-   "Romper" el container padre (.section-container--tight) con margin
-   negativo para que el panel ocupe todo el ancho del viewport. Como el
-   body tiene overflow-x: hidden, no genera scroll horizontal. */
+   "Romper" el container padre con margin negativo para que el panel
+   ocupe todo el ancho del viewport. Adentro: ShaderAnimation WebGL
+   como bg + overlay con el texto. */
 .hold-bloque-cita__panel {
   position: relative;
-  /* Truco: 100vw + margin-left negativo del 50% que falta para llegar
-     al borde izquierdo del viewport. Funciona con cualquier container. */
   width: 100vw;
   margin-left: calc(50% - 50vw);
   padding: clamp(56px, 9vh, 120px) clamp(28px, 6vw, 96px);
@@ -103,18 +101,9 @@
   overflow: hidden;
 }
 
-/* Hatch sutil de fondo (textura editorial) — apenas perceptible */
-.hold-bloque-cita__panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgba(250, 255, 250, 0.025) 0 10px,
-    transparent 10px 20px
-  );
-  pointer-events: none;
-  z-index: -1;
+.hold-bloque-cita__panel-overlay {
+  position: relative;
+  z-index: 1;
 }
 
 .hold-bloque-cita__panel-text {

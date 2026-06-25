@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { Button } from "@/components/ui/Button"
+import { ParticleAnimation } from "@/components/ui/ParticleAnimation"
 import { WHATSAPP_URL } from "@/data/content"
 import "./cta-band.css"
 
@@ -36,6 +37,7 @@ export function CTABand({
 }: Props) {
   return (
     <section className="hold-cta-band" data-variant={variant}>
+      {variant === "default" ? <ParticleAnimation /> : null}
       <div className="hold-cta-band__inner">
         {eyebrow ? (
           <p className="hold-cta-band__eyebrow" data-reveal="up">

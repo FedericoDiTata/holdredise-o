@@ -1,0 +1,25 @@
+/* HOLD ParticleAnimation — container full-bleed con canvas cuadrado
+   centrado. El canvas excede vertical/horizontal del container, el
+   overflow:hidden del padre clipea los lados — efecto "semicírculos
+   arriba y abajo" cuando el container es horizontal. */
+
+.hold-particle-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hold-particle-container canvas {
+  /* p5 inserta el canvas como child. Lo centramos absolute. */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  touch-action: none;
+  /* Glow accent en cada partícula — el filter aplica a todo el canvas. */
+  filter: drop-shadow(0px 0px 4px rgba(43, 99, 255, 0.65));
+}
