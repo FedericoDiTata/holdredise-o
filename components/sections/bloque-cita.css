@@ -85,14 +85,19 @@
   font-style: italic;
 }
 
-/* ── Panel grande negro con highlight — full-bleed ────────────────────
-   "Romper" el container padre con margin negativo para que el panel
-   ocupe todo el ancho del viewport. Adentro: ShaderAnimation WebGL
-   como bg + overlay con el texto. */
+/* ── Panel grande negro con highlight — FULL-BLEED ───────────────────
+   Técnica classic full-bleed-in-container: left/right 50% del padre
+   + margin negativo de 50vw saca el panel hasta los bordes del
+   viewport (más confiable que solo `width: 100vw + margin-left calc`
+   cuando el padre tiene padding-inline). */
 .hold-bloque-cita__panel {
   position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
   width: 100vw;
-  margin-left: calc(50% - 50vw);
+  max-width: 100vw;
   padding: clamp(56px, 9vh, 120px) clamp(28px, 6vw, 96px);
   background: var(--fg);
   color: var(--bg);

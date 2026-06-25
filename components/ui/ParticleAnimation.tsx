@@ -174,21 +174,11 @@ export function ParticleAnimation() {
           p.resizeCanvas(w, h)
         }
 
-        p.touchMoved = () => {
-          if (p.touches.length === 0) return
-          onMove(p.touches[0].x, p.touches[0].y)
-        }
-
-        p.mouseMoved = () => {
-          onMove(p.mouseX, p.mouseY)
-        }
-
-        const onMove = (x: number, y: number) => {
-          let mouseAngle = p.atan2(y - p.height / 2, x - p.width / 2)
-          mouseAngle = mouseAngle < 0 ? mouseAngle + p.TWO_PI : mouseAngle
-          mouseAngle = p.abs(mouseAngle / p.TWO_PI) * total
-          progress.time(mouseAngle)
-        }
+        /* Mouse / touch handlers removidos a propósito — la animación
+         * va en loop continuo, no se interrumpe por el cursor. El
+         * original (21st.dev) movía la fase del ciclo según el ángulo
+         * del mouse desde el centro; nosotros queremos un pulse
+         * radial limpio sin intervención del usuario. */
 
         p.draw = () => {
           p.clear()

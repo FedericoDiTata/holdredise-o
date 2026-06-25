@@ -6,8 +6,6 @@ import "./shader-animation.css"
 type Props = {
   /** Opacidad del canvas (0–1). Default 1. */
   opacity?: number
-  /** Habilitar mouse parallax sutil. Default false. */
-  interactive?: boolean
   className?: string
 }
 
@@ -19,22 +17,34 @@ void main() {
 }
 `
 
-/* Fragment shader adaptado a paleta HOLD (azul brand + negro brand).
- * Loop de fractal-like noise + gradient overlay del negro (#1D1D1B) al
- * azul accent (#2B63FF). */
+/* Fragment shader — paleta HOLD ESTRICTA (azul brand + negro brand +
+ * blanco). El palette() original (a + b*cos(...)) generaba colores
+ * cíclicos en magenta/cyan/rojo que no son de la marca; reemplazado
+ * por una interpolación entre 3 colores brand (negro → azul → blanco)
+ * controlada por un valor lineal de tiempo. */
 const FRAGMENT_SHADER_SRC = `
 precision mediump float;
 
 uniform vec2 u_resolution;
 uniform float u_time;
-uniform vec2 u_mouse;
+
+/* Colores brand exactos:
+ * - #1D1D1B (negro brand) ≈ vec3(0.114, 0.114, 0.106)
+ * - #2B63FF (azul accent) ≈ vec3(0.169, 0.388, 1.0)
+ * - #FAFFFA (star white) ≈ vec3(0.980, 1.0, 0.980) */
+const vec3 BRAND_BLACK = vec3(0.114, 0.114, 0.106);
+const vec3 BRAND_BLUE  = vec3(0.169, 0.388, 1.0);
+const vec3 BRAND_WHITE = vec3(0.980, 1.0, 0.980);
 
 vec3 palette(float t) {
-  vec3 a = vec3(0.08, 0.10, 0.25);
-  vec3 b = vec3(0.15, 0.30, 0.85);
-  vec3 c = vec3(1.0, 1.0, 1.0);
-  vec3 d = vec3(0.0, 0.12, 0.30);
-  return a + b * cos(6.28318 * (c * t + d));
+  /* Interpolación negro → azul → blanco según un sine de t (no cos
+   * cycling de colores que tiraba magentas y cyanes). */
+  float v = 0.5 + 0.5 * sin(6.28318 * t);
+  if (v < 0.5) {
+    return mix(BRAND_BLACK, BRAND_BLUE, v * 2.0);
+  } else {
+    return mix(BRAND_BLUE, BRAND_WHITE, (v - 0.5) * 2.0);
+  }
 }
 
 void main() {
@@ -53,21 +63,16 @@ void main() {
     d = sin(d * 4.0 + u_time) / 36.0;
     d = pow(0.005 / d, 1.5);
 
-    vec2 mouseEffect = u_mouse - uv0;
-    float mouseDist = length(mouseEffect);
-    d *= 1.0 + sin(mouseDist * 8.0 - u_time * 1.5) * 0.08;
-
     col += color * d;
   }
 
   float wave = sin(uv0.x * 2.0 + u_time) * 0.008;
   col += vec3(wave);
 
-  /* Gradient negro brand → azul accent. */
-  vec3 gradient1 = vec3(0.114, 0.114, 0.106);
-  vec3 gradient2 = vec3(0.169, 0.388, 1.0);
-  vec3 gradientMix = mix(gradient1, gradient2, uv0.y * 0.6 + sin(u_time * 0.3) * 0.15);
-  col = mix(col, gradientMix, 0.35);
+  /* Gradient base negro → azul, mezclado generosamente para mantener
+   * el ambient brand. */
+  vec3 gradientMix = mix(BRAND_BLACK, BRAND_BLUE, uv0.y * 0.6 + sin(u_time * 0.3) * 0.15);
+  col = mix(col, gradientMix, 0.42);
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -103,12 +108,10 @@ function createShader(
  */
 export function ShaderAnimation({
   opacity = 1,
-  interactive = false,
   className,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
-  const mouseRef = useRef({ x: 0.5, y: 0.5 })
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -150,7 +153,6 @@ export function ShaderAnimation({
     const positionLocation = gl.getAttribLocation(program, "a_position")
     const resolutionLocation = gl.getUniformLocation(program, "u_resolution")
     const timeLocation = gl.getUniformLocation(program, "u_time")
-    const mouseLocation = gl.getUniformLocation(program, "u_mouse")
 
     const parent = canvas.parentElement
     const updateSize = () => {
@@ -168,15 +170,6 @@ export function ShaderAnimation({
     const resizeObserver = new ResizeObserver(updateSize)
     if (parent) resizeObserver.observe(parent)
 
-    let mouseHandler: ((e: MouseEvent) => void) | undefined
-    if (interactive) {
-      mouseHandler = (e: MouseEvent) => {
-        mouseRef.current.x = e.clientX / window.innerWidth
-        mouseRef.current.y = 1.0 - e.clientY / window.innerHeight
-      }
-      window.addEventListener("mousemove", mouseHandler, { passive: true })
-    }
-
     const startTime = Date.now()
     const render = () => {
       const currentTime = (Date.now() - startTime) * 0.001
@@ -188,7 +181,6 @@ export function ShaderAnimation({
       gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)
       gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
       gl.uniform1f(timeLocation, currentTime)
-      gl.uniform2f(mouseLocation, mouseRef.current.x, mouseRef.current.y)
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
       animationRef.current = requestAnimationFrame(render)
     }
@@ -197,15 +189,12 @@ export function ShaderAnimation({
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current)
       resizeObserver.disconnect()
-      if (mouseHandler) {
-        window.removeEventListener("mousemove", mouseHandler)
-      }
       gl.deleteProgram(program)
       gl.deleteShader(vertexShader)
       gl.deleteShader(fragmentShader)
       gl.deleteBuffer(positionBuffer)
     }
-  }, [interactive])
+  }, [])
 
   return (
     <canvas
