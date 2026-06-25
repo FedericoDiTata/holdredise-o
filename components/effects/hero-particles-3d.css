@@ -5,9 +5,8 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  /* Mix-blend para que las partículas integren con el bg star-white
-     sin verse "encima" como overlay. */
-  mix-blend-mode: multiply;
+  /* Sin mix-blend: las partículas se ven en su color accent puro,
+     más vivas y juguetonas (no apagadas por blend con el bg). */
 }
 
 .hold-hero-particles-3d canvas {

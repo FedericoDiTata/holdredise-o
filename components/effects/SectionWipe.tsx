@@ -2,44 +2,39 @@
 
 import { motion, useReducedMotion } from "framer-motion"
 import { type ReactNode } from "react"
-import { EASE_WIPE } from "@/lib/motion"
 import "./section-wipe.css"
 
 type Props = {
   children: ReactNode
-  /** Color de las líneas accent. Default: --accent azul. */
+  /** Color del blob de fondo. Default: --accent azul. */
   color?: string
-  /** Duración total en s. */
-  duration?: number
-  /** Delay inicial. */
+  /** Delay inicial antes de empezar. */
   delay?: number
   className?: string
 }
 
 /**
- * SectionWipe rediseñado — "Split Reveal" editorial.
+ * SectionWipe rediseñado — "Bloom Reveal" creativo y cercano.
  *
- * Eliminado el approach de bloques sólidos accent (rectángulos rígidos
- * sin profundidad). Ahora el efecto es minimalista y arquitectónico:
+ * Reemplaza el approach editorial anterior (líneas finas, clip-path
+ * arquitectónico). Ahora es más orgánico:
  *
- *   1. Una línea horizontal accent fina (1px) se dibuja desde el centro
- *      hacia afuera (scaleX 0 → 1, origin center).
- *   2. El contenido se "rasga" abriendo desde esa línea central —
- *      clip-path desde polygon plano (línea horizontal) a rectángulo
- *      completo, acompañado de scale-up 1.04 → 1 + blur-fade 6px → 0.
- *   3. La línea accent se mantiene visible un instante y luego se
- *      desvanece (opacity 1 → 0).
+ *   1. Un blob accent difuso (radial gradient con blur grande) crece
+ *      desde detrás del contenido y se desvanece — como un "spotlight"
+ *      orgánico que ilumina el bloque por un instante.
  *
- * Es el "horizon split" que usan agencias top de motion design. Mucho
- * más editorial que cubrir la sección con bloques de color, da
- * sensación de profundidad por el clip + scale + blur combinados.
+ *   2. El contenido emerge con SPRING OVERSHOOT (scale 0.92 → 1.02 → 1)
+ *      en lugar de duration-based linear → movimiento natural, bouncy,
+ *      más juguetón que la rigidez editorial anterior.
  *
- * Respeta prefers-reduced-motion: render directo sin animación.
+ *   3. Sutil rotation tilt durante el reveal (-1.2° → 0°) para evitar
+ *      el "snap to grid" que se sentía mecánico.
+ *
+ * Respeta prefers-reduced-motion: render directo, sin blob ni spring.
  */
 export function SectionWipe({
   children,
   color = "var(--accent)",
-  duration = 1.1,
   delay = 0,
   className,
 }: Props) {
@@ -58,57 +53,52 @@ export function SectionWipe({
   return (
     <div className={"hold-section-wipe" + (className ? ` ${className}` : "")}>
       <motion.div
-        className="hold-section-wipe__line"
-        style={{ background: color }}
-        initial={{ scaleX: 0, opacity: 1 }}
+        className="hold-section-wipe__bloom"
+        style={
+          {
+            "--bloom-color": color,
+          } as React.CSSProperties
+        }
+        initial={{ scale: 0.4, opacity: 0 }}
         whileInView={{
-          scaleX: [0, 1, 1, 1],
-          opacity: [1, 1, 1, 0],
+          scale: [0.4, 1.2, 1.5, 1.8],
+          opacity: [0, 0.55, 0.35, 0],
         }}
         viewport={{ once: true, margin: "-12%" }}
         transition={{
-          duration: duration * 1.15,
-          times: [0, 0.32, 0.78, 1],
-          ease: EASE_WIPE,
+          duration: 1.8,
+          times: [0, 0.35, 0.65, 1],
+          ease: [0.4, 0, 0.2, 1],
           delay,
         }}
       />
 
       <motion.div
         className="hold-section-wipe__content"
-        initial={{
-          clipPath: "polygon(0% 50%, 100% 50%, 100% 50%, 0% 50%)",
-          opacity: 0,
-          scale: 1.04,
-          filter: "blur(6px)",
-        }}
-        whileInView={{
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-          opacity: 1,
-          scale: 1,
-          filter: "blur(0px)",
-        }}
+        initial={{ opacity: 0, scale: 0.92, y: 28, rotate: -1.2 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
         viewport={{ once: true, margin: "-12%" }}
         transition={{
-          clipPath: {
-            duration: duration * 0.9,
-            ease: EASE_WIPE,
-            delay: delay + duration * 0.25,
-          },
-          opacity: {
-            duration: duration * 0.7,
-            ease: EASE_WIPE,
-            delay: delay + duration * 0.3,
-          },
+          opacity: { duration: 0.6, delay: delay + 0.15 },
           scale: {
-            duration: duration * 1.1,
-            ease: [0.2, 0.8, 0.2, 1],
-            delay: delay + duration * 0.3,
+            type: "spring",
+            stiffness: 80,
+            damping: 13,
+            mass: 0.9,
+            delay: delay + 0.15,
           },
-          filter: {
-            duration: duration * 0.8,
-            ease: EASE_WIPE,
-            delay: delay + duration * 0.3,
+          y: {
+            type: "spring",
+            stiffness: 80,
+            damping: 13,
+            mass: 0.9,
+            delay: delay + 0.15,
+          },
+          rotate: {
+            type: "spring",
+            stiffness: 60,
+            damping: 14,
+            delay: delay + 0.15,
           },
         }}
       >

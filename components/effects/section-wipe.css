@@ -1,30 +1,47 @@
-/* HOLD SectionWipe — Split Reveal editorial.
+/* HOLD SectionWipe — Bloom Reveal creativo.
 
-   Una línea horizontal accent fina (1px) cruza el centro de la sección,
-   y el contenido se "rasga" abriendo desde esa línea con clip-path +
-   scale + blur. NO usa bloques sólidos accent (eso era plano/rígido). */
+   Un blob accent difuso crece detrás del contenido (radial gradient
+   con blur generoso). El contenido emerge con spring overshoot +
+   sutil rotation tilt — orgánico, lúdico, no editorial. */
 
 .hold-section-wipe {
   position: relative;
   isolation: isolate;
+  /* Necesario para que el rotate del contenido no genere clipping
+     vertical visible (sino el clip se ve recto + sigue lo rígido). */
+  overflow: visible;
 }
 
-.hold-section-wipe__line {
+.hold-section-wipe__bloom {
   position: absolute;
+  left: 50%;
   top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  z-index: 2;
+  width: 70%;
+  aspect-ratio: 1 / 1;
+  background: radial-gradient(
+    circle at center,
+    var(--bloom-color, var(--accent)) 0%,
+    transparent 60%
+  );
+  filter: blur(90px);
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  transform-origin: 50% 50%;
-  /* Sutil glow accent en la línea — refuerza la sensación editorial-blueprint */
-  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent);
-  will-change: transform, opacity;
+  z-index: 0;
+  /* Bloom queda detrás del contenido del padre, pero por encima del bg
+     del section-container (que es transparente). */
 }
 
 .hold-section-wipe__content {
   position: relative;
   z-index: 1;
-  will-change: transform, opacity, filter, clip-path;
+  /* transform-origin centro para el spring overshoot + tilt natural. */
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 768px) {
+  .hold-section-wipe__bloom {
+    width: 110%;
+    /* Blob más grande en mobile para que se sienta el efecto. */
+  }
 }
