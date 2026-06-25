@@ -27,18 +27,21 @@ declare global {
 
 /**
  * ParticleAnimation — círculo de ~2000 partículas brand que pulsan
- * radialmente con easing elastic (GSAP). Mouse / touch mueve el "fase"
- * de la animación. Drop-shadow accent para brillo.
+ * radialmente sin pausas y sin intervención del cursor.
+ *
+ * Cada partícula tiene su propio `baseRadius` + `pulseAmp` único →
+ * nunca convergen a una pose estática ("columnas 3D"). El loop usa
+ * un sine wave inline calculado en cada draw() (no GSAP timeline)
+ * con `localProgress = (proxy.progress + i) % 1` para que cada
+ * partícula esté en su propia fase del cycle.
  *
  * Adaptado de 21st.dev (Scottclayton3d) — paleta HOLD, fix className
- * duplicado del original, responsive al PADRE (no al viewport), CSS
- * separado (no `<style jsx>` que requería next-jsx-style).
+ * duplicado del original, responsive al PADRE, CSS separado, sin
+ * mouse/touch interaction.
  *
- * Dependencias externas (lazy-loaded del CDN solo en client):
+ * Dependencias externas (lazy-loaded del CDN solo client):
  *   - p5.js 1.7.0
  *   - GSAP 3.12.2
- *
- * Cleanup: remove sketch + cancel pending animations en unmount.
  */
 export function ParticleAnimation() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -85,25 +88,22 @@ export function ParticleAnimation() {
         const particles: any[] = []
         const amount =
           p.windowWidth < 600 || p.windowHeight < 600 ? 1000 : 2000
-        /* Cycle más corto + ease sine.inOut → las partículas oscilan
-         * continuamente sin pausas estáticas en los extremos del
-         * ciclo (el elastic.in original las dejaba quietas un instante). */
-        const durationShrink = 4
-        const durationGrow = 4
-        const total = durationShrink + durationGrow
+        /* Cycle linear de 6s en loop infinito. NO usamos la timeline
+         * GSAP para `val` — el cálculo es inline en cada draw() con un
+         * sine wave per particle, así CADA partícula tiene su propio
+         * baseRadius + amplitud y ninguna converge a una pose estática. */
+        const cycleDuration = 6
 
-        const proxy = { progress: 1, val: 0 }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let progress: any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let interpolator: any
+        const proxy = { progress: 0 }
+        const TAU = Math.PI * 2
 
         class Particle {
           i: number
           cos: number
           sin: number
           r: number
-          offset: number
+          baseRadius: number
+          pulseAmp: number
           color: string
 
           constructor(i: number) {
@@ -111,14 +111,23 @@ export function ParticleAnimation() {
             this.cos = p.cos(i * p.TWO_PI)
             this.sin = p.sin(i * p.TWO_PI)
             this.r = p.floor(p.random(2, 8))
-            this.offset =
-              p.pow(p.random(1, 2), 2.5) * p.random(-0.015, 0.015)
+            /* baseRadius único por partícula → cuando todas oscilan,
+             * NO convergen al mismo radio (evita el efecto "columnas"
+             * estáticas reportado en el feedback). */
+            this.baseRadius = 0.34 + p.random(-0.05, 0.05)
+            /* Amplitud del pulse varía por partícula — algunas pulsan
+             * más, otras menos → orgánico, no uniforme. */
+            this.pulseAmp = p.random(0.18, 0.42)
             this.color = p.random(HOLD_THEME)
           }
 
           draw() {
-            interpolator.progress((proxy.progress + this.i) % 1)
-            const r = p.width * (0.35 + proxy.val * this.offset)
+            /* Cada partícula está en su propia fase del cycle (offset i).
+             * Sine wave continuo entre -1 y 1 — siempre en movimiento,
+             * sin pausas estáticas en los extremos. */
+            const localProgress = (proxy.progress + this.i) % 1
+            const val = Math.sin(localProgress * TAU)
+            const r = p.width * this.baseRadius * (1 + val * this.pulseAmp)
             const x = this.cos * r + p.width / 2
             const y = this.sin * r + p.height / 2
             p.fill(this.color)
@@ -147,25 +156,16 @@ export function ParticleAnimation() {
             p.blendMode(p.SCREEN)
           }
 
-          progress = gsapLib.to(proxy, {
-            progress: 0,
+          /* Tween linear que avanza proxy.progress de 0 a 1 en
+           * `cycleDuration` segundos, en loop infinito. ease: "none"
+           * para velocidad constante — cada partícula recorre el sine
+           * wave a velocidad uniforme. */
+          gsapLib.to(proxy, {
+            progress: 1,
             ease: "none",
-            duration: total,
+            duration: cycleDuration,
             repeat: -1,
           })
-
-          interpolator = gsapLib
-            .timeline({ paused: true, reverse: true })
-            .to(proxy, {
-              val: 1,
-              duration: durationShrink,
-              ease: "sine.inOut",
-            })
-            .to(proxy, {
-              val: 0,
-              duration: durationGrow,
-              ease: "sine.inOut",
-            })
 
           for (let i = 0; i < amount; i++) {
             particles.push(new Particle(i / amount))
