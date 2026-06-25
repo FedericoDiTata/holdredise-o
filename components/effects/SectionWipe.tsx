@@ -6,31 +6,30 @@ import "./section-wipe.css"
 
 type Props = {
   children: ReactNode
-  /** Color del blob de fondo. Default: --accent azul. */
+  /** Color del blob accent de fondo. Default: --accent. */
   color?: string
-  /** Delay inicial antes de empezar. */
+  /** Delay inicial antes de empezar la animación. */
   delay?: number
   className?: string
 }
 
 /**
- * SectionWipe rediseñado — "Bloom Reveal" creativo y cercano.
+ * SectionWipe — Bloom Reveal.
  *
- * Reemplaza el approach editorial anterior (líneas finas, clip-path
- * arquitectónico). Ahora es más orgánico:
+ * Bg: un blob accent difuso crece detrás del contenido y se desvanece.
+ * Fg: el contenido emerge con spring overshoot orgánico — robusto y
+ * obvio, no editorial-sutil.
  *
- *   1. Un blob accent difuso (radial gradient con blur grande) crece
- *      desde detrás del contenido y se desvanece — como un "spotlight"
- *      orgánico que ilumina el bloque por un instante.
+ * Simplificación clave (post-feedback "no veo animaciones"):
+ *   - El viewport no usa margin negativo (eso requería que el elemento
+ *     entrara MÁS adentro del viewport antes de disparar; con secciones
+ *     de padding grande, podía no dispararse nunca).
+ *   - `amount: 0.15` dispara cuando 15% del elemento es visible.
+ *   - Sin clip-path: el initial es solo opacity + y + scale, robusto
+ *     entre browsers (clip-path con polygon collapsado podía dejar el
+ *     content invisible si la transición fallaba).
  *
- *   2. El contenido emerge con SPRING OVERSHOOT (scale 0.92 → 1.02 → 1)
- *      en lugar de duration-based linear → movimiento natural, bouncy,
- *      más juguetón que la rigidez editorial anterior.
- *
- *   3. Sutil rotation tilt durante el reveal (-1.2° → 0°) para evitar
- *      el "snap to grid" que se sentía mecánico.
- *
- * Respeta prefers-reduced-motion: render directo, sin blob ni spring.
+ * Respeta prefers-reduced-motion: render directo sin animación.
  */
 export function SectionWipe({
   children,
@@ -57,24 +56,20 @@ export function SectionWipe({
         style={
           {
             "--bloom-color": color,
-            /* x/y como motion values para que framer combine el centrado
-             * con el scale animado. Si lo dejábamos como `transform:
-             * translate(-50%, -50%)` en CSS, framer lo sobrescribía al
-             * aplicar `transform: scale(X)` inline → el bloom se iba a
-             * una esquina en vez de quedar centrado. */
+            /* x/y como motion values para que framer combine con scale. */
             x: "-50%",
             y: "-50%",
           } as React.CSSProperties
         }
         initial={{ scale: 0.4, opacity: 0 }}
         whileInView={{
-          scale: [0.4, 1.2, 1.5, 1.8],
-          opacity: [0, 0.55, 0.35, 0],
+          scale: [0.4, 1.3, 1.8, 2.1],
+          opacity: [0, 0.7, 0.4, 0],
         }}
-        viewport={{ once: true, margin: "-10%", amount: 0.15 }}
+        viewport={{ once: true, amount: 0.15 }}
         transition={{
-          duration: 1.8,
-          times: [0, 0.35, 0.65, 1],
+          duration: 1.6,
+          times: [0, 0.35, 0.7, 1],
           ease: [0.4, 0, 0.2, 1],
           delay,
         }}
@@ -82,30 +77,28 @@ export function SectionWipe({
 
       <motion.div
         className="hold-section-wipe__content"
-        initial={{ opacity: 0, scale: 0.92, y: 28, rotate: -1.2 }}
-        whileInView={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
-        viewport={{ once: true, margin: "-10%", amount: 0.15 }}
+        initial={{ opacity: 0, y: 40, scale: 0.94 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
         transition={{
-          opacity: { duration: 0.6, delay: delay + 0.15 },
-          scale: {
-            type: "spring",
-            stiffness: 80,
-            damping: 13,
-            mass: 0.9,
-            delay: delay + 0.15,
+          opacity: {
+            duration: 0.55,
+            ease: [0.2, 0.8, 0.2, 1],
+            delay: delay + 0.1,
           },
           y: {
             type: "spring",
-            stiffness: 80,
-            damping: 13,
+            stiffness: 100,
+            damping: 16,
             mass: 0.9,
-            delay: delay + 0.15,
+            delay: delay + 0.1,
           },
-          rotate: {
+          scale: {
             type: "spring",
-            stiffness: 60,
+            stiffness: 90,
             damping: 14,
-            delay: delay + 0.15,
+            mass: 0.9,
+            delay: delay + 0.1,
           },
         }}
       >

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react"
 import * as THREE from "three"
 import "./hero-particles-3d.css"
 
-const PARTICLE_COUNT = 1400
+const PARTICLE_COUNT = 2400
 /* Accent azul brand (Bright Blue Pantone 285) — mismo que --accent. */
 const ACCENT_COLOR = 0x2b63ff
 
@@ -79,11 +79,11 @@ export function HeroParticles3D() {
 
     const material = new THREE.PointsMaterial({
       color: ACCENT_COLOR,
-      size: 0.06,
+      size: 0.095,
       sizeAttenuation: true,
       map: particleTexture,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.9,
       depthWrite: false,
       alphaTest: 0.001,
     })
@@ -104,8 +104,10 @@ export function HeroParticles3D() {
     const clock = new THREE.Clock()
     const animate = () => {
       const t = clock.getElapsedTime()
-      points.rotation.y = t * 0.045 + mouseX
-      points.rotation.x = Math.sin(t * 0.025) * 0.06 + mouseY * 0.5
+      /* Rotación más perceptible que la versión anterior (0.045/0.025)
+       * — el drift se nota sin marear. */
+      points.rotation.y = t * 0.08 + mouseX
+      points.rotation.x = Math.sin(t * 0.05) * 0.1 + mouseY * 0.5
       renderer.render(scene, camera)
       raf = requestAnimationFrame(animate)
     }
