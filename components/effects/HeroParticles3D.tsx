@@ -60,13 +60,32 @@ export function HeroParticles3D() {
     }
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
 
+    /* CanvasTexture con radial gradient → cada partícula se renderiza
+     * como círculo con alpha suave, NO como cuadrado (el default de
+     * PointsMaterial es un sprite cuadrado). */
+    const sprite = document.createElement("canvas")
+    sprite.width = 64
+    sprite.height = 64
+    const sCtx = sprite.getContext("2d")
+    if (sCtx) {
+      const grad = sCtx.createRadialGradient(32, 32, 0, 32, 32, 32)
+      grad.addColorStop(0, "rgba(255,255,255,1)")
+      grad.addColorStop(0.45, "rgba(255,255,255,0.65)")
+      grad.addColorStop(1, "rgba(255,255,255,0)")
+      sCtx.fillStyle = grad
+      sCtx.fillRect(0, 0, 64, 64)
+    }
+    const particleTexture = new THREE.CanvasTexture(sprite)
+
     const material = new THREE.PointsMaterial({
       color: ACCENT_COLOR,
-      size: 0.035,
+      size: 0.06,
       sizeAttenuation: true,
+      map: particleTexture,
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.75,
       depthWrite: false,
+      alphaTest: 0.001,
     })
 
     const points = new THREE.Points(geometry, material)
@@ -107,6 +126,7 @@ export function HeroParticles3D() {
       window.removeEventListener("resize", handleResize)
       geometry.dispose()
       material.dispose()
+      particleTexture.dispose()
       renderer.dispose()
       if (renderer.domElement.parentNode) {
         renderer.domElement.parentNode.removeChild(renderer.domElement)

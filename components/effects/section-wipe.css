@@ -1,40 +1,30 @@
-/* HOLD SectionWipe — stripes horizontales accent que colapsan en zigzag.
-   Las stripes pares contraen hacia la derecha, las impares hacia la
-   izquierda — tejido editorial que abre el contenido. */
+/* HOLD SectionWipe — Split Reveal editorial.
+
+   Una línea horizontal accent fina (1px) cruza el centro de la sección,
+   y el contenido se "rasga" abriendo desde esa línea con clip-path +
+   scale + blur. NO usa bloques sólidos accent (eso era plano/rígido). */
 
 .hold-section-wipe {
   position: relative;
   isolation: isolate;
 }
 
-.hold-section-wipe__stripes {
+.hold-section-wipe__line {
   position: absolute;
-  inset: 0;
-  display: grid;
-  /* Stripes en filas horizontales — apiladas verticalmente. */
-  grid-template-rows: repeat(5, 1fr);
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
   z-index: 2;
   pointer-events: none;
-}
-
-.hold-section-wipe__stripe {
-  height: 100%;
-  width: 100%;
-  will-change: transform;
-}
-
-/* Stripes pares con un hatch diagonal sutil — textura editorial,
-   evita que se vea como un bloque plano accent. */
-.hold-section-wipe__stripe:nth-child(even) {
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12) 0 6px,
-    transparent 6px 12px
-  );
-  background-blend-mode: overlay;
+  transform-origin: 50% 50%;
+  /* Sutil glow accent en la línea — refuerza la sensación editorial-blueprint */
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent);
+  will-change: transform, opacity;
 }
 
 .hold-section-wipe__content {
   position: relative;
   z-index: 1;
+  will-change: transform, opacity, filter, clip-path;
 }
