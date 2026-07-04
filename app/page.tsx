@@ -2,10 +2,9 @@ import { CierreGrot } from "@/components/grotesco/CierreGrot"
 import { FoundersGrot } from "@/components/grotesco/FoundersGrot"
 import { HeroGrot } from "@/components/grotesco/HeroGrot"
 import { IntroLoader } from "@/components/grotesco/IntroLoader"
-import { PunchlinePinned } from "@/components/grotesco/PunchlinePinned"
+import { PinScroll } from "@/components/grotesco/PinScroll"
 import { ServiciosGrot } from "@/components/grotesco/ServiciosGrot"
 import { StatsGrot } from "@/components/grotesco/StatsGrot"
-import { TrabajosGrot } from "@/components/grotesco/TrabajosGrot"
 import { WhyGrot } from "@/components/grotesco/WhyGrot"
 
 /**
@@ -27,10 +26,7 @@ export default function Home() {
       <IntroLoader />
       <HeroGrot />
       <StatsGrot />
-      <div className="grot-pin-wrap">
-        <PunchlinePinned />
-        <TrabajosGrot />
-      </div>
+      <PinScroll />
       <ServiciosGrot />
       <WhyGrot />
       <FoundersGrot />

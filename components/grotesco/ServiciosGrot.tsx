@@ -4,6 +4,7 @@ import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { serviciosGrupos } from "@/data/content"
 import { EASE_HOLD } from "@/lib/motion"
+import { SectionTag } from "./SectionTag"
 import "./servicios-grot.css"
 
 /**
@@ -17,10 +18,7 @@ export function ServiciosGrot() {
 
   return (
     <section className="grot-servicios grot-cover" id="servicios">
-      <div className="grot-servicios__head">
-        <span>Servicios</span>
-        <span>Lo que sostenemos</span>
-      </div>
+      <SectionTag>Servicios</SectionTag>
 
       <div role="list">
         {serviciosGrupos.map((grupo, i) => {

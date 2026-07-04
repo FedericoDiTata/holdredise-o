@@ -1,41 +1,97 @@
 "use client"
 
-import { motion, useReducedMotion } from "framer-motion"
-import { EASE_WIPE } from "@/lib/motion"
+import { useEffect, useRef, useState } from "react"
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  type MotionStyle,
+} from "framer-motion"
 import "./punchline-pinned.css"
 
-/* Las 3 buzzwords: cada una con ángulo, tratamiento y vida propia
- * (float + neón con timings distintos, definidos en el CSS). */
+const PHRASE = "Algún día alguien te va a querer cobrar caro por decirte"
+const TYPE_MS = 36
+
+/* Las 3 buzzwords desparramadas: cada una con ángulo, tratamiento y
+ * posición propia (los offsets viven en el CSS). */
 const WORDS = [
-  { text: "awareness", variant: "outline", rotate: -3.5 },
-  { text: "engagement", variant: "accent", rotate: 2 },
-  { text: "funnel", variant: "solid", rotate: -1.5 },
+  { text: "awareness", variant: "outline", rotate: -4 },
+  { text: "engagement", variant: "accent", rotate: 2.5 },
+  { text: "funnel", variant: "solid", rotate: -2 },
 ] as const
 
+/* Strobe de fondo: negro, accent, blanco, accent, negro. Rápido, y
+ * termina siempre en negro. */
+const STROBE = ["#1D1D1B", "#2B63FF", "#FAFFFA", "#2B63FF", "#1D1D1B"]
+
+type Props = {
+  /** Transforms scroll-linked que inyecta PinScroll (scale + rotate). */
+  style?: MotionStyle
+}
+
 /**
- * Punchline pineada: sección negra full-viewport con la frase completa
- * y las 3 buzzwords estampándose gigantes. Cada palabra entra con un
- * spring con rebote (escala + rotación que se acomoda) y después queda
- * VIVA: float orgánico continuo + neón pulsante, cada una con duración
- * y delay distintos para que nunca se sincronicen.
+ * Punchline pineada. Secuencia al entrar al viewport:
+ *   1. La frase se ESCRIBE con typewriter (como el hero)
+ *   2. Al terminar, el fondo hace un strobe negro/azul/blanco rápido
+ *      mientras las buzzwords se estampan desparramadas por la sección
+ *   3. Todo queda vivo: float orgánico + neón pulsante por palabra
  *
- * La sección queda sticky y la siguiente se le monta encima.
+ * La sección queda sticky y la siguiente se le monta encima (el
+ * scale/rotate del overlap lo maneja PinScroll).
  */
-export function PunchlinePinned() {
+export function PunchlinePinned({ style }: Props) {
   const reduce = useReducedMotion()
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { once: true, amount: 0.35 })
+
+  const [typedCount, setTypedCount] = useState(0)
+  const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    if (!inView) return
+    if (reduce) {
+      setTypedCount(PHRASE.length)
+      setDone(true)
+      return
+    }
+    let i = 0
+    const id = setInterval(() => {
+      i += 1
+      setTypedCount(i)
+      if (i >= PHRASE.length) {
+        clearInterval(id)
+        setDone(true)
+      }
+    }, TYPE_MS)
+    return () => clearInterval(id)
+  }, [inView, reduce])
 
   return (
-    <section className="grot-punch" aria-label="Manifiesto">
+    <motion.section
+      ref={ref}
+      className="grot-punch"
+      style={style}
+      aria-label="Manifiesto"
+      animate={
+        done && !reduce ? { backgroundColor: STROBE } : undefined
+      }
+      transition={{ duration: 1, times: [0, 0.22, 0.45, 0.7, 1], ease: "linear" }}
+    >
       <div className="grot-punch__inner">
-        <motion.h2
-          className="grot-punch__phrase"
-          initial={reduce ? false : { opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: EASE_WIPE }}
-        >
-          Algún día alguien te va a querer cobrar caro por decirte
-        </motion.h2>
+        <h2 className="grot-punch__phrase" aria-label={PHRASE}>
+          <span aria-hidden>
+            {PHRASE.slice(0, typedCount)}
+            {!reduce ? (
+              <span
+                className={
+                  "grot-punch__cursor" +
+                  (done ? " grot-punch__cursor--blink" : "")
+                }
+                aria-hidden
+              />
+            ) : null}
+          </span>
+        </h2>
 
         <div className="grot-punch__words">
           {WORDS.map((w, i) => (
@@ -44,17 +100,20 @@ export function PunchlinePinned() {
               className={`grot-punch__word grot-punch__word--${w.variant}`}
               initial={
                 reduce
-                  ? false
-                  : { opacity: 0, scale: 1.7, rotate: w.rotate * 4 }
+                  ? { opacity: 1, scale: 1, rotate: w.rotate }
+                  : { opacity: 0, scale: 1.8, rotate: w.rotate * 4 }
               }
-              whileInView={{ opacity: 1, scale: 1, rotate: w.rotate }}
-              viewport={{ once: true, amount: 0.3 }}
+              animate={
+                done
+                  ? { opacity: 1, scale: 1, rotate: w.rotate }
+                  : undefined
+              }
               transition={{
                 type: "spring",
-                stiffness: 210,
-                damping: 13,
+                stiffness: 220,
+                damping: 12,
                 mass: 0.9,
-                delay: 0.45 + i * 0.28,
+                delay: 0.15 + i * 0.24,
               }}
             >
               <span
@@ -69,14 +128,13 @@ export function PunchlinePinned() {
 
         <motion.p
           className="grot-punch__closer"
-          initial={reduce ? false : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, delay: 1.4 }}
+          initial={reduce ? { opacity: 1 } : { opacity: 0 }}
+          animate={done ? { opacity: 1 } : undefined}
+          transition={{ duration: 0.5, delay: 1.1 }}
         >
           Nosotras preferimos <em>no venderte humo</em>.
         </motion.p>
       </div>
-    </section>
+    </motion.section>
   )
 }

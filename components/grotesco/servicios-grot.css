@@ -6,18 +6,6 @@
   border-bottom: 1px solid var(--fg);
 }
 
-.grot-servicios__head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px clamp(16px, 2.4vw, 28px);
-  border-bottom: 1px solid rgba(250, 255, 250, 0.25);
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .grot-servicios__item {
   border-bottom: 1px solid rgba(250, 255, 250, 0.25);
 }

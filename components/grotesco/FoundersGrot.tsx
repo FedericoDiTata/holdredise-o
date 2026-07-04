@@ -1,4 +1,5 @@
 import { founders } from "@/data/content"
+import { SectionTag } from "./SectionTag"
 import "./founders-grot.css"
 
 /**
@@ -9,10 +10,7 @@ import "./founders-grot.css"
 export function FoundersGrot() {
   return (
     <section className="grot-founders grot-cover" id="founders">
-      <div className="grot-founders__head">
-        <span>Founders</span>
-        <span>Quiénes sostienen</span>
-      </div>
+      <SectionTag>Founders</SectionTag>
 
       <h2 className="grot-founders__claim">
         Decidimos construir lo que no{" "}

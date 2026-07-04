@@ -1,3 +1,4 @@
+import { SectionTag } from "./SectionTag"
 import "./why-grot.css"
 
 const RAZONES = [
@@ -28,10 +29,7 @@ const RAZONES = [
 export function WhyGrot() {
   return (
     <section className="grot-why grot-cover" aria-label="Por qué elegirnos">
-      <div className="grot-why__head">
-        <span>Por qué elegirnos</span>
-        <span>El diferencial</span>
-      </div>
+      <SectionTag>Por qué elegirnos</SectionTag>
 
       <h2 className="grot-why__claim">No somos un proveedor más.</h2>
 

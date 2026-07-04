@@ -7,14 +7,6 @@
   border-bottom: 1px solid var(--fg);
 }
 
-.grot-cierre__kicker {
-  margin: 0 0 clamp(28px, 4vw, 48px);
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .grot-cierre__claim {
   margin: 0;
   font-weight: 700;

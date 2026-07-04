@@ -180,10 +180,9 @@
   transition: color var(--dur-fast) var(--ease-hold);
 }
 
-/* Hover: el link pasa a outline (grotesco puro). */
+/* Hover: el link pasa a blanco (star white sobre el accent). */
 .grot-menu__link:hover {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--fg);
+  color: var(--bg);
 }
 
 .grot-menu__footer {
@@ -228,9 +227,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .grot-menu__link:hover {
-    color: var(--bg);
-    -webkit-text-stroke: 0;
-  }
-}

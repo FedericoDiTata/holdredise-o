@@ -1,4 +1,5 @@
 import { EMAIL, WHATSAPP_URL } from "@/data/content"
+import { SectionTag } from "./SectionTag"
 import "./cierre-grot.css"
 
 /**
@@ -8,7 +9,7 @@ import "./cierre-grot.css"
 export function CierreGrot() {
   return (
     <section className="grot-cierre grot-cover" id="contacto">
-      <p className="grot-cierre__kicker">Hablemos</p>
+      <SectionTag dark>Hablemos</SectionTag>
 
       <h2 className="grot-cierre__claim">
         <span className="grot-cierre__row">Construyamos</span>

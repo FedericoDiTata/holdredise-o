@@ -4,35 +4,15 @@
   background: var(--bg);
   color: var(--fg);
   border-bottom: 1px solid var(--fg);
-  /* Clipea el contenido rotado del tilt para no generar scroll
-     horizontal mientras se endereza. */
-  overflow: hidden;
+  /* La sección entera rota/escala via PinScroll — will-change acá para
+     que el layer quede promovido durante la transición. */
+  will-change: transform;
 }
 
 /* .grot-cover: tapa la sección pineada anterior. */
 .grot-cover {
   position: relative;
   z-index: 2;
-}
-
-/* Wrapper interno que entra en diagonal y se endereza (scroll-linked
-   desde TrabajosGrot.tsx). transform-origin arriba-centro para que la
-   rotación se sienta como una hoja que cae sobre la sección negra. */
-.grot-trabajos__tilt {
-  transform-origin: 50% 0%;
-  will-change: transform;
-}
-
-.grot-trabajos__head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px clamp(16px, 2.4vw, 28px);
-  border-bottom: 1px solid var(--fg);
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .grot-trabajos__grid {

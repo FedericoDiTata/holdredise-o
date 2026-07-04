@@ -6,18 +6,6 @@
   border-bottom: 1px solid var(--fg);
 }
 
-.grot-founders__head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px clamp(16px, 2.4vw, 28px);
-  border-bottom: 1px solid var(--fg);
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .grot-founders__claim {
   margin: 0;
   padding: clamp(40px, 6vw, 90px) clamp(16px, 2.4vw, 28px);
