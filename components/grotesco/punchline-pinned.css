@@ -50,11 +50,23 @@
   will-change: transform, opacity;
 }
 
-/* El span interno lleva la vida continua (float + neón). El color y el
-   stroke se definen acá y los hereda. */
+/* El span interno lleva el float continuo (transform, composited).
+   El neón pulsante vive en el ::after (copia del texto via attr) y
+   anima SOLO opacity — nada de animar text-shadow, que fuerza repaints
+   de los glifos gigantes en cada frame y traba el scroll. */
 .grot-punch__live {
+  position: relative;
   display: inline-block;
-  will-change: transform, text-shadow;
+  will-change: transform;
+}
+
+.grot-punch__live::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  pointer-events: none;
+  opacity: 0.25;
 }
 
 .grot-punch__word--outline {
@@ -73,23 +85,36 @@
   margin-left: clamp(8px, 6vw, 120px);
 }
 
-/* Float orgánico: 3 keyframes distintos, duraciones distintas. */
+/* Float orgánico: 3 keyframes distintos, duraciones distintas.
+   El glow del ::after pulsa solo opacity (composited). */
 .grot-punch__live--0 {
-  animation:
-    grot-float-a 4.6s ease-in-out infinite alternate,
-    grot-glow-white 3.4s ease-in-out infinite;
+  animation: grot-float-a 4.6s ease-in-out infinite alternate;
+}
+.grot-punch__live--0::after {
+  text-shadow:
+    0 0 22px rgba(250, 255, 250, 0.7),
+    0 0 60px rgba(250, 255, 250, 0.3);
+  animation: grot-glow-pulse 3.4s ease-in-out infinite;
 }
 
 .grot-punch__live--1 {
-  animation:
-    grot-float-b 5.6s ease-in-out infinite alternate,
-    grot-glow-accent 2.7s ease-in-out infinite;
+  animation: grot-float-b 5.6s ease-in-out infinite alternate;
+}
+.grot-punch__live--1::after {
+  text-shadow:
+    0 0 26px rgba(43, 99, 255, 0.95),
+    0 0 76px rgba(43, 99, 255, 0.5);
+  animation: grot-glow-pulse 2.7s ease-in-out infinite;
 }
 
 .grot-punch__live--2 {
-  animation:
-    grot-float-c 5s ease-in-out infinite alternate,
-    grot-glow-white 3.9s ease-in-out 0.8s infinite;
+  animation: grot-float-c 5s ease-in-out infinite alternate;
+}
+.grot-punch__live--2::after {
+  text-shadow:
+    0 0 22px rgba(250, 255, 250, 0.7),
+    0 0 60px rgba(250, 255, 250, 0.3);
+  animation: grot-glow-pulse 3.9s ease-in-out 0.8s infinite;
 }
 
 @keyframes grot-float-a {
@@ -107,31 +132,10 @@
   to { transform: translate(7px, -9px) rotate(-0.8deg); }
 }
 
-/* Neón pulsante: blanco para outline/solid, accent para la azul. */
-@keyframes grot-glow-white {
-  0%, 100% {
-    text-shadow:
-      0 0 10px rgba(250, 255, 250, 0.35),
-      0 0 34px rgba(250, 255, 250, 0.15);
-  }
-  50% {
-    text-shadow:
-      0 0 22px rgba(250, 255, 250, 0.75),
-      0 0 64px rgba(250, 255, 250, 0.35);
-  }
-}
-
-@keyframes grot-glow-accent {
-  0%, 100% {
-    text-shadow:
-      0 0 14px rgba(43, 99, 255, 0.55),
-      0 0 44px rgba(43, 99, 255, 0.25);
-  }
-  50% {
-    text-shadow:
-      0 0 28px rgba(43, 99, 255, 1),
-      0 0 80px rgba(43, 99, 255, 0.55);
-  }
+/* Pulso de neón: solo opacity, GPU-composited. */
+@keyframes grot-glow-pulse {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
 }
 
 .grot-punch__closer {
@@ -161,7 +165,17 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .grot-punch__live {
+  .grot-punch__live,
+  .grot-punch__live::after {
     animation: none;
   }
+}
+
+/* Wrapper que LIMITA el alcance del sticky: la punchline queda pineada
+   solo mientras Trabajos se le monta encima, y después scrollea afuera
+   con el flujo normal. Sin esto, la sección negra quedaba sticky detrás
+   de TODA la página, componiéndose (con sus animaciones corriendo) en
+   cada frame del scroll hasta el footer. */
+.grot-pin-wrap {
+  position: relative;
 }

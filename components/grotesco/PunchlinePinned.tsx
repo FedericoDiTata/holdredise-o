@@ -57,7 +57,10 @@ export function PunchlinePinned() {
                 delay: 0.45 + i * 0.28,
               }}
             >
-              <span className={`grot-punch__live grot-punch__live--${i}`}>
+              <span
+                className={`grot-punch__live grot-punch__live--${i}`}
+                data-text={w.text}
+              >
                 {w.text}
               </span>
             </motion.span>

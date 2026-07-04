@@ -1,4 +1,6 @@
-import type { CSSProperties } from "react"
+"use client"
+
+import { useEffect, useRef, useState, type CSSProperties } from "react"
 import "./marquee-grot.css"
 
 type Props = {
@@ -18,6 +20,10 @@ type Props = {
  * Seamless garantizado: el track contiene 2 mitades idénticas y anima
  * translateX(-50%). Cada mitad tiene suficientes copias como para
  * superar 2x el ancho de viewport, así nunca queda banda vacía.
+ *
+ * Performance: la animación se PAUSA cuando la banda no está en
+ * viewport (IntersectionObserver) — un track de miles de px animándose
+ * fuera de pantalla es trabajo de compositor tirado a la basura.
  */
 export function MarqueeGrot({
   text,
@@ -25,6 +31,20 @@ export function MarqueeGrot({
   durationSec = 14,
   repeats = 8,
 }: Props) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: "120px 0px" },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   const half = (
     <div className="grot-marquee__half">
       {Array.from({ length: repeats }).map((_, i) => (
@@ -44,7 +64,12 @@ export function MarqueeGrot({
 
   return (
     <div
-      className={"grot-marquee" + (dark ? " grot-marquee--dark" : "")}
+      ref={ref}
+      className={
+        "grot-marquee" +
+        (dark ? " grot-marquee--dark" : "") +
+        (visible ? "" : " grot-marquee--paused")
+      }
       style={{ "--grot-mq-dur": `${durationSec}s` } as CSSProperties}
       aria-hidden
     >

@@ -33,9 +33,10 @@ export function TrabajosGrot() {
     offset: ["start end", "start 0.12"],
   })
 
-  const rotate = useTransform(scrollYProgress, [0, 1], [-5, 0])
-  const y = useTransform(scrollYProgress, [0, 1], [90, 0])
-  const scale = useTransform(scrollYProgress, [0, 1], [0.96, 1])
+  /* Solo rotate + y: agregar scale acá duplicaba el costo de raster
+   * del layer gigante y contribuía al lag del scroll. */
+  const rotate = useTransform(scrollYProgress, [0, 1], [-4, 0])
+  const y = useTransform(scrollYProgress, [0, 1], [80, 0])
 
   const items = trabajos.slice(0, 4)
 
@@ -43,7 +44,7 @@ export function TrabajosGrot() {
     <section className="grot-trabajos grot-cover" id="trabajos" ref={ref}>
       <motion.div
         className="grot-trabajos__tilt"
-        style={reduce ? undefined : { rotate, y, scale }}
+        style={reduce ? undefined : { rotate, y }}
       >
         <div className="grot-trabajos__head">
           <span>Trabajos</span>

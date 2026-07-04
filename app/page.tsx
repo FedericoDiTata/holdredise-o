@@ -27,8 +27,10 @@ export default function Home() {
       <IntroLoader />
       <HeroGrot />
       <StatsGrot />
-      <PunchlinePinned />
-      <TrabajosGrot />
+      <div className="grot-pin-wrap">
+        <PunchlinePinned />
+        <TrabajosGrot />
+      </div>
       <ServiciosGrot />
       <WhyGrot />
       <FoundersGrot />
