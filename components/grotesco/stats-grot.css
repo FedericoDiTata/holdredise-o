@@ -28,6 +28,26 @@
   gap: 14px;
 }
 
+/* SLAM con rotación propia por celda (más grotesco que el slam
+   genérico): cada número cae ladeado en un sentido distinto y se
+   acomoda al aterrizar. */
+.grot-stats__cell:nth-child(1) .grot-stats__cell-inner[data-reveal="slam"] {
+  transform: translateY(-150px) scale(1.35) rotate(-4deg);
+}
+
+.grot-stats__cell:nth-child(2) .grot-stats__cell-inner[data-reveal="slam"] {
+  transform: translateY(-150px) scale(1.35) rotate(3.5deg);
+}
+
+.grot-stats__cell:nth-child(3) .grot-stats__cell-inner[data-reveal="slam"] {
+  transform: translateY(-150px) scale(1.35) rotate(-3deg);
+}
+
+/* El .in base resetea transform: none, así aterrizan derechas. */
+.grot-stats__cell .grot-stats__cell-inner[data-reveal="slam"].in {
+  transform: none;
+}
+
 .grot-stats__num {
   font-weight: 700;
   font-size: clamp(52px, 8.5vw, 140px);

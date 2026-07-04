@@ -38,6 +38,60 @@ function HeroCol({
   return <motion.div className="grot-hero__col" style={{ scaleY }} />
 }
 
+/* Piezas de la frase intro: desparramadas, cada una con su rotación y
+ * entrando desde una dirección distinta (transform puro, scroll-linked). */
+const PIECES = [
+  {
+    text: "Ayudamos a negocios y creadores",
+    variant: "solid",
+    from: { x: -1300, y: 0 },
+    window: [0.5, 0.72] as [number, number],
+    rotate: -3,
+  },
+  {
+    text: "a transformar su presencia digital",
+    variant: "outline",
+    from: { x: 1300, y: 0 },
+    window: [0.56, 0.78] as [number, number],
+    rotate: 2,
+  },
+  {
+    text: "en una marca con identidad, estrategia y resultados.",
+    variant: "solid",
+    from: { x: 0, y: 700 },
+    window: [0.62, 0.84] as [number, number],
+    rotate: -1.5,
+  },
+  {
+    text: "Nos involucramos en tu negocio.",
+    variant: "accent",
+    from: { x: 0, y: 900 },
+    window: [0.68, 0.9] as [number, number],
+    rotate: 2.5,
+  },
+] as const
+
+function IntroPiece({
+  progress,
+  piece,
+  index,
+}: {
+  progress: MotionValue<number>
+  piece: (typeof PIECES)[number]
+  index: number
+}) {
+  const x = useTransform(progress, piece.window, [piece.from.x, 0])
+  const y = useTransform(progress, piece.window, [piece.from.y, 0])
+  return (
+    <motion.span
+      className={`grot-hero__piece grot-hero__piece--${piece.variant} grot-hero__piece--${index}`}
+      style={{ x, y, rotate: piece.rotate }}
+    >
+      {piece.text}
+    </motion.span>
+  )
+}
+
 /**
  * Hero grotesco: bloque accent pineado con el título + typewriter.
  * Las columnas blancas (sin ranuras) crecen y CUBREN el título; la
@@ -59,10 +113,6 @@ export function HeroGrot() {
   /* El título sube y las columnas lo tapan físicamente (z-order). */
   const titleY = useTransform(scrollYProgress, [0, 0.5], [0, -260])
   const titleRotate = useTransform(scrollYProgress, [0, 0.5], [0, -2.5])
-
-  /* La frase SUBE desde abajo del viewport sobre el blanco: transform
-   * puro, sin opacity. */
-  const introY = useTransform(scrollYProgress, [0.55, 0.85], [1000, 0])
 
   return (
     <div className="grot-hero-wrap" id="inicio" ref={wrapRef}>
@@ -109,14 +159,18 @@ export function HeroGrot() {
           )}
         </div>
 
-        <motion.p
-          className="grot-hero__intro"
-          style={reduce ? undefined : { y: introY }}
-        >
-          Ayudamos a negocios y creadores a transformar su presencia digital
-          en una marca con identidad, estrategia y resultados.{" "}
-          <strong>Nos involucramos en tu negocio.</strong>
-        </motion.p>
+        {!reduce ? (
+          <p className="grot-hero__intro" aria-hidden>
+            {PIECES.map((piece, i) => (
+              <IntroPiece
+                key={piece.text}
+                progress={scrollYProgress}
+                piece={piece}
+                index={i}
+              />
+            ))}
+          </p>
+        ) : null}
       </section>
     </div>
   )

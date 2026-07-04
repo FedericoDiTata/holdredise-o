@@ -8,11 +8,11 @@
      3 = columnas
      4 = frase intro (sobre el blanco) */
 
-/* Wrapper: 50svh de recorrido — columnas cortas + un tramo final de
-   blanco con la frase antes de que el hero se vaya. */
+/* Wrapper: 40svh de recorrido — columnas cortas, la frase se arma y
+   enseguida llegan las métricas. */
 .grot-hero-wrap {
   position: relative;
-  height: 150svh;
+  height: 140svh;
   background: var(--accent);
   isolation: isolate;
 }
@@ -120,38 +120,77 @@
   will-change: transform;
 }
 
-/* ── Frase intro: centrada sobre el blanco de las columnas ────────── */
+/* ── Frase intro: piezas desparramadas sobre el blanco ─────────────
+   Cada pieza llega desde una dirección distinta y queda rotada, como
+   afiches pegados. Sin patrón. */
 .grot-hero__intro {
   position: absolute;
   inset: 0;
   z-index: 4;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  text-align: center;
+  gap: clamp(10px, 1.6vh, 22px);
   margin: 0;
-  padding-inline: clamp(20px, 12vw, 260px);
+  padding-inline: clamp(16px, 4vw, 80px);
   padding-top: calc(var(--hold-header-h, 72px) + 16px);
-  padding-bottom: 24px;
-  font-weight: 700;
-  font-size: clamp(22px, 3.2vw, 48px);
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  color: var(--fg);
-  text-wrap: balance;
   pointer-events: none;
+  overflow: hidden;
 }
 
-.grot-hero__intro strong {
+.grot-hero__piece {
+  display: inline-block;
+  width: fit-content;
+  max-width: 90%;
+  font-weight: 700;
+  font-size: clamp(22px, 3.1vw, 50px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  will-change: transform;
+}
+
+.grot-hero__piece--outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--fg);
+}
+
+.grot-hero__piece--accent {
   color: var(--accent);
+  font-size: clamp(26px, 3.8vw, 62px);
+}
+
+/* Desparramo: cada pieza en su lugar. */
+.grot-hero__piece--0 {
+  align-self: flex-start;
+  margin-left: clamp(4px, 4vw, 90px);
+}
+
+.grot-hero__piece--1 {
+  align-self: flex-end;
+  margin-right: clamp(4px, 3vw, 70px);
+}
+
+.grot-hero__piece--2 {
+  align-self: flex-start;
+  margin-left: clamp(10px, 9vw, 190px);
+}
+
+.grot-hero__piece--3 {
+  align-self: center;
+  margin-top: clamp(6px, 1.4vh, 18px);
 }
 
 @media (max-width: 820px) {
   .grot-hero__title {
     font-size: clamp(36px, 10.5vw, 80px);
   }
-  .grot-hero__intro {
-    font-size: clamp(19px, 5vw, 30px);
+  .grot-hero__piece {
+    font-size: clamp(17px, 4.6vw, 26px);
+    max-width: 96%;
+  }
+  .grot-hero__piece--accent {
+    font-size: clamp(20px, 5.4vw, 32px);
   }
 }
 
