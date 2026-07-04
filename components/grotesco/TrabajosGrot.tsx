@@ -30,13 +30,26 @@ export function TrabajosGrot({ style }: Props) {
     >
       <SectionTag spot="right">Trabajos</SectionTag>
 
-      <MarqueeGrot text="Trabajos" durationSec={13} />
+      <MarqueeGrot text="Trabajos" durationSec={13} tilt="left" />
 
       <div className="grot-trabajos__grid">
         {items.map((t, i) => (
-          <article
+          <motion.article
             key={t.cliente}
             className={`grot-trabajos__card grot-trabajos__card--${CARD_TONES[i]}`}
+            initial={{
+              y: 80,
+              opacity: 0,
+              rotate: i % 2 === 0 ? -2 : 2,
+            }}
+            whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{
+              type: "spring",
+              stiffness: 120,
+              damping: 15,
+              delay: (i % 2) * 0.12,
+            }}
           >
             <div className="grot-trabajos__media" aria-hidden />
             <span className="grot-trabajos__tag" aria-hidden>
@@ -46,7 +59,7 @@ export function TrabajosGrot({ style }: Props) {
               <span className="grot-trabajos__cliente">{t.cliente}</span>
               <span className="grot-trabajos__rubro">{t.rubro}</span>
             </div>
-          </article>
+          </motion.article>
         ))}
       </div>
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 import { contadoresHome } from "@/data/content"
 import "./stats-grot.css"
 
@@ -52,25 +53,42 @@ function StatCell({
   suffix,
   label,
   accent,
+  index,
 }: {
   valor: number
   suffix?: string
   label: string
   accent?: boolean
+  index: number
 }) {
   const { value, ref } = useCountUp(valor)
   return (
     <div className="grot-stats__cell">
-      <span
-        ref={ref}
-        className={
-          "grot-stats__num" + (accent ? " grot-stats__num--accent" : "")
-        }
+      {/* El contenido entra con spring + rotación que se acomoda,
+          alternando el sentido por celda. */}
+      <motion.div
+        className="grot-stats__cell-inner"
+        initial={{ y: 70, opacity: 0, rotate: index % 2 === 0 ? -2.5 : 2.5 }}
+        whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{
+          type: "spring",
+          stiffness: 140,
+          damping: 15,
+          delay: index * 0.12,
+        }}
       >
-        {value}
-        {suffix ?? ""}
-      </span>
-      <span className="grot-stats__label">{label}</span>
+        <span
+          ref={ref}
+          className={
+            "grot-stats__num" + (accent ? " grot-stats__num--accent" : "")
+          }
+        >
+          {value}
+          {suffix ?? ""}
+        </span>
+        <span className="grot-stats__label">{label}</span>
+      </motion.div>
     </div>
   )
 }
@@ -89,6 +107,7 @@ export function StatsGrot() {
           suffix={c.suffix}
           label={c.label}
           accent={i === 1}
+          index={i}
         />
       ))}
     </section>

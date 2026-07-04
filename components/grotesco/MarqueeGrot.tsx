@@ -11,6 +11,8 @@ type Props = {
   durationSec?: number
   /** Copias del texto por mitad. Subir si el texto es corto. */
   repeats?: number
+  /** Inclinación grotesca de la banda entera (sticker cruzado). */
+  tilt?: "left" | "right"
 }
 
 /**
@@ -30,6 +32,7 @@ export function MarqueeGrot({
   dark = false,
   durationSec = 14,
   repeats = 8,
+  tilt,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(true)
@@ -68,6 +71,8 @@ export function MarqueeGrot({
       className={
         "grot-marquee" +
         (dark ? " grot-marquee--dark" : "") +
+        (tilt === "left" ? " grot-marquee--tilt-l" : "") +
+        (tilt === "right" ? " grot-marquee--tilt-r" : "") +
         (visible ? "" : " grot-marquee--paused")
       }
       style={{ "--grot-mq-dur": `${durationSec}s` } as CSSProperties}

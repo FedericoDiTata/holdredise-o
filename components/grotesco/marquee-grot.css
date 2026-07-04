@@ -71,6 +71,18 @@
   animation-play-state: paused;
 }
 
+/* Tilt grotesco: la banda cruza la sección levemente inclinada, como
+   una faja pegada a mano. Scale 1.05 cubre los extremos horizontales. */
+.grot-marquee--tilt-l {
+  transform: rotate(-1.6deg) scale(1.05);
+  margin-block: clamp(12px, 1.6vw, 26px);
+}
+
+.grot-marquee--tilt-r {
+  transform: rotate(1.3deg) scale(1.05);
+  margin-block: clamp(12px, 1.6vw, 26px);
+}
+
 @keyframes grot-marquee-loop {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }

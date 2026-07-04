@@ -8,11 +8,16 @@
 }
 
 .grot-stats__cell {
+  padding: clamp(28px, 4vw, 56px) clamp(16px, 2.4vw, 28px);
+  border-right: 1px solid var(--fg);
+  overflow: hidden;
+}
+
+.grot-stats__cell-inner {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: clamp(28px, 4vw, 56px) clamp(16px, 2.4vw, 28px);
-  border-right: 1px solid var(--fg);
+  will-change: transform, opacity;
 }
 
 .grot-stats__cell:last-child {

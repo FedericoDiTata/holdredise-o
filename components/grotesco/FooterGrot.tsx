@@ -22,6 +22,7 @@ export function FooterGrot() {
         dark
         durationSec={18}
         repeats={5}
+        tilt="right"
       />
 
       <div className="grot-footer__grid">

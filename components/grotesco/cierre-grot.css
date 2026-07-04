@@ -15,8 +15,17 @@
   letter-spacing: -0.045em;
 }
 
+/* Cada renglón clipea su propio mask reveal (y: 112% inicial). */
+.grot-cierre__row-clip {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
 .grot-cierre__row {
   display: block;
+  will-change: transform;
 }
 
 .grot-cierre__actions {

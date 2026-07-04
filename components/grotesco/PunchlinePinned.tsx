@@ -1,9 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   motion,
-  useInView,
   useReducedMotion,
   type MotionStyle,
 } from "framer-motion"
@@ -25,33 +24,27 @@ const WORDS = [
 const STROBE = ["#1D1D1B", "#2B63FF", "#FAFFFA", "#2B63FF", "#1D1D1B"]
 
 type Props = {
+  /** Dispara la secuencia (lo maneja PinScroll con scroll progress). */
+  active: boolean
   /** Transforms scroll-linked que inyecta PinScroll (scale + rotate). */
   style?: MotionStyle
 }
 
 /**
- * Punchline pineada. Secuencia al entrar al viewport:
+ * Punchline pineada. Secuencia cuando PinScroll marca `active`:
  *   1. La frase se ESCRIBE con typewriter (como el hero)
  *   2. Al terminar, el fondo hace un strobe negro/azul/blanco rápido
- *      mientras las buzzwords se estampan desparramadas por la sección
+ *      mientras las buzzwords se estampan desparramadas
  *   3. Todo queda vivo: float orgánico + neón pulsante por palabra
- *
- * La sección queda sticky y la siguiente se le monta encima (el
- * scale/rotate del overlap lo maneja PinScroll).
  */
-export function PunchlinePinned({ style }: Props) {
+export function PunchlinePinned({ active, style }: Props) {
   const reduce = useReducedMotion()
-  const ref = useRef<HTMLElement>(null)
-  /* amount 0.55: la secuencia arranca recién cuando más de la mitad de
-   * la sección está en pantalla. Con 0.35 disparaba mientras todavía
-   * estabas en Stats y llegabas con todo ya terminado. */
-  const inView = useInView(ref, { once: true, amount: 0.55 })
 
   const [typedCount, setTypedCount] = useState(0)
   const [done, setDone] = useState(false)
 
   useEffect(() => {
-    if (!inView) return
+    if (!active || done) return
     if (reduce) {
       setTypedCount(PHRASE.length)
       setDone(true)
@@ -67,16 +60,19 @@ export function PunchlinePinned({ style }: Props) {
       }
     }, TYPE_MS)
     return () => clearInterval(id)
-  }, [inView, reduce])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, reduce])
 
   return (
     <motion.section
-      ref={ref}
       className="grot-punch"
       style={style}
       aria-label="Manifiesto"
+      initial={false}
       animate={
-        done && !reduce ? { backgroundColor: STROBE } : undefined
+        done && !reduce
+          ? { backgroundColor: STROBE }
+          : { backgroundColor: "#1D1D1B" }
       }
       transition={{
         duration: 1.2,
@@ -89,7 +85,7 @@ export function PunchlinePinned({ style }: Props) {
         <h2 className="grot-punch__phrase" aria-label={PHRASE}>
           <span aria-hidden>
             {PHRASE.slice(0, typedCount)}
-            {!reduce ? (
+            {!reduce && active ? (
               <span
                 className={
                   "grot-punch__cursor" +
@@ -106,23 +102,28 @@ export function PunchlinePinned({ style }: Props) {
             <motion.span
               key={w.text}
               className={`grot-punch__word grot-punch__word--${w.variant}`}
-              initial={
-                reduce
-                  ? { opacity: 1, scale: 1, y: 0, rotate: w.rotate }
-                  : { opacity: 0, scale: 2.3, y: 60, rotate: w.rotate * 5 }
-              }
+              initial={false}
               animate={
-                done
+                done || reduce
                   ? { opacity: 1, scale: 1, y: 0, rotate: w.rotate }
-                  : undefined
+                  : {
+                      opacity: 0,
+                      scale: 2.3,
+                      y: 60,
+                      rotate: w.rotate * 5,
+                    }
               }
-              transition={{
-                type: "spring",
-                stiffness: 190,
-                damping: 12,
-                mass: 1,
-                delay: 0.2 + i * 0.3,
-              }}
+              transition={
+                done && !reduce
+                  ? {
+                      type: "spring",
+                      stiffness: 190,
+                      damping: 12,
+                      mass: 1,
+                      delay: 0.2 + i * 0.3,
+                    }
+                  : { duration: 0 }
+              }
             >
               <span
                 className={`grot-punch__live grot-punch__live--${i}`}
@@ -136,9 +137,9 @@ export function PunchlinePinned({ style }: Props) {
 
         <motion.p
           className="grot-punch__closer"
-          initial={reduce ? { opacity: 1 } : { opacity: 0 }}
-          animate={done ? { opacity: 1 } : undefined}
-          transition={{ duration: 0.5, delay: 1.1 }}
+          initial={false}
+          animate={done || reduce ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.5, delay: done ? 1.2 : 0 }}
         >
           Nosotras preferimos <em>no venderte humo</em>.
         </motion.p>

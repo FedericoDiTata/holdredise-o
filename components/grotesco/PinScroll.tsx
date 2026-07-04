@@ -1,7 +1,8 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import {
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -10,29 +11,39 @@ import { PunchlinePinned } from "./PunchlinePinned"
 import { TrabajosGrot } from "./TrabajosGrot"
 
 /**
- * Overlap de secciones estilo "hero scroll animation" (ui-layouts,
- * adaptado a nuestro stack): la punchline pineada se ENCOGE y rota
- * levemente mientras Trabajos sube por encima enderezándose desde una
- * rotación opuesta. Un solo scrollYProgress del contenedor maneja los
- * dos lados de la transición, así quedan perfectamente sincronizados.
+ * Overlap de secciones estilo "hero scroll animation": la punchline
+ * pineada se encoge y rota levemente mientras Trabajos sube por encima
+ * enderezándose. Un solo scrollYProgress maneja los dos lados.
  *
- * Los transforms terminan en 0.65 del progreso (cuando Trabajos ya
- * cubrió el viewport) para que el resto del scroll interno de Trabajos
- * quede derecho.
+ * Además dispara la secuencia de la punchline (typewriter + strobe +
+ * words) via el MISMO sistema de scroll: `enterProgress` mide la
+ * entrada del wrapper al viewport y activa la secuencia cuando la
+ * sección ya domina la pantalla. Nada de IntersectionObserver sobre
+ * elementos sticky, que venía fallando silenciosamente.
  */
 export function PinScroll() {
   const container = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
+  const [active, setActive] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ["start start", "end end"],
   })
 
-  /* Ángulos y escalas contenidos: con rotate 5 y scale 0.92 quedaba un
-   * hueco grande a la izquierda y tardaba en acomodarse. Con 2.5 grados
-   * y settle al 40% del progreso, la sección entra apenas ladeada y se
-   * endereza enseguida. */
+  /* Progreso de ENTRADA: 0 cuando el top del wrapper toca el borde
+   * inferior del viewport, 1 cuando llega al 25% superior. */
+  const { scrollYProgress: enterProgress } = useScroll({
+    target: container,
+    offset: ["start 0.9", "start 0.25"],
+  })
+
+  useMotionValueEvent(enterProgress, "change", (v) => {
+    if (v >= 1) setActive(true)
+  })
+
+  /* Ángulos y escalas contenidos para que no quede hueco a la
+   * izquierda y se acomode rápido. */
   const punchScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.92])
   const punchRotate = useTransform(scrollYProgress, [0, 0.5], [0, -3])
   const trabScale = useTransform(scrollYProgress, [0, 0.4], [0.97, 1])
@@ -41,6 +52,7 @@ export function PinScroll() {
   return (
     <div ref={container} className="grot-pin-wrap">
       <PunchlinePinned
+        active={active}
         style={
           reduce ? undefined : { scale: punchScale, rotate: punchRotate }
         }
