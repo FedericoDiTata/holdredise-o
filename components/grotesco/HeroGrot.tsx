@@ -1,8 +1,9 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import {
   motion,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -112,10 +113,17 @@ function IntroPiece({
 export function HeroGrot() {
   const wrapRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
+  const [collage, setCollage] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: wrapRef,
     offset: ["start start", "end end"],
+  })
+
+  /* Modo collage: cuando las columnas ya crecieron, arranca la
+   * coreografía de swaps de color (fondo + piezas, ciclo compartido). */
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    setCollage(v > 0.5)
   })
 
   /* El título sube y las columnas lo tapan físicamente (z-order). */
@@ -124,7 +132,12 @@ export function HeroGrot() {
 
   return (
     <div className="grot-hero-wrap" id="inicio" ref={wrapRef}>
-      <section className="grot-hero" aria-label="Inicio">
+      <section
+        className={
+          "grot-hero" + (collage && !reduce ? " grot-hero--collage" : "")
+        }
+        aria-label="Inicio"
+      >
         <h1 className="grot-hero__sr">
           No solo hacemos contenido, construimos marcas.
         </h1>
