@@ -55,11 +55,11 @@ export function HeroGrot() {
     offset: ["start start", "end end"],
   })
 
-  /* El título se va antes de que las columnas lleguen arriba. */
-  const titleY = useTransform(scrollYProgress, [0, 0.6], [0, -90])
-  const titleRotate = useTransform(scrollYProgress, [0, 0.6], [0, -2.5])
-  const titleOpacity = useTransform(scrollYProgress, [0.1, 0.55], [1, 0])
-  const subOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0])
+  /* El título se va BIEN antes de que las columnas lleguen arriba,
+   * así nunca queda texto pisado por los bloques blancos. */
+  const titleY = useTransform(scrollYProgress, [0, 0.45], [0, -110])
+  const titleRotate = useTransform(scrollYProgress, [0, 0.45], [0, -2.5])
+  const titleOpacity = useTransform(scrollYProgress, [0.05, 0.38], [1, 0])
 
   /* Base blanca que aparece al final: tapa las ranuras accent entre
    * columnas para que el hero se funda sin costuras con la sección
@@ -91,15 +91,6 @@ export function HeroGrot() {
               </span>
             </motion.p>
           </div>
-
-          <motion.p
-            className="grot-hero__sub"
-            style={reduce ? undefined : { opacity: subOpacity }}
-          >
-            Ayudamos a negocios y creadores a transformar su presencia
-            digital en una marca con identidad, estrategia y resultados.{" "}
-            <strong>Nos involucramos en tu negocio.</strong>
-          </motion.p>
         </div>
 
         {!reduce ? (

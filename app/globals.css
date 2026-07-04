@@ -231,6 +231,71 @@ body {
 [data-reveal-delay="0.5"] { transition-delay: 0.5s; }
 [data-reveal-delay="0.6"] { transition-delay: 0.6s; }
 
+/* ─── VARIANTES GROTESCAS (rama rediseño) ──────────────────────────────────
+   Cada sección tiene su propio vocabulario de entrada. Curvas con
+   overshoot (back-out) para que nada entre derecho. */
+
+/* SLAM: cae desde arriba sobredimensionado y aterriza con golpe. */
+[data-reveal="slam"] {
+  transform: translateY(-120px) scale(1.25);
+  transition-duration: 0.55s;
+  transition-timing-function: cubic-bezier(0.3, 1.45, 0.45, 1);
+}
+
+/* SKEW SLIDE: entra lateral inclinado y se endereza. */
+[data-reveal="skew-l"] {
+  transform: translateX(-110px) skewX(6deg);
+  transition-duration: 0.65s;
+  transition-timing-function: cubic-bezier(0.3, 1.3, 0.45, 1);
+}
+
+[data-reveal="skew-r"] {
+  transform: translateX(110px) skewX(-6deg);
+  transition-duration: 0.65s;
+  transition-timing-function: cubic-bezier(0.3, 1.3, 0.45, 1);
+}
+
+/* FLIP 3D: se levanta del piso rotando en X (el padre necesita
+   perspective). */
+[data-reveal="flip"] {
+  transform: rotateX(-85deg) translateY(30px);
+  transition-duration: 0.7s;
+  transition-timing-function: cubic-bezier(0.3, 1.3, 0.45, 1);
+}
+
+/* WIPE / CORTINA: reveal con clip-path, sin mover el elemento. */
+[data-reveal="wipe-l"],
+[data-reveal="wipe-r"],
+[data-reveal="curtain"] {
+  opacity: 1;
+  transform: none;
+  transition: clip-path 0.75s cubic-bezier(0.62, 0.04, 0.36, 0.97);
+}
+
+[data-reveal="wipe-l"] { clip-path: inset(0 100% 0 0); }
+[data-reveal="wipe-r"] { clip-path: inset(0 0 0 100%); }
+[data-reveal="curtain"] {
+  clip-path: inset(100% 0 0 0);
+  transition-duration: 0.85s;
+}
+
+[data-reveal="wipe-l"].in,
+[data-reveal="wipe-r"].in,
+[data-reveal="curtain"].in {
+  clip-path: inset(0 0 0 0);
+}
+
+/* MASK: sube desde su propio clip (el padre necesita overflow hidden). */
+[data-reveal="mask"] {
+  opacity: 1;
+  transform: translateY(112%);
+  transition: transform 0.8s cubic-bezier(0.3, 1.2, 0.4, 1);
+}
+
+[data-reveal="mask"].in {
+  transform: translateY(0);
+}
+
 /* ─── LAYOUT HELPERS ──────────────────────────────────────────────────────── */
 
 .section-container {

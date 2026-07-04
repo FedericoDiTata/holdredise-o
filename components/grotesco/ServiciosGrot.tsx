@@ -25,24 +25,15 @@ export function ServiciosGrot() {
           const isOpen = openIdx === i
           const nombre = grupo.titulo.replace(/^HOLD\s+/i, "")
           return (
-            <motion.div
+            <div
               key={grupo.titulo}
               className="grot-servicios__item"
               data-open={isOpen ? "true" : undefined}
               role="listitem"
-              initial={{
-                x: i % 2 === 0 ? -110 : 110,
-                skewX: i % 2 === 0 ? 6 : -6,
-                opacity: 0,
-              }}
-              whileInView={{ x: 0, skewX: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{
-                type: "spring",
-                stiffness: 130,
-                damping: 17,
-                delay: i * 0.1,
-              }}
+              data-reveal={i % 2 === 0 ? "skew-l" : "skew-r"}
+              data-reveal-delay={
+                i === 1 ? "0.1" : i === 2 ? "0.2" : undefined
+              }
             >
               <button
                 type="button"
@@ -79,7 +70,7 @@ export function ServiciosGrot() {
                   </motion.div>
                 ) : null}
               </AnimatePresence>
-            </motion.div>
+            </div>
           )
         })}
       </div>

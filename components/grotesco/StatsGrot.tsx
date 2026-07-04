@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { motion } from "framer-motion"
 import { contadoresHome } from "@/data/content"
 import "./stats-grot.css"
 
@@ -48,6 +47,8 @@ function useCountUp(target: number, durationMs = 1400) {
   return { value, ref }
 }
 
+const DELAYS = [undefined, "0.15", "0.3"] as const
+
 function StatCell({
   valor,
   suffix,
@@ -64,25 +65,12 @@ function StatCell({
   const { value, ref } = useCountUp(valor)
   return (
     <div className="grot-stats__cell">
-      {/* SLAM: el número cae desde arriba sobredimensionado y aterriza
-          con un golpe seco (spring duro), cada celda con su delay. */}
-      <motion.div
+      {/* SLAM via data-reveal: el número cae desde arriba y aterriza
+          con overshoot (curva y transición en globals.css). */}
+      <div
         className="grot-stats__cell-inner"
-        initial={{
-          y: -140,
-          opacity: 0,
-          scale: 1.3,
-          rotate: index % 2 === 0 ? -3 : 3,
-        }}
-        whileInView={{ y: 0, opacity: 1, scale: 1, rotate: 0 }}
-        viewport={{ once: true, amount: 0.4 }}
-        transition={{
-          type: "spring",
-          stiffness: 230,
-          damping: 14,
-          mass: 1.1,
-          delay: index * 0.11,
-        }}
+        data-reveal="slam"
+        data-reveal-delay={DELAYS[index]}
       >
         <span
           ref={ref}
@@ -94,28 +82,36 @@ function StatCell({
           {suffix ?? ""}
         </span>
         <span className="grot-stats__label">{label}</span>
-      </motion.div>
+      </div>
     </div>
   )
 }
 
 /**
- * Grilla de 3 stats con bordes 1px: números gigantes bold que cuentan
- * al entrar al viewport. El del medio en accent para romper el ritmo.
+ * Intro (la bajada que antes vivía en el hero, ahora centrada acá) +
+ * grilla de 3 stats con números gigantes que caen con slam.
  */
 export function StatsGrot() {
   return (
-    <section className="grot-stats" aria-label="Números de HOLD">
-      {contadoresHome.map((c, i) => (
-        <StatCell
-          key={c.label}
-          valor={c.valor}
-          suffix={c.suffix}
-          label={c.label}
-          accent={i === 1}
-          index={i}
-        />
-      ))}
+    <section className="grot-stats grot-cover" aria-label="Números de HOLD">
+      <p className="grot-stats__intro" data-reveal="blur">
+        Ayudamos a negocios y creadores a transformar su presencia digital
+        en una marca con identidad, estrategia y resultados.{" "}
+        <strong>Nos involucramos en tu negocio.</strong>
+      </p>
+
+      <div className="grot-stats__grid">
+        {contadoresHome.map((c, i) => (
+          <StatCell
+            key={c.label}
+            valor={c.valor}
+            suffix={c.suffix}
+            label={c.label}
+            accent={i === 1}
+            index={i}
+          />
+        ))}
+      </div>
     </section>
   )
 }

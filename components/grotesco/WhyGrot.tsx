@@ -1,6 +1,3 @@
-"use client"
-
-import { motion } from "framer-motion"
 import { SectionTag } from "./SectionTag"
 import "./why-grot.css"
 
@@ -25,47 +22,33 @@ const RAZONES = [
   },
 ] as const
 
+const DELAYS = [undefined, "0.15", "0.3", "0.4"] as const
+
 /**
- * Por qué elegirnos: claim grande + 4 columnas de razones. El claim
- * entra ladeado y se acomoda; las columnas suben con spring alternando
- * el sentido de la rotación.
+ * Por qué elegirnos: claim grande + 4 columnas que se levantan del
+ * piso con FLIP 3D (data-reveal="flip" + perspective en el grid).
  */
 export function WhyGrot() {
   return (
     <section className="grot-why grot-cover" aria-label="Por qué elegirnos">
       <SectionTag spot="center">Por qué elegirnos</SectionTag>
 
-      <motion.h2
-        className="grot-why__claim"
-        initial={{ y: 60, opacity: 0, rotate: -1.5 }}
-        whileInView={{ y: 0, opacity: 1, rotate: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ type: "spring", stiffness: 120, damping: 15 }}
-      >
+      <h2 className="grot-why__claim" data-reveal="up">
         No somos un proveedor más.
-      </motion.h2>
+      </h2>
 
       <div className="grot-why__grid">
         {RAZONES.map((r, i) => (
-          /* FLIP 3D: cada columna se levanta desde el piso rotando en X
-             (el grid tiene perspective en CSS). */
-          <motion.div
+          <div
             key={r.titulo}
             className="grot-why__col"
-            initial={{ rotateX: -85, opacity: 0, y: 30 }}
-            whileInView={{ rotateX: 0, opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{
-              type: "spring",
-              stiffness: 120,
-              damping: 15,
-              delay: i * 0.13,
-            }}
+            data-reveal="flip"
+            data-reveal-delay={DELAYS[i]}
           >
             <span className="grot-why__marker" aria-hidden />
             <h3 className="grot-why__titulo">{r.titulo}</h3>
             <p className="grot-why__texto">{r.texto}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>

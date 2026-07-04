@@ -1,10 +1,33 @@
-/* HOLD StatsGrot: 3 celdas con bordes, números gigantes count-up. */
+/* HOLD StatsGrot: intro centrada + 3 celdas con bordes, números
+   gigantes count-up que entran con SLAM. */
 
 .grot-stats {
+  background: var(--bg);
+  color: var(--fg);
+  border-bottom: 1px solid var(--fg);
+}
+
+/* La bajada que antes vivía en el hero: centrada, arriba de las
+   métricas. */
+.grot-stats__intro {
+  margin: 0 auto;
+  max-width: 44ch;
+  text-align: center;
+  padding: clamp(48px, 7vw, 100px) clamp(16px, 2.4vw, 28px)
+    clamp(36px, 5vw, 72px);
+  font-size: clamp(17px, 2vw, 26px);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.grot-stats__intro strong {
+  color: var(--accent);
+}
+
+.grot-stats__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: var(--bg);
-  border-bottom: 1px solid var(--fg);
+  border-top: 1px solid var(--fg);
 }
 
 .grot-stats__cell {
@@ -13,15 +36,14 @@
   overflow: hidden;
 }
 
+.grot-stats__cell:last-child {
+  border-right: none;
+}
+
 .grot-stats__cell-inner {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  will-change: transform, opacity;
-}
-
-.grot-stats__cell:last-child {
-  border-right: none;
 }
 
 .grot-stats__num {
@@ -44,7 +66,7 @@
 }
 
 @media (max-width: 720px) {
-  .grot-stats {
+  .grot-stats__grid {
     grid-template-columns: 1fr;
   }
   .grot-stats__cell {

@@ -2,11 +2,14 @@
    crecen desde abajo hasta volverse el fondo de la siguiente sección. */
 
 /* Wrapper alto: la diferencia con 100svh es el recorrido del scroll
-   durante el cual crecen las columnas. */
+   durante el cual crecen las columnas. isolation encapsula el sticky:
+   sin esto, el hero (posicionado) pintaba POR ENCIMA de las secciones
+   estáticas que vienen después. */
 .grot-hero-wrap {
   position: relative;
   height: 185svh;
   background: var(--accent);
+  isolation: isolate;
 }
 
 .grot-hero {
@@ -40,8 +43,8 @@
   display: flex;
   flex-direction: column;
   padding-top: var(--hold-header-h, 72px);
-  /* Deja aire abajo para que el sub no choque con las columnas. */
-  padding-bottom: 26svh;
+  /* Aire abajo: las columnas asoman hasta ~22svh. */
+  padding-bottom: 24svh;
 }
 
 .grot-hero__title-wrap {
@@ -95,19 +98,6 @@
   51%, 100% { opacity: 0; }
 }
 
-.grot-hero__sub {
-  margin: 0;
-  max-width: 46ch;
-  font-size: clamp(15px, 1.6vw, 21px);
-  line-height: 1.4;
-  padding-inline: clamp(16px, 2.4vw, 28px);
-  color: var(--bg);
-}
-
-.grot-hero__sub strong {
-  color: var(--fg);
-}
-
 /* Base blanca de cierre: tapa las ranuras entre columnas al final. */
 .grot-hero__base {
   position: absolute;
@@ -122,7 +112,9 @@
   position: absolute;
   inset: 0;
   display: flex;
-  gap: clamp(4px, 0.5vw, 10px);
+  /* Ranuras finas: con 4-10px las divisiones quedaban gruesas y
+     cortaban el contenido visualmente. */
+  gap: 2px;
   align-items: stretch;
   pointer-events: none;
   z-index: 1;

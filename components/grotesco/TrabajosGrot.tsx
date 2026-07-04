@@ -30,28 +30,17 @@ export function TrabajosGrot({ style }: Props) {
     >
       <SectionTag spot="right">Trabajos</SectionTag>
 
-      <MarqueeGrot text="Trabajos" durationSec={13} tilt="left" />
+      <MarqueeGrot text="Trabajos" durationSec={13} />
 
       <div className="grot-trabajos__grid">
         {items.map((t, i) => (
-          /* WIPE: cada card se revela con un barrido lateral, alternando
-             la dirección (izquierda / derecha) por columna. */
-          <motion.article
+          /* WIPE via data-reveal: cada card se revela con barrido
+             lateral, alternando la dirección por columna. */
+          <article
             key={t.cliente}
             className={`grot-trabajos__card grot-trabajos__card--${CARD_TONES[i]}`}
-            initial={{
-              clipPath:
-                i % 2 === 0
-                  ? "inset(0% 100% 0% 0%)"
-                  : "inset(0% 0% 0% 100%)",
-            }}
-            whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{
-              duration: 0.7,
-              ease: [0.62, 0.04, 0.36, 0.97],
-              delay: (i % 2) * 0.14,
-            }}
+            data-reveal={i % 2 === 0 ? "wipe-l" : "wipe-r"}
+            data-reveal-delay={i % 2 === 1 ? "0.15" : undefined}
           >
             <div className="grot-trabajos__media" aria-hidden />
             <span className="grot-trabajos__tag" aria-hidden>
@@ -61,7 +50,7 @@ export function TrabajosGrot({ style }: Props) {
               <span className="grot-trabajos__cliente">{t.cliente}</span>
               <span className="grot-trabajos__rubro">{t.rubro}</span>
             </div>
-          </motion.article>
+          </article>
         ))}
       </div>
 
