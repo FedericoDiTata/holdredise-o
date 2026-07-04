@@ -1,19 +1,20 @@
-/* HOLD SectionTag: calcomanía de sección montada sobre el borde. */
+/* HOLD SectionTag: calcomanía de sección montada sobre el borde.
+   Tres spots (left / right / center) con rotaciones propias para que
+   se sientan pegadas a mano. */
 
 .grot-tag {
   position: absolute;
   top: 0;
-  left: clamp(16px, 2.4vw, 28px);
-  transform: translateY(-50%) rotate(-2deg);
   z-index: 6;
   display: inline-block;
   background: var(--accent);
   color: #fff;
   font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 9px 16px;
+  padding: 12px 22px;
   white-space: nowrap;
   pointer-events: none;
 }
@@ -21,4 +22,19 @@
 .grot-tag--dark {
   background: var(--fg);
   color: var(--bg);
+}
+
+.grot-tag--left {
+  left: clamp(20px, 4vw, 64px);
+  transform: translateY(-50%) rotate(-3deg);
+}
+
+.grot-tag--right {
+  right: clamp(20px, 5vw, 90px);
+  transform: translateY(-50%) rotate(2.5deg);
+}
+
+.grot-tag--center {
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-1.5deg);
 }

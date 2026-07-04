@@ -28,7 +28,7 @@ export function TrabajosGrot({ style }: Props) {
       id="trabajos"
       style={style}
     >
-      <SectionTag>Trabajos</SectionTag>
+      <SectionTag spot="right">Trabajos</SectionTag>
 
       <MarqueeGrot text="Trabajos" durationSec={13} />
 

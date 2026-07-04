@@ -29,7 +29,7 @@ const RAZONES = [
 export function WhyGrot() {
   return (
     <section className="grot-why grot-cover" aria-label="Por qué elegirnos">
-      <SectionTag>Por qué elegirnos</SectionTag>
+      <SectionTag spot="center">Por qué elegirnos</SectionTag>
 
       <h2 className="grot-why__claim">No somos un proveedor más.</h2>
 

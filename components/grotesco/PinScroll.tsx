@@ -29,10 +29,14 @@ export function PinScroll() {
     offset: ["start start", "end end"],
   })
 
-  const punchScale = useTransform(scrollYProgress, [0, 0.65], [1, 0.86])
-  const punchRotate = useTransform(scrollYProgress, [0, 0.65], [0, -5])
-  const trabScale = useTransform(scrollYProgress, [0, 0.65], [0.92, 1])
-  const trabRotate = useTransform(scrollYProgress, [0, 0.65], [5, 0])
+  /* Ángulos y escalas contenidos: con rotate 5 y scale 0.92 quedaba un
+   * hueco grande a la izquierda y tardaba en acomodarse. Con 2.5 grados
+   * y settle al 40% del progreso, la sección entra apenas ladeada y se
+   * endereza enseguida. */
+  const punchScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.92])
+  const punchRotate = useTransform(scrollYProgress, [0, 0.5], [0, -3])
+  const trabScale = useTransform(scrollYProgress, [0, 0.4], [0.97, 1])
+  const trabRotate = useTransform(scrollYProgress, [0, 0.4], [2.5, 0])
 
   return (
     <div ref={container} className="grot-pin-wrap">

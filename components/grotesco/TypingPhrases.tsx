@@ -13,10 +13,10 @@ const PHRASES = [
   "contamos historias.",
 ] as const
 
-const TYPING_MS = 62
-const DELETING_MS = 30
-const PAUSE_AFTER_TYPED_MS = 1400
-const PAUSE_AFTER_DELETED_MS = 240
+const TYPING_MS = 40
+const DELETING_MS = 20
+const PAUSE_AFTER_TYPED_MS = 950
+const PAUSE_AFTER_DELETED_MS = 160
 
 type Phase = "pause" | "typing" | "deleting"
 

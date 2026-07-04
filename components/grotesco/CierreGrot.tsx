@@ -9,7 +9,9 @@ import "./cierre-grot.css"
 export function CierreGrot() {
   return (
     <section className="grot-cierre grot-cover" id="contacto">
-      <SectionTag dark>Hablemos</SectionTag>
+      <SectionTag dark spot="center">
+        Hablemos
+      </SectionTag>
 
       <h2 className="grot-cierre__claim">
         <span className="grot-cierre__row">Construyamos</span>

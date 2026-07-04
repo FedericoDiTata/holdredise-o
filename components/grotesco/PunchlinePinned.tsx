@@ -10,7 +10,7 @@ import {
 import "./punchline-pinned.css"
 
 const PHRASE = "Algún día alguien te va a querer cobrar caro por decirte"
-const TYPE_MS = 36
+const TYPE_MS = 24
 
 /* Las 3 buzzwords desparramadas: cada una con ángulo, tratamiento y
  * posición propia (los offsets viven en el CSS). */
@@ -42,7 +42,10 @@ type Props = {
 export function PunchlinePinned({ style }: Props) {
   const reduce = useReducedMotion()
   const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.35 })
+  /* amount 0.55: la secuencia arranca recién cuando más de la mitad de
+   * la sección está en pantalla. Con 0.35 disparaba mientras todavía
+   * estabas en Stats y llegabas con todo ya terminado. */
+  const inView = useInView(ref, { once: true, amount: 0.55 })
 
   const [typedCount, setTypedCount] = useState(0)
   const [done, setDone] = useState(false)
@@ -75,7 +78,12 @@ export function PunchlinePinned({ style }: Props) {
       animate={
         done && !reduce ? { backgroundColor: STROBE } : undefined
       }
-      transition={{ duration: 1, times: [0, 0.22, 0.45, 0.7, 1], ease: "linear" }}
+      transition={{
+        duration: 1.2,
+        times: [0, 0.2, 0.42, 0.68, 1],
+        ease: "linear",
+        delay: 0.1,
+      }}
     >
       <div className="grot-punch__inner">
         <h2 className="grot-punch__phrase" aria-label={PHRASE}>
@@ -100,20 +108,20 @@ export function PunchlinePinned({ style }: Props) {
               className={`grot-punch__word grot-punch__word--${w.variant}`}
               initial={
                 reduce
-                  ? { opacity: 1, scale: 1, rotate: w.rotate }
-                  : { opacity: 0, scale: 1.8, rotate: w.rotate * 4 }
+                  ? { opacity: 1, scale: 1, y: 0, rotate: w.rotate }
+                  : { opacity: 0, scale: 2.3, y: 60, rotate: w.rotate * 5 }
               }
               animate={
                 done
-                  ? { opacity: 1, scale: 1, rotate: w.rotate }
+                  ? { opacity: 1, scale: 1, y: 0, rotate: w.rotate }
                   : undefined
               }
               transition={{
                 type: "spring",
-                stiffness: 220,
+                stiffness: 190,
                 damping: 12,
-                mass: 0.9,
-                delay: 0.15 + i * 0.24,
+                mass: 1,
+                delay: 0.2 + i * 0.3,
               }}
             >
               <span
