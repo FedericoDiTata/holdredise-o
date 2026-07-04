@@ -12,15 +12,15 @@ import { TypingPhrases } from "./TypingPhrases"
 import "./hero-grot.css"
 
 /* Columnas blancas SIN gaps: skyline sólido que crece y tapa el título.
- * Terminan alrededor del 78% del progreso para dejar un tramo final de
- * blanco + frase antes de que el hero se vaya. */
+ * Terminan temprano (≤62%) para que las piezas de la frase tengan un
+ * tramo largo de entrada sobre el blanco. */
 const COLS = [
-  { peek: 0.1, start: 0.0, end: 0.62 },
-  { peek: 0.2, start: 0.05, end: 0.7 },
-  { peek: 0.07, start: 0.1, end: 0.66 },
-  { peek: 0.16, start: 0.02, end: 0.74 },
-  { peek: 0.12, start: 0.08, end: 0.68 },
-  { peek: 0.22, start: 0.04, end: 0.78 },
+  { peek: 0.1, start: 0.0, end: 0.5 },
+  { peek: 0.2, start: 0.04, end: 0.56 },
+  { peek: 0.07, start: 0.08, end: 0.52 },
+  { peek: 0.16, start: 0.02, end: 0.58 },
+  { peek: 0.12, start: 0.06, end: 0.54 },
+  { peek: 0.22, start: 0.03, end: 0.62 },
 ] as const
 
 function HeroCol({
@@ -38,35 +38,38 @@ function HeroCol({
   return <motion.div className="grot-hero__col" style={{ scaleY }} />
 }
 
-/* Piezas de la frase intro: desparramadas, cada una con su rotación y
- * entrando desde una dirección distinta (transform puro, scroll-linked). */
+/* Piezas de la frase intro: stickers gigantes desparramados, cada uno
+ * con su rotación, su dirección de entrada y su tratamiento (bloques
+ * de color con swaps secos, outline con neón, accent con neón). Las
+ * ventanas de progreso son ANCHAS para que la llegada sea progresiva,
+ * no instantánea. */
 const PIECES = [
   {
     text: "Ayudamos a negocios y creadores",
-    variant: "solid",
-    from: { x: -1300, y: 0 },
-    window: [0.5, 0.72] as [number, number],
+    variant: "block-dark",
+    from: { x: -1600, y: 0 },
+    window: [0.42, 0.7] as [number, number],
     rotate: -3,
   },
   {
     text: "a transformar su presencia digital",
     variant: "outline",
-    from: { x: 1300, y: 0 },
-    window: [0.56, 0.78] as [number, number],
+    from: { x: 1600, y: 0 },
+    window: [0.5, 0.78] as [number, number],
     rotate: 2,
   },
   {
     text: "en una marca con identidad, estrategia y resultados.",
-    variant: "solid",
-    from: { x: 0, y: 700 },
-    window: [0.62, 0.84] as [number, number],
+    variant: "block-accent",
+    from: { x: 0, y: 900 },
+    window: [0.58, 0.86] as [number, number],
     rotate: -1.5,
   },
   {
     text: "Nos involucramos en tu negocio.",
-    variant: "accent",
-    from: { x: 0, y: 900 },
-    window: [0.68, 0.9] as [number, number],
+    variant: "neon",
+    from: { x: 0, y: 1100 },
+    window: [0.66, 0.95] as [number, number],
     rotate: 2.5,
   },
 ] as const
@@ -84,10 +87,15 @@ function IntroPiece({
   const y = useTransform(progress, piece.window, [piece.from.y, 0])
   return (
     <motion.span
-      className={`grot-hero__piece grot-hero__piece--${piece.variant} grot-hero__piece--${index}`}
+      className={`grot-hero__piece grot-hero__piece--${index}`}
       style={{ x, y, rotate: piece.rotate }}
     >
-      {piece.text}
+      <span
+        className={`grot-hero__piece-in grot-hero__piece-in--${piece.variant}`}
+        data-text={piece.text}
+      >
+        {piece.text}
+      </span>
     </motion.span>
   )
 }
@@ -111,8 +119,8 @@ export function HeroGrot() {
   })
 
   /* El título sube y las columnas lo tapan físicamente (z-order). */
-  const titleY = useTransform(scrollYProgress, [0, 0.5], [0, -260])
-  const titleRotate = useTransform(scrollYProgress, [0, 0.5], [0, -2.5])
+  const titleY = useTransform(scrollYProgress, [0, 0.4], [0, -260])
+  const titleRotate = useTransform(scrollYProgress, [0, 0.4], [0, -2.5])
 
   return (
     <div className="grot-hero-wrap" id="inicio" ref={wrapRef}>
