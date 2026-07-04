@@ -88,18 +88,12 @@ function StatCell({
 }
 
 /**
- * Intro (la bajada que antes vivía en el hero, ahora centrada acá) +
- * grilla de 3 stats con números gigantes que caen con slam.
+ * Grilla de 3 stats con números gigantes que caen con SLAM. La intro
+ * de la agencia vive ahora dentro de la transición del hero.
  */
 export function StatsGrot() {
   return (
     <section className="grot-stats grot-cover" aria-label="Números de HOLD">
-      <p className="grot-stats__intro" data-reveal="blur">
-        Ayudamos a negocios y creadores a transformar su presencia digital
-        en una marca con identidad, estrategia y resultados.{" "}
-        <strong>Nos involucramos en tu negocio.</strong>
-      </p>
-
       <div className="grot-stats__grid">
         {contadoresHome.map((c, i) => (
           <StatCell

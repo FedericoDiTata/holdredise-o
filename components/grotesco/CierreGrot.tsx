@@ -13,16 +13,12 @@ export function CierreGrot() {
         Hablemos
       </SectionTag>
 
-      <h2 className="grot-cierre__claim">
-        {["Construyamos", "tu marca."].map((line, i) => (
+      {/* Host: el observer mira el h2 (visible) y el CSS sube cada
+          renglón desde su clip cuando llega el .in. */}
+      <h2 className="grot-cierre__claim" data-reveal="host">
+        {["Construyamos", "tu marca."].map((line) => (
           <span key={line} className="grot-cierre__row-clip">
-            <span
-              className="grot-cierre__row"
-              data-reveal="mask"
-              data-reveal-delay={i === 1 ? "0.15" : undefined}
-            >
-              {line}
-            </span>
+            <span className="grot-cierre__row">{line}</span>
           </span>
         ))}
       </h2>

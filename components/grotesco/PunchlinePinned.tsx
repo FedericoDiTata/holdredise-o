@@ -9,7 +9,7 @@ import {
 import "./punchline-pinned.css"
 
 const PHRASE = "Algún día alguien te va a querer cobrar caro por decirte"
-const TYPE_MS = 15
+const TYPE_MS = 20
 
 /* Las 3 buzzwords desparramadas: cada una con ángulo, tratamiento y
  * posición propia (los offsets viven en el CSS). */
@@ -75,10 +75,10 @@ export function PunchlinePinned({ active, style }: Props) {
           : { backgroundColor: "#1D1D1B" }
       }
       transition={{
-        duration: 0.95,
+        duration: 1.15,
         times: [0, 0.2, 0.42, 0.68, 1],
         ease: "linear",
-        delay: 0.05,
+        delay: 0.08,
       }}
     >
       <div className="grot-punch__inner">
@@ -120,7 +120,7 @@ export function PunchlinePinned({ active, style }: Props) {
                       stiffness: 190,
                       damping: 12,
                       mass: 1,
-                      delay: 0.1 + i * 0.22,
+                      delay: 0.18 + i * 0.28,
                     }
                   : { duration: 0 }
               }
@@ -139,7 +139,7 @@ export function PunchlinePinned({ active, style }: Props) {
           className="grot-punch__closer"
           initial={false}
           animate={done || reduce ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, delay: done ? 0.85 : 0 }}
+          transition={{ duration: 0.5, delay: done ? 1.05 : 0 }}
         >
           Nosotras preferimos <em>no venderte humo</em>.
         </motion.p>

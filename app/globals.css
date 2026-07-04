@@ -263,37 +263,15 @@ body {
   transition-timing-function: cubic-bezier(0.3, 1.3, 0.45, 1);
 }
 
-/* WIPE / CORTINA: reveal con clip-path, sin mover el elemento. */
-[data-reveal="wipe-l"],
-[data-reveal="wipe-r"],
-[data-reveal="curtain"] {
+/* HOST: el observer mira este elemento (sin clips ni transforms — si
+   el elemento observado arranca clipeado o fuera de su clip padre, la
+   intersección da cero y el .in nunca llega). El CSS del componente
+   anima a los HIJOS cuando el host recibe .in. */
+[data-reveal="host"] {
   opacity: 1;
   transform: none;
-  transition: clip-path 0.75s cubic-bezier(0.62, 0.04, 0.36, 0.97);
-}
-
-[data-reveal="wipe-l"] { clip-path: inset(0 100% 0 0); }
-[data-reveal="wipe-r"] { clip-path: inset(0 0 0 100%); }
-[data-reveal="curtain"] {
-  clip-path: inset(100% 0 0 0);
-  transition-duration: 0.85s;
-}
-
-[data-reveal="wipe-l"].in,
-[data-reveal="wipe-r"].in,
-[data-reveal="curtain"].in {
-  clip-path: inset(0 0 0 0);
-}
-
-/* MASK: sube desde su propio clip (el padre necesita overflow hidden). */
-[data-reveal="mask"] {
-  opacity: 1;
-  transform: translateY(112%);
-  transition: transform 0.8s cubic-bezier(0.3, 1.2, 0.4, 1);
-}
-
-[data-reveal="mask"].in {
-  transform: translateY(0);
+  filter: none;
+  transition: none;
 }
 
 /* ─── LAYOUT HELPERS ──────────────────────────────────────────────────────── */

@@ -32,15 +32,13 @@ export function TrabajosGrot({ style }: Props) {
 
       <MarqueeGrot text="Trabajos" durationSec={13} />
 
-      <div className="grot-trabajos__grid">
+      {/* Host: el observer mira el grid (sin clip) y el CSS revela las
+          cards con wipe alternado cuando llega el .in. */}
+      <div className="grot-trabajos__grid" data-reveal="host">
         {items.map((t, i) => (
-          /* WIPE via data-reveal: cada card se revela con barrido
-             lateral, alternando la dirección por columna. */
           <article
             key={t.cliente}
             className={`grot-trabajos__card grot-trabajos__card--${CARD_TONES[i]}`}
-            data-reveal={i % 2 === 0 ? "wipe-l" : "wipe-r"}
-            data-reveal-delay={i % 2 === 1 ? "0.15" : undefined}
           >
             <div className="grot-trabajos__media" aria-hidden />
             <span className="grot-trabajos__tag" aria-hidden>

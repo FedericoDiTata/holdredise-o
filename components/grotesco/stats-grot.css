@@ -7,27 +7,9 @@
   border-bottom: 1px solid var(--fg);
 }
 
-/* La bajada que antes vivía en el hero: centrada, arriba de las
-   métricas. */
-.grot-stats__intro {
-  margin: 0 auto;
-  max-width: 44ch;
-  text-align: center;
-  padding: clamp(48px, 7vw, 100px) clamp(16px, 2.4vw, 28px)
-    clamp(36px, 5vw, 72px);
-  font-size: clamp(17px, 2vw, 26px);
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-}
-
-.grot-stats__intro strong {
-  color: var(--accent);
-}
-
 .grot-stats__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--fg);
 }
 
 .grot-stats__cell {

@@ -20,6 +20,25 @@
   grid-template-columns: 1fr 1fr;
 }
 
+/* WIPE de entrada (patrón host: el grid recibe .in y los hijos se
+   revelan con clip alternando dirección). */
+.grot-trabajos__grid[data-reveal="host"] .grot-trabajos__card {
+  transition: clip-path 0.75s cubic-bezier(0.62, 0.04, 0.36, 0.97);
+}
+
+.grot-trabajos__grid[data-reveal="host"] .grot-trabajos__card:nth-child(odd) {
+  clip-path: inset(0 100% 0 0);
+}
+
+.grot-trabajos__grid[data-reveal="host"] .grot-trabajos__card:nth-child(even) {
+  clip-path: inset(0 0 0 100%);
+  transition-delay: 0.15s;
+}
+
+.grot-trabajos__grid[data-reveal="host"].in .grot-trabajos__card {
+  clip-path: inset(0 0 0 0);
+}
+
 .grot-trabajos__card {
   position: relative;
   aspect-ratio: 3 / 2;

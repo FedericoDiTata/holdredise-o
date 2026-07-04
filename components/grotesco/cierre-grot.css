@@ -28,6 +28,22 @@
   will-change: transform;
 }
 
+/* MASK reveal por renglón (patrón host: el h2 recibe .in). */
+.grot-cierre__claim[data-reveal="host"] .grot-cierre__row {
+  transform: translateY(112%);
+  transition: transform 0.8s cubic-bezier(0.3, 1.2, 0.4, 1);
+}
+
+.grot-cierre__claim[data-reveal="host"]
+  .grot-cierre__row-clip:nth-child(2)
+  .grot-cierre__row {
+  transition-delay: 0.15s;
+}
+
+.grot-cierre__claim[data-reveal="host"].in .grot-cierre__row {
+  transform: translateY(0);
+}
+
 .grot-cierre__actions {
   display: flex;
   flex-wrap: wrap;

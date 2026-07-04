@@ -16,14 +16,11 @@ export function FoundersGrot() {
         <span className="grot-founders__claim-accent">encontrábamos.</span>
       </h2>
 
-      <div className="grot-founders__grid">
+      {/* Host: el observer mira el grid y el CSS revela las cards con
+          cortina (clip subiendo) cuando llega el .in. */}
+      <div className="grot-founders__grid" data-reveal="host">
         {founders.map((f, i) => (
-          <article
-            key={f.nombre}
-            className="grot-founders__card"
-            data-reveal="curtain"
-            data-reveal-delay={i === 1 ? "0.2" : undefined}
-          >
+          <article key={f.nombre} className="grot-founders__card">
             <div
               className={
                 "grot-founders__photo " +
