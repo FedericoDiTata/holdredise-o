@@ -30,14 +30,18 @@ export function ServiciosGrot() {
               className="grot-servicios__item"
               data-open={isOpen ? "true" : undefined}
               role="listitem"
-              initial={{ x: -80, opacity: 0, rotate: -0.8 }}
-              whileInView={{ x: 0, opacity: 1, rotate: 0 }}
+              initial={{
+                x: i % 2 === 0 ? -110 : 110,
+                skewX: i % 2 === 0 ? 6 : -6,
+                opacity: 0,
+              }}
+              whileInView={{ x: 0, skewX: 0, opacity: 1 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{
                 type: "spring",
                 stiffness: 130,
-                damping: 16,
-                delay: i * 0.12,
+                damping: 17,
+                delay: i * 0.1,
               }}
             >
               <button

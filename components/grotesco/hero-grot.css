@@ -1,12 +1,23 @@
-/* HOLD HeroGrot: tipografía gigante + typewriter azul. Sin ornamentos. */
+/* HOLD HeroGrot v2: bloque accent pineado con columnas blancas que
+   crecen desde abajo hasta volverse el fondo de la siguiente sección. */
+
+/* Wrapper alto: la diferencia con 100svh es el recorrido del scroll
+   durante el cual crecen las columnas. */
+.grot-hero-wrap {
+  position: relative;
+  height: 185svh;
+  background: var(--accent);
+}
 
 .grot-hero {
-  background: var(--bg);
-  color: var(--fg);
-  border-bottom: 1px solid var(--fg);
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--accent);
+  color: var(--bg);
   display: flex;
   flex-direction: column;
-  min-height: calc(100svh - var(--hold-header-h, 72px));
 }
 
 .grot-hero__sr {
@@ -21,12 +32,23 @@
   border: 0;
 }
 
-/* Título gigante. */
+/* Contenido sobre las columnas. */
+.grot-hero__content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--hold-header-h, 72px);
+  /* Deja aire abajo para que el sub no choque con las columnas. */
+  padding-bottom: 26svh;
+}
+
 .grot-hero__title-wrap {
   flex: 1;
   display: flex;
   align-items: center;
-  padding: clamp(28px, 4vw, 64px) clamp(16px, 2.4vw, 28px);
+  padding: clamp(20px, 3vw, 48px) clamp(16px, 2.4vw, 28px);
 }
 
 .grot-hero__title {
@@ -35,19 +57,21 @@
   font-size: clamp(40px, 8vw, 140px);
   line-height: 0.95;
   letter-spacing: -0.045em;
+  will-change: transform, opacity;
 }
 
 .grot-hero__line {
   display: block;
+  color: var(--bg);
 }
 
 .grot-hero__line--typed {
-  color: var(--accent);
+  color: var(--fg);
   /* Reserva una línea de alto para que el borrado no colapse el layout. */
   min-height: 1em;
 }
 
-/* Typewriter: cursor bloque grotesco. */
+/* Typewriter: cursor bloque grotesco (blanco sobre el accent). */
 .grot-typing {
   display: inline;
 }
@@ -56,7 +80,7 @@
   display: inline-block;
   width: 0.45ch;
   height: 0.78em;
-  background: var(--fg);
+  background: var(--bg);
   vertical-align: baseline;
   transform: translateY(0.06em);
   margin-left: 0.06ch;
@@ -71,30 +95,64 @@
   51%, 100% { opacity: 0; }
 }
 
-/* Fila inferior: bajada. */
-.grot-hero__bottom {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 0 clamp(16px, 2.4vw, 28px) clamp(24px, 3.4vw, 48px);
-  flex-wrap: wrap;
-}
-
 .grot-hero__sub {
   margin: 0;
   max-width: 46ch;
   font-size: clamp(15px, 1.6vw, 21px);
   line-height: 1.4;
+  padding-inline: clamp(16px, 2.4vw, 28px);
+  color: var(--bg);
+}
+
+.grot-hero__sub strong {
+  color: var(--fg);
+}
+
+/* Base blanca de cierre: tapa las ranuras entre columnas al final. */
+.grot-hero__base {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Columnas skyline ─────────────────────────────────────────────── */
+.grot-hero__cols {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: clamp(4px, 0.5vw, 10px);
+  align-items: stretch;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grot-hero__col {
+  flex: 1;
+  height: 100%;
+  background: var(--bg);
+  transform-origin: bottom center;
+  will-change: transform;
 }
 
 @media (max-width: 820px) {
   .grot-hero__title {
     font-size: clamp(36px, 10.5vw, 80px);
   }
+  .grot-hero__content {
+    padding-bottom: 30svh;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .grot-hero-wrap {
+    height: auto;
+  }
+  .grot-hero {
+    position: relative;
+    height: calc(100svh - var(--hold-header-h, 72px));
+  }
   .grot-typing__cursor {
     display: none;
   }

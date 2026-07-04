@@ -64,18 +64,24 @@ function StatCell({
   const { value, ref } = useCountUp(valor)
   return (
     <div className="grot-stats__cell">
-      {/* El contenido entra con spring + rotación que se acomoda,
-          alternando el sentido por celda. */}
+      {/* SLAM: el número cae desde arriba sobredimensionado y aterriza
+          con un golpe seco (spring duro), cada celda con su delay. */}
       <motion.div
         className="grot-stats__cell-inner"
-        initial={{ y: 70, opacity: 0, rotate: index % 2 === 0 ? -2.5 : 2.5 }}
-        whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+        initial={{
+          y: -140,
+          opacity: 0,
+          scale: 1.3,
+          rotate: index % 2 === 0 ? -3 : 3,
+        }}
+        whileInView={{ y: 0, opacity: 1, scale: 1, rotate: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{
           type: "spring",
-          stiffness: 140,
-          damping: 15,
-          delay: index * 0.12,
+          stiffness: 230,
+          damping: 14,
+          mass: 1.1,
+          delay: index * 0.11,
         }}
       >
         <span

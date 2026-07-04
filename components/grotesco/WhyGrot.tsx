@@ -47,21 +47,19 @@ export function WhyGrot() {
 
       <div className="grot-why__grid">
         {RAZONES.map((r, i) => (
+          /* FLIP 3D: cada columna se levanta desde el piso rotando en X
+             (el grid tiene perspective en CSS). */
           <motion.div
             key={r.titulo}
             className="grot-why__col"
-            initial={{
-              y: 60,
-              opacity: 0,
-              rotate: i % 2 === 0 ? -2 : 2,
-            }}
-            whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+            initial={{ rotateX: -85, opacity: 0, y: 30 }}
+            whileInView={{ rotateX: 0, opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{
               type: "spring",
-              stiffness: 140,
+              stiffness: 120,
               damping: 15,
-              delay: i * 0.1,
+              delay: i * 0.13,
             }}
           >
             <span className="grot-why__marker" aria-hidden />

@@ -31,11 +31,12 @@ export function PinScroll() {
     offset: ["start start", "end end"],
   })
 
-  /* Progreso de ENTRADA: 0 cuando el top del wrapper toca el borde
-   * inferior del viewport, 1 cuando llega al 25% superior. */
+  /* Progreso de ENTRADA: dispara cuando el top del wrapper llega a la
+   * mitad del viewport (la sección ya se ve bien, sin esperar a que
+   * termine de pinnearse). */
   const { scrollYProgress: enterProgress } = useScroll({
     target: container,
-    offset: ["start 0.9", "start 0.25"],
+    offset: ["start 0.95", "start 0.55"],
   })
 
   useMotionValueEvent(enterProgress, "change", (v) => {

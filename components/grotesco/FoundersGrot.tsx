@@ -27,21 +27,18 @@ export function FoundersGrot() {
 
       <div className="grot-founders__grid">
         {founders.map((f, i) => (
+          /* CORTINA: el retrato se revela con un clip que sube desde
+             abajo, cada card con su tiempo. */
           <motion.article
             key={f.nombre}
             className="grot-founders__card"
-            initial={{
-              y: 90,
-              opacity: 0,
-              rotate: i === 0 ? -2.5 : 2.5,
-            }}
-            whileInView={{ y: 0, opacity: 1, rotate: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
+            whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
+            viewport={{ once: true, amount: 0.25 }}
             transition={{
-              type: "spring",
-              stiffness: 110,
-              damping: 15,
-              delay: i * 0.15,
+              duration: 0.85,
+              ease: [0.62, 0.04, 0.36, 0.97],
+              delay: i * 0.18,
             }}
           >
             <div

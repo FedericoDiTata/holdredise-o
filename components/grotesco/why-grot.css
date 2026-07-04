@@ -24,11 +24,15 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   padding-inline: clamp(16px, 2.4vw, 28px);
+  /* Para el flip 3D de las columnas al entrar. */
+  perspective: 900px;
 }
 
 .grot-why__col {
   padding-right: 24px;
   border-right: 1px solid rgba(29, 29, 27, 0.35);
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
 }
 
 .grot-why__col + .grot-why__col {

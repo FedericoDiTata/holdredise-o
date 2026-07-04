@@ -34,21 +34,23 @@ export function TrabajosGrot({ style }: Props) {
 
       <div className="grot-trabajos__grid">
         {items.map((t, i) => (
+          /* WIPE: cada card se revela con un barrido lateral, alternando
+             la dirección (izquierda / derecha) por columna. */
           <motion.article
             key={t.cliente}
             className={`grot-trabajos__card grot-trabajos__card--${CARD_TONES[i]}`}
             initial={{
-              y: 80,
-              opacity: 0,
-              rotate: i % 2 === 0 ? -2 : 2,
+              clipPath:
+                i % 2 === 0
+                  ? "inset(0% 100% 0% 0%)"
+                  : "inset(0% 0% 0% 100%)",
             }}
-            whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+            whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{
-              type: "spring",
-              stiffness: 120,
-              damping: 15,
-              delay: (i % 2) * 0.12,
+              duration: 0.7,
+              ease: [0.62, 0.04, 0.36, 0.97],
+              delay: (i % 2) * 0.14,
             }}
           >
             <div className="grot-trabajos__media" aria-hidden />
