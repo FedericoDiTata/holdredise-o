@@ -4,12 +4,23 @@
   background: var(--bg);
   color: var(--fg);
   border-bottom: 1px solid var(--fg);
+  /* Clipea el contenido rotado del tilt para no generar scroll
+     horizontal mientras se endereza. */
+  overflow: hidden;
 }
 
 /* .grot-cover: tapa la sección pineada anterior. */
 .grot-cover {
   position: relative;
   z-index: 2;
+}
+
+/* Wrapper interno que entra en diagonal y se endereza (scroll-linked
+   desde TrabajosGrot.tsx). transform-origin arriba-centro para que la
+   rotación se sienta como una hoja que cae sobre la sección negra. */
+.grot-trabajos__tilt {
+  transform-origin: 50% 0%;
+  will-change: transform;
 }
 
 .grot-trabajos__head {
@@ -27,7 +38,6 @@
 .grot-trabajos__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-top: 1px solid var(--fg);
 }
 
 .grot-trabajos__card {

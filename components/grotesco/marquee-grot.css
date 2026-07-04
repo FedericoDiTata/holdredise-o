@@ -1,0 +1,78 @@
+/* HOLD MarqueeGrot: banda de texto gigante en loop infinito rápido.
+   Alterna copias sólidas y outline. Nunca deja banda vacía: el track
+   son 2 mitades idénticas animadas a -50%. */
+
+.grot-marquee {
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  border-top: 1px solid var(--fg);
+  border-bottom: 1px solid var(--fg);
+}
+
+.grot-marquee--dark {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: rgba(250, 255, 250, 0.25);
+}
+
+.grot-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: grot-marquee-loop var(--grot-mq-dur, 14s) linear infinite;
+  will-change: transform;
+}
+
+.grot-marquee__half {
+  display: flex;
+  align-items: baseline;
+  flex-shrink: 0;
+}
+
+.grot-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(18px, 2vw, 36px);
+  margin-right: clamp(18px, 2vw, 36px);
+  font-weight: 700;
+  font-size: clamp(44px, 8.5vw, 150px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding-block: clamp(8px, 1vw, 18px);
+}
+
+.grot-marquee__item--outline {
+  color: transparent;
+  -webkit-text-stroke: 2px currentColor;
+  /* currentColor no aplica con color transparent: definimos el stroke
+     explícito por tono. */
+}
+
+.grot-marquee .grot-marquee__item--outline {
+  -webkit-text-stroke: 2px var(--fg);
+}
+
+.grot-marquee--dark .grot-marquee__item--outline {
+  -webkit-text-stroke: 2px var(--bg);
+}
+
+.grot-marquee__sep {
+  display: inline-block;
+  width: clamp(10px, 1.2vw, 20px);
+  height: clamp(10px, 1.2vw, 20px);
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+@keyframes grot-marquee-loop {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grot-marquee__track {
+    animation: none;
+  }
+}

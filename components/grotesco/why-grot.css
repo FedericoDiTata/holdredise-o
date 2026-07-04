@@ -1,8 +1,10 @@
-/* HOLD WhyGrot: bloque accent con claim + 4 columnas de razones. */
+/* HOLD WhyGrot: bloque CLARO con claim + 4 columnas de razones.
+   Va en blanco para cortar contra la tabla negra de servicios (que al
+   expandirse pinta accent) y que la división de secciones se lea. */
 
 .grot-why {
-  background: var(--accent);
-  color: #fff;
+  background: var(--bg);
+  color: var(--fg);
   border-bottom: 1px solid var(--fg);
   padding-bottom: clamp(50px, 7vw, 100px);
 }
@@ -12,7 +14,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 14px clamp(16px, 2.4vw, 28px);
-  border-bottom: 1px solid rgba(250, 255, 250, 0.4);
+  border-bottom: 1px solid var(--fg);
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   letter-spacing: 0.14em;
@@ -38,7 +40,7 @@
 
 .grot-why__col {
   padding-right: 24px;
-  border-right: 1px solid rgba(250, 255, 250, 0.4);
+  border-right: 1px solid rgba(29, 29, 27, 0.35);
 }
 
 .grot-why__col + .grot-why__col {
@@ -54,7 +56,7 @@
   display: block;
   width: 10px;
   height: 10px;
-  background: var(--fg);
+  background: var(--accent);
   margin-bottom: 18px;
 }
 
@@ -70,7 +72,7 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.5;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 @media (max-width: 900px) {

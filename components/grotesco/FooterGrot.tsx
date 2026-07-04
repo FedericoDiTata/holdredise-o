@@ -1,4 +1,4 @@
-import { MarqueeBand } from "@/components/effects/MarqueeBand"
+import { MarqueeGrot } from "./MarqueeGrot"
 import {
   EMAIL,
   INSTAGRAM_HANDLE,
@@ -17,10 +17,11 @@ export function FooterGrot() {
 
   return (
     <footer className="grot-footer grot-cover">
-      <MarqueeBand
-        items={["Sostener y contener"]}
-        invert
-        durationSec={26}
+      <MarqueeGrot
+        text="Sostener y contener"
+        dark
+        durationSec={18}
+        repeats={5}
       />
 
       <div className="grot-footer__grid">
