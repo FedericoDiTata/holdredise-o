@@ -1,0 +1,52 @@
+/* HOLD StatsGrot: 3 celdas con bordes, números gigantes count-up. */
+
+.grot-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--bg);
+  border-bottom: 1px solid var(--fg);
+}
+
+.grot-stats__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(28px, 4vw, 56px) clamp(16px, 2.4vw, 28px);
+  border-right: 1px solid var(--fg);
+}
+
+.grot-stats__cell:last-child {
+  border-right: none;
+}
+
+.grot-stats__num {
+  font-weight: 700;
+  font-size: clamp(52px, 8.5vw, 140px);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.grot-stats__num--accent {
+  color: var(--accent);
+}
+
+.grot-stats__label {
+  font-size: 14px;
+  line-height: 1.4;
+  opacity: 0.7;
+  max-width: 26ch;
+}
+
+@media (max-width: 720px) {
+  .grot-stats {
+    grid-template-columns: 1fr;
+  }
+  .grot-stats__cell {
+    border-right: none;
+    border-bottom: 1px solid var(--fg);
+  }
+  .grot-stats__cell:last-child {
+    border-bottom: none;
+  }
+}

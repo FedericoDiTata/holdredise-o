@@ -1,0 +1,86 @@
+/* HOLD CierreGrot: bloque accent de cierre con claim gigante. */
+
+.grot-cierre {
+  background: var(--accent);
+  color: var(--fg);
+  padding: clamp(60px, 9vw, 150px) clamp(16px, 2.4vw, 28px);
+  border-bottom: 1px solid var(--fg);
+}
+
+.grot-cierre__kicker {
+  margin: 0 0 clamp(28px, 4vw, 48px);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.grot-cierre__claim {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(48px, 11vw, 200px);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+}
+
+.grot-cierre__row {
+  display: block;
+}
+
+.grot-cierre__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(20px, 3vw, 40px);
+  margin-top: clamp(40px, 6vw, 80px);
+}
+
+.grot-cierre__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--fg);
+  color: var(--bg);
+  padding: 18px 30px;
+  font-weight: 700;
+  font-size: clamp(15px, 1.6vw, 20px);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-hold),
+    color var(--dur-fast) var(--ease-hold),
+    transform var(--dur-fast) var(--ease-hold);
+}
+
+.grot-cierre__cta:hover {
+  background: var(--bg);
+  color: var(--fg);
+  transform: translateY(-2px);
+}
+
+.grot-cierre__mail {
+  font-weight: 700;
+  font-size: clamp(18px, 2.6vw, 40px);
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 2px solid var(--fg);
+  transition: color var(--dur-fast) var(--ease-hold),
+    border-color var(--dur-fast) var(--ease-hold);
+}
+
+.grot-cierre__mail:hover {
+  color: var(--bg);
+  border-color: var(--bg);
+}
+
+.grot-cierre__foot {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(40px, 6vw, 70px);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

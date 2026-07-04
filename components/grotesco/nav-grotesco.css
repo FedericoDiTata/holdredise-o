@@ -1,0 +1,236 @@
+/* HOLD NavGrotesco: barra fija mínima + menú fullscreen accent con
+   links gigantes a la derecha y ghost outline a la izquierda. */
+
+.grot-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  height: var(--hold-header-h, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: clamp(16px, 2.4vw, 28px);
+  background: var(--fg);
+  color: var(--bg);
+  border-bottom: 1px solid var(--bg);
+}
+
+.grot-nav__logo {
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  color: var(--bg);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.grot-nav__logo span {
+  color: var(--accent);
+}
+
+.grot-nav__burger {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 1px solid var(--bg);
+  padding: 9px 16px;
+  color: var(--bg);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-hold),
+    border-color var(--dur-fast) var(--ease-hold);
+}
+
+.grot-nav__burger:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.grot-nav__burger-lines {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 22px;
+}
+
+.grot-nav__burger-lines span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  transition: transform var(--dur-fast) var(--ease-hold);
+}
+
+.grot-nav__burger:hover .grot-nav__burger-lines span:nth-child(1) {
+  transform: translateX(3px);
+}
+.grot-nav__burger:hover .grot-nav__burger-lines span:nth-child(2) {
+  transform: translateX(-3px);
+}
+
+/* ── Menú fullscreen ─────────────────────────────────────────────── */
+
+.grot-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: var(--accent);
+  color: var(--fg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.grot-menu__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px clamp(16px, 2.4vw, 28px);
+  border-bottom: 1px solid var(--fg);
+  flex-shrink: 0;
+}
+
+.grot-menu__logo {
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.grot-menu__logo span {
+  color: var(--bg);
+}
+
+.grot-menu__close {
+  background: var(--fg);
+  border: 1px solid var(--fg);
+  padding: 9px 16px;
+  color: var(--bg);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease-hold);
+}
+
+.grot-menu__close:hover {
+  opacity: 0.75;
+}
+
+/* Ghost gigante outline a la izquierda, detrás de los links. */
+.grot-menu__ghost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding-left: clamp(16px, 4vw, 60px);
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.grot-menu__ghost-word {
+  font-weight: 700;
+  font-size: clamp(80px, 16vw, 260px);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(29, 29, 27, 0.35);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.grot-menu__links {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding-inline: clamp(16px, 2.4vw, 28px);
+  gap: clamp(0px, 0.6vw, 8px);
+  min-height: 0;
+}
+
+/* Cada fila clipea el mask-reveal del link (y: 110% inicial). */
+.grot-menu__row {
+  display: block;
+  overflow: hidden;
+  line-height: 0.98;
+}
+
+.grot-menu__link {
+  display: inline-block;
+  font-weight: 700;
+  font-size: clamp(44px, 9.5vw, 130px);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-hold);
+}
+
+/* Hover: el link pasa a outline (grotesco puro). */
+.grot-menu__link:hover {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--fg);
+}
+
+.grot-menu__footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 20px clamp(16px, 2.4vw, 28px);
+  border-top: 1px solid var(--fg);
+  flex-shrink: 0;
+}
+
+.grot-menu__mail {
+  font-weight: 700;
+  font-size: clamp(16px, 2.4vw, 32px);
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.grot-menu__mail:hover {
+  color: var(--bg);
+}
+
+.grot-menu__social {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.grot-menu__social:hover {
+  color: var(--bg);
+}
+
+@media (max-width: 720px) {
+  .grot-menu__ghost {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grot-menu__link:hover {
+    color: var(--bg);
+    -webkit-text-stroke: 0;
+  }
+}

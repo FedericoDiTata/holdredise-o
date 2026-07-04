@@ -1,0 +1,167 @@
+/* HOLD TrabajosGrot: grilla 2x2 de cards halftone con bordes 1px. */
+
+.grot-trabajos {
+  background: var(--bg);
+  color: var(--fg);
+  border-bottom: 1px solid var(--fg);
+}
+
+/* .grot-cover: tapa la sección pineada anterior. */
+.grot-cover {
+  position: relative;
+  z-index: 2;
+}
+
+.grot-trabajos__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px clamp(16px, 2.4vw, 28px);
+  border-bottom: 1px solid var(--fg);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.grot-trabajos__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--fg);
+}
+
+.grot-trabajos__card {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  cursor: pointer;
+  border-right: 1px solid var(--fg);
+  border-bottom: 1px solid var(--fg);
+  isolation: isolate;
+}
+
+.grot-trabajos__card:nth-child(2n) {
+  border-right: none;
+}
+
+.grot-trabajos__card:nth-last-child(-n + 2) {
+  border-bottom: none;
+}
+
+/* Media: fondo halftone que escala en hover. */
+.grot-trabajos__media {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.grot-trabajos__card:hover .grot-trabajos__media {
+  transform: scale(1.06);
+}
+
+.grot-trabajos__card--accent .grot-trabajos__media {
+  background: var(--accent);
+  background-image: radial-gradient(
+    rgba(0, 0, 0, 0.22) 1.6px,
+    transparent 1.8px
+  );
+  background-size: 11px 11px;
+}
+
+.grot-trabajos__card--dark .grot-trabajos__media {
+  background: var(--fg);
+  background-image: radial-gradient(
+    rgba(250, 255, 250, 0.16) 1.6px,
+    transparent 1.8px
+  );
+  background-size: 11px 11px;
+}
+
+/* Tag placeholder centrado (se va cuando lleguen las fotos reales). */
+.grot-trabajos__tag {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(250, 255, 250, 0.85);
+  border: 1px dashed rgba(250, 255, 250, 0.55);
+  padding: 8px 14px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grot-trabajos__meta {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #fff;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grot-trabajos__cliente {
+  font-weight: 700;
+  font-size: clamp(18px, 2.2vw, 30px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.grot-trabajos__rubro {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.grot-trabajos__more {
+  display: flex;
+  justify-content: center;
+  padding: clamp(22px, 3vw, 38px);
+  border-top: 1px solid var(--fg);
+}
+
+.grot-trabajos__more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 4px;
+  transition: color var(--dur-fast) var(--ease-hold),
+    border-color var(--dur-fast) var(--ease-hold);
+}
+
+.grot-trabajos__more-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .grot-trabajos__grid {
+    grid-template-columns: 1fr;
+  }
+  .grot-trabajos__card {
+    border-right: none;
+    aspect-ratio: 4 / 3;
+  }
+  .grot-trabajos__card:nth-last-child(-n + 2) {
+    border-bottom: 1px solid var(--fg);
+  }
+  .grot-trabajos__card:last-child {
+    border-bottom: none;
+  }
+}

@@ -1,66 +1,38 @@
-import { HeroShader } from "@/components/sections/HeroShader"
-import { BloqueCita } from "@/components/sections/BloqueCita"
-import { ContadoresAnimados } from "@/components/sections/ContadoresAnimados"
-import { TrabajosSection } from "@/components/sections/TrabajosSection"
-import { ServiciosAccordion } from "@/components/sections/ServiciosAccordion"
-import { ServiciosGrupos } from "@/components/sections/ServiciosGrupos"
-import { FoundersHome } from "@/components/sections/FoundersHome"
-import { HistoriaBirra } from "@/components/sections/HistoriaBirra"
-import { CTABand } from "@/components/sections/CTABand"
-import { MarqueeBand } from "@/components/effects/MarqueeBand"
-import {
-  CONTADORES_INTRO,
-  MARQUEE_LO_QUE_HACEMOS,
-  MARQUEE_QUIENES_SOMOS,
-  contadoresHome,
-  serviciosHome,
-} from "@/data/content"
+import { CierreGrot } from "@/components/grotesco/CierreGrot"
+import { FoundersGrot } from "@/components/grotesco/FoundersGrot"
+import { HeroGrot } from "@/components/grotesco/HeroGrot"
+import { IntroLoader } from "@/components/grotesco/IntroLoader"
+import { PunchlinePinned } from "@/components/grotesco/PunchlinePinned"
+import { ServiciosGrot } from "@/components/grotesco/ServiciosGrot"
+import { StatsGrot } from "@/components/grotesco/StatsGrot"
+import { TrabajosGrot } from "@/components/grotesco/TrabajosGrot"
+import { WhyGrot } from "@/components/grotesco/WhyGrot"
 
+/**
+ * Home grotesca one-scroll. Orden:
+ *   Hero (grid system + typewriter de frases)
+ *   Stats (contadores con bordes)
+ *   Punchline pineada (queda sticky, lo siguiente se monta encima)
+ *   Trabajos (halftone grid) ← tapa la punchline al scrollear
+ *   Servicios (Brands / Talents / Performance)
+ *   Por qué elegirnos
+ *   Founders
+ *   Cierre + contacto
+ *
+ * El footer (FooterGrot) y la nav (NavGrotesco) viven en el layout.
+ */
 export default function Home() {
   return (
     <>
-      <HeroShader />
-
-      <section className="section-container section-container--tight">
-        <BloqueCita />
-      </section>
-
-      <MarqueeBand items={[MARQUEE_LO_QUE_HACEMOS]} accent durationSec={28} />
-
-      <section className="section-container section-container--tight">
-        <ContadoresAnimados intro={CONTADORES_INTRO} items={contadoresHome} />
-      </section>
-
-      <section className="section-container section-container--tight">
-        <TrabajosSection />
-      </section>
-
-      <section className="section-container section-container--tight">
-        <ServiciosAccordion items={serviciosHome} />
-      </section>
-
-      <section className="section-container section-container--tight">
-        <ServiciosGrupos />
-      </section>
-
-      <MarqueeBand items={[MARQUEE_QUIENES_SOMOS]} accent durationSec={28} />
-
-      <section className="section-container section-container--tight">
-        <FoundersHome />
-      </section>
-
-      <section className="section-container section-container--tight">
-        <HistoriaBirra />
-      </section>
-
-      <CTABand
-        title={
-          <>
-            ¿Hablamos sobre <em>tu marca?</em>
-          </>
-        }
-        sub="Te respondemos en menos de 24 hs hábiles."
-      />
+      <IntroLoader />
+      <HeroGrot />
+      <StatsGrot />
+      <PunchlinePinned />
+      <TrabajosGrot />
+      <ServiciosGrot />
+      <WhyGrot />
+      <FoundersGrot />
+      <CierreGrot />
     </>
   )
 }

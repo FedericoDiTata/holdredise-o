@@ -1,0 +1,90 @@
+/* HOLD PunchlinePinned: sección negra sticky que queda pineada mientras
+   la siguiente sección se le monta encima al scrollear. Las secciones
+   que vienen después necesitan .grot-cover (position relative + z-index
+   + bg propio) para taparla. */
+
+.grot-punch {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  min-height: 100svh;
+  background: var(--fg);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.grot-punch__inner {
+  width: 100%;
+  padding: clamp(60px, 10vh, 120px) clamp(16px, 2.4vw, 28px);
+  display: flex;
+  flex-direction: column;
+}
+
+.grot-punch__phrase {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(24px, 3.6vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 24ch;
+}
+
+/* Las buzzwords apiladas, gigantes, con offsets alternados para que se
+   sientan estampadas y no alineadas a una grilla. */
+.grot-punch__words {
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(28px, 5vh, 56px);
+}
+
+.grot-punch__word {
+  display: inline-block;
+  width: fit-content;
+  font-weight: 700;
+  font-size: clamp(56px, 11vw, 180px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  will-change: transform, opacity;
+}
+
+.grot-punch__word--outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--bg);
+  margin-left: clamp(0px, 4vw, 80px);
+}
+
+.grot-punch__word--accent {
+  color: var(--accent);
+  margin-left: clamp(24px, 16vw, 340px);
+}
+
+.grot-punch__word--solid {
+  color: var(--bg);
+  margin-left: clamp(8px, 8vw, 160px);
+}
+
+.grot-punch__closer {
+  margin: clamp(28px, 5vh, 56px) 0 0;
+  align-self: flex-end;
+  font-size: clamp(17px, 2vw, 26px);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.grot-punch__closer em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .grot-punch__word--accent {
+    margin-left: clamp(12px, 8vw, 60px);
+  }
+  .grot-punch__word--solid {
+    margin-left: clamp(4px, 4vw, 30px);
+  }
+}

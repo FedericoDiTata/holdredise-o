@@ -1,0 +1,52 @@
+/* HOLD IntroLoader: pantalla accent con wordmark + barra. */
+
+.grot-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--accent);
+  color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  pointer-events: none;
+}
+
+.grot-loader__logo {
+  font-weight: 700;
+  font-size: clamp(70px, 16vw, 200px);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.grot-loader__logo span {
+  color: var(--fg);
+}
+
+.grot-loader__bar {
+  width: min(60vw, 260px);
+  height: 2px;
+  background: rgba(250, 255, 250, 0.3);
+  overflow: hidden;
+}
+
+.grot-loader__bar-fill {
+  height: 100%;
+  background: var(--bg);
+  animation: grot-loader-fill 1.4s cubic-bezier(0.5, 0, 0.1, 1) forwards;
+}
+
+@keyframes grot-loader-fill {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.grot-loader__label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}

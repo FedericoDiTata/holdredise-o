@@ -1,0 +1,163 @@
+/* HOLD HeroGrot: grilla visible, tipografía gigante, typewriter azul. */
+
+.grot-hero {
+  background: var(--bg);
+  color: var(--fg);
+  border-bottom: 1px solid var(--fg);
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - var(--hold-header-h, 72px));
+}
+
+.grot-hero__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Strip de celdas mono con bordes. */
+.grot-hero__strip {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr;
+  border-bottom: 1px solid var(--fg);
+}
+
+.grot-hero__cell {
+  padding: 13px clamp(16px, 2.4vw, 28px);
+  border-right: 1px solid var(--fg);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.grot-hero__cell:last-child {
+  border-right: none;
+}
+
+.grot-hero__cell--right {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Título gigante. */
+.grot-hero__title-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: clamp(28px, 4vw, 64px) clamp(16px, 2.4vw, 28px);
+}
+
+.grot-hero__title {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(40px, 8vw, 140px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.grot-hero__line {
+  display: block;
+}
+
+.grot-hero__line--typed {
+  color: var(--accent);
+  /* Reserva una línea de alto para que el borrado no colapse el layout. */
+  min-height: 1em;
+}
+
+/* Typewriter: cursor bloque grotesco. */
+.grot-typing {
+  display: inline;
+}
+
+.grot-typing__cursor {
+  display: inline-block;
+  width: 0.45ch;
+  height: 0.78em;
+  background: var(--fg);
+  vertical-align: baseline;
+  transform: translateY(0.06em);
+  margin-left: 0.06ch;
+}
+
+.grot-typing__cursor--blink {
+  animation: grot-cursor-blink 0.9s steps(1) infinite;
+}
+
+@keyframes grot-cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Fila inferior: bajada + scroll. */
+.grot-hero__bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 clamp(16px, 2.4vw, 28px) clamp(24px, 3.4vw, 48px);
+  flex-wrap: wrap;
+}
+
+.grot-hero__sub {
+  margin: 0;
+  max-width: 46ch;
+  font-size: clamp(15px, 1.6vw, 21px);
+  line-height: 1.4;
+}
+
+.grot-hero__scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.grot-hero__scroll-circle {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--fg);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  animation: grot-scroll-nudge 2.2s var(--ease-hold) infinite;
+}
+
+@keyframes grot-scroll-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@media (max-width: 820px) {
+  .grot-hero__strip {
+    grid-template-columns: 1fr 1fr;
+  }
+  .grot-hero__cell--right {
+    display: none;
+  }
+  .grot-hero__title {
+    font-size: clamp(36px, 10.5vw, 80px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grot-typing__cursor {
+    display: none;
+  }
+  .grot-hero__scroll-circle {
+    animation: none;
+  }
+}

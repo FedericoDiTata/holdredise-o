@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { Header } from "@/components/layout/Header"
-import { Footer } from "@/components/layout/Footer"
+import { Inter, Space_Mono } from "next/font/google"
+import { FooterGrot } from "@/components/grotesco/FooterGrot"
+import { NavGrotesco } from "@/components/grotesco/NavGrotesco"
 import { SmoothScroll } from "@/components/effects/SmoothScroll"
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll"
 import { PageTransition } from "@/components/effects/PageTransition"
@@ -12,6 +12,14 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+})
+
+/* Space Mono para labels y metadata del sistema grotesco. */
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-mono",
 })
 
 export const metadata: Metadata = {
@@ -40,14 +48,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={inter.variable}>
+    <html lang="es" className={`${inter.variable} ${spaceMono.variable}`}>
       <body>
         <a href="#content" className="hold-skip-link">
           Saltar al contenido
         </a>
         <SmoothScroll />
         <RevealOnScroll />
-        <Header />
+        <NavGrotesco />
         <div
           id="content"
           className="hold-page"
@@ -55,7 +63,7 @@ export default function RootLayout({
         >
           <PageTransition>{children}</PageTransition>
         </div>
-        <Footer />
+        <FooterGrot />
         <FloatingWhatsApp />
       </body>
     </html>
