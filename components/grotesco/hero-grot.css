@@ -8,10 +8,11 @@
      3 = columnas
      4 = frase intro (sobre el blanco) */
 
-/* Wrapper corto: 30svh de recorrido para toda la transición. */
+/* Wrapper: 50svh de recorrido — columnas cortas + un tramo final de
+   blanco con la frase antes de que el hero se vaya. */
 .grot-hero-wrap {
   position: relative;
-  height: 130svh;
+  height: 150svh;
   background: var(--accent);
   isolation: isolate;
 }
@@ -99,21 +100,13 @@
   51%, 100% { opacity: 0; }
 }
 
-/* Base blanca de cierre: tapa las ranuras entre columnas al final. */
-.grot-hero__base {
-  position: absolute;
-  inset: 0;
-  background: var(--bg);
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* ── Columnas skyline (por ENCIMA del título) ─────────────────────── */
+/* ── Columnas skyline (por ENCIMA del título) ─────────────────────────
+   SIN gaps: el skyline es sólido y no deja líneas divisorias. La
+   silueta la dan las alturas desparejas de los topes. */
 .grot-hero__cols {
   position: absolute;
   inset: 0;
   display: flex;
-  gap: 2px;
   align-items: stretch;
   pointer-events: none;
   z-index: 3;

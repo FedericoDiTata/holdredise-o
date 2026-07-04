@@ -11,16 +11,16 @@ import {
 import { TypingPhrases } from "./TypingPhrases"
 import "./hero-grot.css"
 
-/* Columnas blancas que asoman abajo del hero: cada una con su altura
- * inicial (peek) y su propia ventana de progreso. Al crecer TAPAN
- * físicamente el título (z-order), como en la referencia. */
+/* Columnas blancas SIN gaps: skyline sólido que crece y tapa el título.
+ * Terminan alrededor del 78% del progreso para dejar un tramo final de
+ * blanco + frase antes de que el hero se vaya. */
 const COLS = [
-  { peek: 0.1, start: 0.0, end: 0.85 },
-  { peek: 0.2, start: 0.07, end: 0.93 },
-  { peek: 0.07, start: 0.13, end: 0.88 },
-  { peek: 0.16, start: 0.03, end: 0.96 },
-  { peek: 0.12, start: 0.1, end: 0.9 },
-  { peek: 0.22, start: 0.05, end: 1.0 },
+  { peek: 0.1, start: 0.0, end: 0.62 },
+  { peek: 0.2, start: 0.05, end: 0.7 },
+  { peek: 0.07, start: 0.1, end: 0.66 },
+  { peek: 0.16, start: 0.02, end: 0.74 },
+  { peek: 0.12, start: 0.08, end: 0.68 },
+  { peek: 0.22, start: 0.04, end: 0.78 },
 ] as const
 
 function HeroCol({
@@ -40,11 +40,12 @@ function HeroCol({
 
 /**
  * Hero grotesco: bloque accent pineado con el título + typewriter.
- * Las columnas blancas crecen desde abajo y CUBREN el título (están
- * por encima en z-order); sobre el blanco resultante aparece la frase
- * de la agencia centrada, integrada al final de la transición. El
- * recorrido es corto (30svh de scroll) para que no haya que scrollear
- * de más.
+ * Las columnas blancas (sin ranuras) crecen y CUBREN el título; la
+ * frase de la agencia SUBE desde abajo sobre el blanco resultante.
+ *
+ * Nota técnica: todos los efectos scroll-linked de este hero usan
+ * SOLO transforms (scaleY / translateY / rotate) — los MotionValues de
+ * opacity venían fallando en este stack y dejaban contenido invisible.
  */
 export function HeroGrot() {
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -55,19 +56,13 @@ export function HeroGrot() {
     offset: ["start start", "end end"],
   })
 
-  /* El título sube y se desvanece mientras las columnas lo tapan. */
-  const titleY = useTransform(scrollYProgress, [0, 0.55], [0, -220])
-  const titleRotate = useTransform(scrollYProgress, [0, 0.55], [0, -2.5])
-  const titleOpacity = useTransform(scrollYProgress, [0.05, 0.4], [1, 0])
+  /* El título sube y las columnas lo tapan físicamente (z-order). */
+  const titleY = useTransform(scrollYProgress, [0, 0.5], [0, -260])
+  const titleRotate = useTransform(scrollYProgress, [0, 0.5], [0, -2.5])
 
-  /* La frase aparece centrada SOBRE el blanco de las columnas, apenas
-   * después de que crecieron: integrada a la transición, sin dejar
-   * una pantalla blanca vacía. */
-  const introOpacity = useTransform(scrollYProgress, [0.45, 0.72], [0, 1])
-  const introY = useTransform(scrollYProgress, [0.45, 0.72], [70, 0])
-
-  /* Base blanca que tapa las ranuras accent al final. */
-  const baseOpacity = useTransform(scrollYProgress, [0.85, 1], [0, 1])
+  /* La frase SUBE desde abajo del viewport sobre el blanco: transform
+   * puro, sin opacity. */
+  const introY = useTransform(scrollYProgress, [0.55, 0.85], [1000, 0])
 
   return (
     <div className="grot-hero-wrap" id="inicio" ref={wrapRef}>
@@ -81,9 +76,7 @@ export function HeroGrot() {
             <motion.p
               className="grot-hero__title"
               style={
-                reduce
-                  ? undefined
-                  : { y: titleY, rotate: titleRotate, opacity: titleOpacity }
+                reduce ? undefined : { y: titleY, rotate: titleRotate }
               }
             >
               <span className="grot-hero__line">
@@ -95,14 +88,6 @@ export function HeroGrot() {
             </motion.p>
           </div>
         </div>
-
-        {!reduce ? (
-          <motion.div
-            className="grot-hero__base"
-            style={{ opacity: baseOpacity }}
-            aria-hidden
-          />
-        ) : null}
 
         <div className="grot-hero__cols" aria-hidden>
           {COLS.map((c, i) =>
@@ -126,7 +111,7 @@ export function HeroGrot() {
 
         <motion.p
           className="grot-hero__intro"
-          style={reduce ? undefined : { opacity: introOpacity, y: introY }}
+          style={reduce ? undefined : { y: introY }}
         >
           Ayudamos a negocios y creadores a transformar su presencia digital
           en una marca con identidad, estrategia y resultados.{" "}
