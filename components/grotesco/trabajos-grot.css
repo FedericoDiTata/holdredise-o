@@ -131,14 +131,6 @@
   line-height: 1;
 }
 
-.grot-trabajos__rubro {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-
 .grot-trabajos__more {
   display: flex;
   justify-content: center;

@@ -49,8 +49,7 @@ export function TrabajosGrot({ style }: Props) {
                 [ proyecto ]
               </span>
               <div className="grot-trabajos__meta">
-                <span className="grot-trabajos__cliente">{t.cliente}</span>
-                <span className="grot-trabajos__rubro">{t.rubro}</span>
+                <span className="grot-trabajos__cliente">Cliente</span>
               </div>
             </div>
           </article>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   motion,
   useReducedMotion,
@@ -19,10 +19,6 @@ const WORDS = [
   { text: "funnel", variant: "solid", rotate: -2 },
 ] as const
 
-/* Strobe de fondo: negro, accent, blanco, accent, negro. Rápido, y
- * termina siempre en negro. */
-const STROBE = ["#1D1D1B", "#2B63FF", "#FAFFFA", "#2B63FF", "#1D1D1B"]
-
 type Props = {
   /** Dispara la secuencia (lo maneja PinScroll con scroll progress). */
   active: boolean
@@ -36,24 +32,32 @@ type Props = {
  *   2. Al terminar, el fondo hace un strobe negro/azul/blanco rápido
  *      mientras las buzzwords se estampan desparramadas
  *   3. Todo queda vivo: float orgánico + neón pulsante por palabra
+ *
+ * Perf: el typewriter muta textContent por ref (cero re-renders por
+ * letra) y el strobe son 2 capas overlay animando SOLO opacity
+ * (compositor puro) — nada de animar backgroundColor de la sección,
+ * que repintaba el viewport completo en cada frame.
  */
 export function PunchlinePinned({ active, style }: Props) {
   const reduce = useReducedMotion()
-
-  const [typedCount, setTypedCount] = useState(0)
+  const textRef = useRef<HTMLSpanElement>(null)
   const [done, setDone] = useState(false)
 
   useEffect(() => {
     if (!active || done) return
     if (reduce) {
-      setTypedCount(PHRASE.length)
+      if (textRef.current) textRef.current.textContent = PHRASE
       setDone(true)
       return
     }
     let i = 0
     const id = setInterval(() => {
       i += 1
-      setTypedCount(i)
+      /* Mutación directa del nodo de texto: el componente NO se
+       * re-renderiza en cada letra. */
+      if (textRef.current) {
+        textRef.current.textContent = PHRASE.slice(0, i)
+      }
       if (i >= PHRASE.length) {
         clearInterval(id)
         setDone(true)
@@ -68,23 +72,24 @@ export function PunchlinePinned({ active, style }: Props) {
       className="grot-punch"
       style={style}
       aria-label="Manifiesto"
-      initial={false}
-      animate={
-        done && !reduce
-          ? { backgroundColor: STROBE }
-          : { backgroundColor: "#1D1D1B" }
-      }
-      transition={{
-        duration: 1.15,
-        times: [0, 0.2, 0.42, 0.68, 1],
-        ease: "linear",
-        delay: 0.08,
-      }}
     >
+      {/* Strobe: 2 capas (accent + blanca) que hacen el wash de color
+          animando solo opacity cuando termina el typing. */}
+      <div
+        className={
+          "grot-punch__strobe" +
+          (done && !reduce ? " grot-punch__strobe--go" : "")
+        }
+        aria-hidden
+      >
+        <span />
+        <span />
+      </div>
+
       <div className="grot-punch__inner">
         <h2 className="grot-punch__phrase" aria-label={PHRASE}>
           <span aria-hidden>
-            {PHRASE.slice(0, typedCount)}
+            <span ref={textRef} />
             {!reduce && active ? (
               <span
                 className={

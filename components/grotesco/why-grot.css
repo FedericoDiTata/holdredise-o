@@ -1,6 +1,6 @@
-/* HOLD WhyGrot: bloque CLARO con claim + 4 columnas de razones.
-   Va en blanco para cortar contra la tabla negra de servicios (que al
-   expandirse pinta accent) y que la división de secciones se lea. */
+/* HOLD WhyGrot: tarjetas expandibles (patrón Nucleo Bariátrico) en
+   lenguaje HOLD: sin radius, bordes 1px negros, halftone placeholder,
+   cuadrados en vez de círculos. flexGrow animado por framer. */
 
 .grot-why {
   background: var(--bg);
@@ -20,72 +20,181 @@
   max-width: 16ch;
 }
 
-.grot-why__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+/* Fila de cards. perspective para el flip de entrada (data-reveal). */
+.grot-why__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding-inline: clamp(16px, 2.4vw, 28px);
-  /* Para el flip 3D de las columnas al entrar. */
-  perspective: 900px;
+  perspective: 1400px;
 }
 
-.grot-why__col {
-  padding-right: 24px;
-  border-right: 1px solid rgba(29, 29, 27, 0.35);
+@media (min-width: 901px) {
+  .grot-why__cards {
+    flex-direction: row;
+    height: 520px;
+  }
+}
+
+.grot-why__card {
+  position: relative;
+  display: flex;
+  flex-basis: 0;
+  flex-grow: 1;
+  min-height: 210px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--fg);
+  isolation: isolate;
   transform-origin: 50% 100%;
-  will-change: transform, opacity;
+  outline: none;
 }
 
-.grot-why__col + .grot-why__col {
-  padding-left: 24px;
+.grot-why__card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-.grot-why__col:last-child {
-  border-right: none;
-  padding-right: 0;
+@media (min-width: 901px) {
+  .grot-why__card {
+    min-height: 0;
+  }
 }
 
-.grot-why__marker {
-  display: block;
-  width: 10px;
-  height: 10px;
+/* Halftone placeholder de fondo (foto real más adelante). */
+.grot-why__card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grot-why__card[data-active] .grot-why__card-bg {
+  transform: scale(1.05);
+}
+
+.grot-why__card--dark .grot-why__card-bg {
+  background: var(--fg);
+  background-image: radial-gradient(
+    rgba(250, 255, 250, 0.16) 1.6px,
+    transparent 1.8px
+  );
+  background-size: 11px 11px;
+}
+
+.grot-why__card--accent .grot-why__card-bg {
   background: var(--accent);
-  margin-bottom: 18px;
+  background-image: radial-gradient(
+    rgba(0, 0, 0, 0.22) 1.6px,
+    transparent 1.8px
+  );
+  background-size: 11px 11px;
 }
 
-.grot-why__titulo {
-  margin: 0 0 10px;
+/* Sombreado para legibilidad del texto (denso abajo). */
+.grot-why__card-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(29, 29, 27, 0.28) 0%,
+    rgba(29, 29, 27, 0.72) 100%
+  );
+  pointer-events: none;
+}
+
+.grot-why__card-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  padding: clamp(16px, 1.6vw, 26px);
+  color: #fff;
+}
+
+/* Cuadrado con ícono (círculo en Nucleo; acá cuadrado grotesco). */
+.grot-why__card-icon {
+  align-self: flex-end;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(250, 255, 250, 0.5);
+  background: rgba(250, 255, 250, 0.12);
+  color: #fff;
+  flex-shrink: 0;
+  transition:
+    background 0.3s var(--ease-hold),
+    color 0.3s var(--ease-hold),
+    border-color 0.3s var(--ease-hold);
+}
+
+.grot-why__card[data-active] .grot-why__card-icon {
+  background: var(--bg);
+  color: var(--fg);
+  border-color: var(--bg);
+}
+
+/* Colapsada: título vertical (horizontal en mobile). */
+.grot-why__card-hold {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+.grot-why__card-title-v {
+  margin: 0;
   font-weight: 700;
-  font-size: clamp(17px, 1.8vw, 24px);
-  letter-spacing: -0.01em;
+  font-size: 19px;
   line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
-.grot-why__texto {
+@media (min-width: 901px) {
+  .grot-why__card-hold {
+    align-items: center;
+  }
+  .grot-why__card-title-v {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+}
+
+/* Expandida: tag de foto + título horizontal + descripción. */
+.grot-why__card-open {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 46ch;
+}
+
+.grot-why__card-fototag {
+  width: fit-content;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(250, 255, 250, 0.85);
+  border: 1px dashed rgba(250, 255, 250, 0.55);
+  padding: 5px 10px;
+}
+
+.grot-why__card-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 32px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.grot-why__card-texto {
   margin: 0;
   font-size: 14px;
   line-height: 1.5;
-  opacity: 0.75;
-}
-
-@media (max-width: 900px) {
-  .grot-why__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px 0;
-  }
-  .grot-why__col:nth-child(2n) {
-    border-right: none;
-  }
-  .grot-why__col:nth-child(2n + 1) {
-    padding-left: 0;
-  }
-}
-
-@media (max-width: 560px) {
-  .grot-why__grid {
-    grid-template-columns: 1fr;
-  }
-  .grot-why__col {
-    border-right: none;
-    padding-inline: 0;
-  }
+  opacity: 0.85;
 }

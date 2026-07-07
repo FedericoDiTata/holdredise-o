@@ -15,10 +15,64 @@
 }
 
 .grot-punch__inner {
+  position: relative;
+  z-index: 2;
   width: 100%;
   padding: clamp(36px, 6vh, 70px) clamp(16px, 2.4vw, 28px);
   display: flex;
   flex-direction: column;
+}
+
+/* ── Strobe de fondo ──────────────────────────────────────────────────
+   El wash negro→azul→blanco→azul→negro. En vez de animar el
+   backgroundColor de la sección (repaint de viewport completo por
+   frame), son 2 capas fijas (accent + blanca) que animan SOLO opacity:
+   puro compositor, cero repaints. La sección queda siempre negra. */
+.grot-punch__strobe {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.grot-punch__strobe span {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.grot-punch__strobe span:nth-child(1) {
+  background: var(--accent);
+}
+
+.grot-punch__strobe span:nth-child(2) {
+  background: var(--bg);
+}
+
+.grot-punch__strobe--go span:nth-child(1) {
+  animation: grot-strobe-accent 1.15s linear 0.08s forwards;
+}
+
+.grot-punch__strobe--go span:nth-child(2) {
+  animation: grot-strobe-white 1.15s linear 0.08s forwards;
+}
+
+/* Mismos beats que el wash original: negro 0% / azul 20% / blanco 42%
+   / azul 68% / negro 100%. La capa blanca pisa a la azul en el pico. */
+@keyframes grot-strobe-accent {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  42% { opacity: 1; }
+  68% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes grot-strobe-white {
+  0%, 20% { opacity: 0; }
+  42% { opacity: 1; }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 .grot-punch__phrase {
@@ -199,6 +253,9 @@
     animation: none;
   }
   .grot-punch__cursor {
+    display: none;
+  }
+  .grot-punch__strobe {
     display: none;
   }
 }
