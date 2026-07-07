@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { contadoresHome } from "@/data/content"
+import { CONTADORES_INTRO, contadoresHome } from "@/data/content"
 import "./stats-grot.css"
 
 /**
@@ -88,12 +88,18 @@ function StatCell({
 }
 
 /**
- * Grilla de 3 stats con números gigantes que caen con SLAM. La intro
- * de la agencia vive ahora dentro de la transición del hero.
+ * Intro "Sí, nuestro nombre es inglés y…" (copy real del PDF) + grilla
+ * de 3 stats con números gigantes que caen con SLAM. La sección abre
+ * con borde negro para que se lea claramente FUERA de la coreografía
+ * de colores del hero.
  */
 export function StatsGrot() {
   return (
     <section className="grot-stats grot-cover" aria-label="Números de HOLD">
+      <p className="grot-stats__intro" data-reveal="up">
+        {CONTADORES_INTRO}
+      </p>
+
       <div className="grot-stats__grid">
         {contadoresHome.map((c, i) => (
           <StatCell
