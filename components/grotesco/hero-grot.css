@@ -150,33 +150,36 @@
 
 .grot-hero__swap span:nth-child(1) {
   background: var(--bg);
-  animation: grot-swapop-a 2.4s steps(1) infinite;
+  animation: grot-swapop-a 1.8s steps(1) infinite;
 }
 
 .grot-hero__swap span:nth-child(2) {
   background: var(--accent);
-  animation: grot-swapop-b 2.4s steps(1) infinite;
+  animation: grot-swapop-b 1.8s steps(1) infinite;
 }
 
 .grot-hero__swap span:nth-child(3) {
   background: var(--fg);
-  animation: grot-swapop-c 2.4s steps(1) infinite;
+  animation: grot-swapop-c 1.8s steps(1) infinite;
 }
 
+/* 3 beats IGUALES de 0.6s: blanco / accent / negro. El ciclo anterior
+   tenía la fase blanca de 1.32s y eso se leía como "se trabó" — ahora
+   el pulso es parejo, algo cambia cada 0.6s sin excepción. */
 @keyframes grot-swapop-a {
-  0%, 54% { opacity: 1; }
-  55%, 100% { opacity: 0; }
+  0%, 32% { opacity: 1; }
+  33%, 100% { opacity: 0; }
 }
 
 @keyframes grot-swapop-b {
-  0%, 54% { opacity: 0; }
-  55%, 79% { opacity: 1; }
-  80%, 100% { opacity: 0; }
+  0%, 32% { opacity: 0; }
+  33%, 65% { opacity: 1; }
+  66%, 100% { opacity: 0; }
 }
 
 @keyframes grot-swapop-c {
-  0%, 79% { opacity: 0; }
-  80%, 100% { opacity: 1; }
+  0%, 65% { opacity: 0; }
+  66%, 100% { opacity: 1; }
 }
 
 /* ── Frase intro: stickers gigantes desparramados sobre el blanco ────
@@ -241,7 +244,7 @@
     0 0 18px rgba(43, 99, 255, 0.85),
     0 0 52px rgba(43, 99, 255, 0.4);
   opacity: 0.2;
-  animation: grot-piece-glow 2.8s ease-in-out infinite;
+  animation: grot-piece-glow 1.9s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -267,7 +270,7 @@
     0 0 22px rgba(43, 99, 255, 0.9),
     0 0 64px rgba(43, 99, 255, 0.45);
   opacity: 0.25;
-  animation: grot-piece-glow 2.2s ease-in-out 0.4s infinite;
+  animation: grot-piece-glow 1.5s ease-in-out 0.3s infinite;
   pointer-events: none;
 }
 
@@ -290,49 +293,51 @@
 
 .grot-hero__piece--0 .grot-hero__piece-in {
   animation:
-    grot-swap-p0 2.4s steps(1) infinite,
+    grot-swap-p0 1.8s steps(1) infinite,
     grot-breathe-a 3.6s ease-in-out infinite alternate;
 }
 
 .grot-hero__piece--1 .grot-hero__piece-in {
   animation:
-    grot-swap-pout 2.4s steps(1) infinite,
+    grot-swap-pout 1.8s steps(1) infinite,
     grot-breathe-b 4.4s ease-in-out infinite alternate;
 }
 
 .grot-hero__piece--2 .grot-hero__piece-in {
   animation:
-    grot-swap-p2 2.4s steps(1) infinite,
+    grot-swap-p2 1.8s steps(1) infinite,
     grot-breathe-c 3.9s ease-in-out infinite alternate;
 }
 
 .grot-hero__piece--3 .grot-hero__piece-in {
   animation:
-    grot-swap-pneon 2.4s steps(1) infinite,
+    grot-swap-pneon 1.8s steps(1) infinite,
     grot-breathe-d 3.1s ease-in-out infinite alternate;
 }
 
+/* Los cortes de las piezas caen en los MISMOS beats que el fondo
+   (33% y 66% de 1.8s) para que todo cambie junto, en ritmo. */
 @keyframes grot-swap-p0 {
-  0%, 54% { background: var(--fg); color: var(--bg); }
-  55%, 79% { background: var(--fg); color: #fff; }
-  80%, 100% { background: var(--accent); color: #fff; }
+  0%, 32% { background: var(--fg); color: var(--bg); }
+  33%, 65% { background: var(--fg); color: #fff; }
+  66%, 100% { background: var(--accent); color: #fff; }
 }
 
 @keyframes grot-swap-p2 {
-  0%, 54% { background: var(--accent); color: #fff; }
-  55%, 79% { background: var(--fg); color: #fff; }
-  80%, 100% { background: var(--accent); color: #fff; }
+  0%, 32% { background: var(--accent); color: #fff; }
+  33%, 65% { background: var(--fg); color: #fff; }
+  66%, 100% { background: var(--accent); color: #fff; }
 }
 
 @keyframes grot-swap-pout {
-  0%, 79% { -webkit-text-stroke-color: var(--fg); }
-  80%, 100% { -webkit-text-stroke-color: var(--bg); }
+  0%, 65% { -webkit-text-stroke-color: var(--fg); }
+  66%, 100% { -webkit-text-stroke-color: var(--bg); }
 }
 
 @keyframes grot-swap-pneon {
-  0%, 54% { color: var(--accent); }
-  55%, 79% { color: #fff; }
-  80%, 100% { color: var(--accent); }
+  0%, 32% { color: var(--accent); }
+  33%, 65% { color: #fff; }
+  66%, 100% { color: var(--accent); }
 }
 
 /* Respiración: translate + rotate + SCALE suaves, siempre vivas. */
