@@ -1,3 +1,4 @@
+import { BirraGrot } from "@/components/grotesco/BirraGrot"
 import { CierreGrot } from "@/components/grotesco/CierreGrot"
 import { FoundersGrot } from "@/components/grotesco/FoundersGrot"
 import { HeroGrot } from "@/components/grotesco/HeroGrot"
@@ -16,6 +17,7 @@ import { WhyGrot } from "@/components/grotesco/WhyGrot"
  *   Servicios (Brands / Talents / Performance)
  *   Por qué elegirnos
  *   Founders
+ *   La birra (cita + strip de 2 fotos)
  *   Cierre + contacto
  *
  * El footer (FooterGrot) y la nav (NavGrotesco) viven en el layout.
@@ -30,6 +32,7 @@ export default function Home() {
       <ServiciosGrot />
       <WhyGrot />
       <FoundersGrot />
+      <BirraGrot />
       <CierreGrot />
     </>
   )

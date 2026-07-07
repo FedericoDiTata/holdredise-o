@@ -1,0 +1,121 @@
+/* HOLD BirraGrot: cita de la birra + strip de 2 fotos unidas con
+   palabras gigantes overlay (placeholders halftone por ahora). */
+
+.grot-birra {
+  background: var(--bg);
+  color: var(--fg);
+  border-bottom: 1px solid var(--fg);
+}
+
+.grot-birra__quote {
+  margin: 0;
+  padding: clamp(40px, 6vw, 90px) clamp(16px, 2.4vw, 28px);
+}
+
+.grot-birra__line {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(26px, 4.4vw, 76px);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  max-width: 24ch;
+}
+
+.grot-birra__line--accent {
+  color: var(--accent);
+  margin-top: 0.45em;
+}
+
+/* Strip: 2 paneles pegados (sin gap), como en la referencia. */
+.grot-birra__strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--fg);
+}
+
+/* WIPE de entrada (patrón host): cada panel abre desde su lado. */
+.grot-birra__strip[data-reveal="host"] .grot-birra__panel--dark {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.85s cubic-bezier(0.62, 0.04, 0.36, 0.97);
+}
+
+.grot-birra__strip[data-reveal="host"] .grot-birra__panel--accent {
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 0.85s cubic-bezier(0.62, 0.04, 0.36, 0.97) 0.15s;
+}
+
+.grot-birra__strip[data-reveal="host"].in .grot-birra__panel--dark,
+.grot-birra__strip[data-reveal="host"].in .grot-birra__panel--accent {
+  clip-path: inset(0 0 0 0);
+}
+
+.grot-birra__panel {
+  position: relative;
+  margin: 0;
+  height: clamp(240px, 34vw, 460px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grot-birra__panel--dark {
+  border-right: 1px solid var(--fg);
+  background: var(--fg);
+  background-image: radial-gradient(
+    rgba(250, 255, 250, 0.16) 1.4px,
+    transparent 1.6px
+  );
+  background-size: 9px 9px;
+}
+
+.grot-birra__panel--accent {
+  background: var(--accent);
+  background-image: radial-gradient(
+    rgba(0, 0, 0, 0.2) 1.4px,
+    transparent 1.6px
+  );
+  background-size: 9px 9px;
+}
+
+.grot-birra__tag {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(250, 255, 250, 0.85);
+  border: 1px dashed rgba(250, 255, 250, 0.55);
+  padding: 8px 14px;
+}
+
+/* Palabras gigantes overlay, como en la referencia del doc. */
+.grot-birra__word {
+  position: absolute;
+  font-weight: 700;
+  color: #fff;
+  font-size: clamp(30px, 5.6vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  text-transform: lowercase;
+  pointer-events: none;
+}
+
+.grot-birra__word--left {
+  left: clamp(14px, 2vw, 30px);
+  bottom: clamp(12px, 2vw, 28px);
+}
+
+.grot-birra__word--right {
+  right: clamp(14px, 2vw, 30px);
+  bottom: clamp(12px, 2vw, 28px);
+}
+
+@media (max-width: 720px) {
+  .grot-birra__panel {
+    height: clamp(170px, 38vw, 260px);
+  }
+  .grot-birra__tag {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+}

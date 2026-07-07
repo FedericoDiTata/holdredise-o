@@ -9,6 +9,8 @@ import "./why-grot.css"
 
 type IconType = ComponentType<{ size?: number; strokeWidth?: number }>
 
+/* Contenido PLACEHOLDER: el doc de las chicas todavía no define nada
+ * para esta sección. Cuando llegue el contenido real, reemplazar acá. */
 const RAZONES: readonly {
   titulo: string
   texto: string
@@ -16,28 +18,30 @@ const RAZONES: readonly {
   tone: "dark" | "accent"
 }[] = [
   {
-    titulo: "Nos involucramos",
+    titulo: "Lorem ipsum",
     texto:
-      "Entramos en tu negocio como si fuera nuestro. No tercerizamos el cuidado.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
     Icon: Handshake,
     tone: "dark",
   },
   {
-    titulo: "Estrategia antes que estética",
+    titulo: "Dolor sit amet",
     texto:
-      "Lo lindo sin un porqué no sirve. Cada decisión tiene una intención.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
     Icon: Crosshair,
     tone: "accent",
   },
   {
-    titulo: "Equipo multidisciplinario",
-    texto: "Más de 15 personas, una sola visión sosteniendo cada proyecto.",
+    titulo: "Consectetur",
+    texto:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.",
     Icon: Users,
     tone: "dark",
   },
   {
-    titulo: "Sin humo",
-    texto: "Resultados que se miden, no que se prometen.",
+    titulo: "Adipiscing elit",
+    texto:
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.",
     Icon: CloudOff,
     tone: "accent",
   },
@@ -53,7 +57,8 @@ const DELAYS = [undefined, "0.15", "0.3", "0.4"] as const
  * Mecánica: fila flex con flexGrow animado (1 colapsada, 3.2 activa).
  * Colapsada: título vertical + cuadrado con ícono. Al pasar el mouse
  * (o tap en mobile) se expande y revela el placeholder de foto, el
- * título horizontal y la descripción.
+ * título horizontal y la descripción. Al salir el cursor de la card
+ * se cierra: si el mouse no está sobre ninguna, ninguna queda abierta.
  */
 export function WhyGrot() {
   const [active, setActive] = useState<number | null>(null)
@@ -62,8 +67,10 @@ export function WhyGrot() {
     <section className="grot-why grot-cover" aria-label="Por qué elegirnos">
       <SectionTag spot="center">Por qué elegirnos</SectionTag>
 
+      {/* PLACEHOLDER: el título real de la sección todavía no está
+          definido en el doc. */}
       <h2 className="grot-why__claim" data-reveal="up">
-        No somos un proveedor más.
+        Titulo
       </h2>
 
       <div className="grot-why__cards">
@@ -80,7 +87,9 @@ export function WhyGrot() {
               role="button"
               tabIndex={0}
               onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive((a) => (a === i ? null : a))}
               onFocus={() => setActive(i)}
+              onBlur={() => setActive((a) => (a === i ? null : a))}
               onClick={() => setActive(isActive ? null : i)}
               animate={{ flexGrow: isActive ? 3.2 : 1 }}
               transition={{ duration: 0.7, ease: EASE_WIPE }}

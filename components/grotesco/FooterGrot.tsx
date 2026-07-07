@@ -9,20 +9,15 @@ import {
 import "./footer-grot.css"
 
 /**
- * Footer grotesco: marquee "Sostener y contener" invertido + grilla de
- * contacto con los datos reales + strip de cierre.
+ * Footer grotesco: marquee "Hablemos" invertido + grilla de contacto
+ * con los datos reales + strip de cierre.
  */
 export function FooterGrot() {
   const whatsappPretty = `+${WHATSAPP_NUMBER.slice(0, 2)} ${WHATSAPP_NUMBER.slice(2, 3)} ${WHATSAPP_NUMBER.slice(3, 5)} ${WHATSAPP_NUMBER.slice(5, 9)} ${WHATSAPP_NUMBER.slice(9)}`
 
   return (
     <footer className="grot-footer grot-cover">
-      <MarqueeGrot
-        text="Sostener y contener"
-        dark
-        durationSec={18}
-        repeats={5}
-      />
+      <MarqueeGrot text="Hablemos" dark durationSec={18} repeats={5} />
 
       <div className="grot-footer__grid">
         <div className="grot-footer__brand">
