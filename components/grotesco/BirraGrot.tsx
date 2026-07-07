@@ -39,7 +39,7 @@ export function BirraGrot() {
           </span>
         </figure>
 
-        <figure className="grot-birra__panel grot-birra__panel--accent">
+        <figure className="grot-birra__panel grot-birra__panel--dark">
           <span className="grot-birra__tag" aria-hidden>
             [ foto · equipo ]
           </span>

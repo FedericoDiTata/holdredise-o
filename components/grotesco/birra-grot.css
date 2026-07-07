@@ -34,18 +34,17 @@
 }
 
 /* WIPE de entrada (patrón host): cada panel abre desde su lado. */
-.grot-birra__strip[data-reveal="host"] .grot-birra__panel--dark {
+.grot-birra__strip[data-reveal="host"] .grot-birra__panel:first-child {
   clip-path: inset(0 100% 0 0);
   transition: clip-path 0.85s cubic-bezier(0.62, 0.04, 0.36, 0.97);
 }
 
-.grot-birra__strip[data-reveal="host"] .grot-birra__panel--accent {
+.grot-birra__strip[data-reveal="host"] .grot-birra__panel:last-child {
   clip-path: inset(0 0 0 100%);
   transition: clip-path 0.85s cubic-bezier(0.62, 0.04, 0.36, 0.97) 0.15s;
 }
 
-.grot-birra__strip[data-reveal="host"].in .grot-birra__panel--dark,
-.grot-birra__strip[data-reveal="host"].in .grot-birra__panel--accent {
+.grot-birra__strip[data-reveal="host"].in .grot-birra__panel {
   clip-path: inset(0 0 0 0);
 }
 
@@ -60,7 +59,6 @@
 }
 
 .grot-birra__panel--dark {
-  border-right: 1px solid var(--fg);
   background: var(--fg);
   background-image: radial-gradient(
     rgba(250, 255, 250, 0.16) 1.4px,
@@ -69,13 +67,9 @@
   background-size: 9px 9px;
 }
 
-.grot-birra__panel--accent {
-  background: var(--accent);
-  background-image: radial-gradient(
-    rgba(0, 0, 0, 0.2) 1.4px,
-    transparent 1.6px
-  );
-  background-size: 9px 9px;
+/* Divisor claro entre los 2 paneles: negro sobre negro no se vería. */
+.grot-birra__panel:first-child {
+  border-right: 1px solid rgba(250, 255, 250, 0.4);
 }
 
 .grot-birra__tag {
