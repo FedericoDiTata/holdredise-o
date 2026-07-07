@@ -47,8 +47,6 @@ const RAZONES: readonly {
   },
 ] as const
 
-const DELAYS = [undefined, "0.15", "0.3", "0.4"] as const
-
 /**
  * Por qué elegirnos: tarjetas EXPANDIBLES estilo Nucleo Bariátrico
  * adaptadas al lenguaje HOLD (sin radius, bordes 1px negros, halftone
@@ -73,7 +71,11 @@ export function WhyGrot() {
         Titulo
       </h2>
 
-      <div className="grot-why__cards">
+      {/* Host: el observer mira la fila (sin transforms). El flip de
+          cada card vive en el CSS del componente — si el observer
+          mirara la card ya rotada en 3D, su proyección en pantalla
+          sería una línea y el reveal dispararía tardísimo. */}
+      <div className="grot-why__cards" data-reveal="host">
         {RAZONES.map((r, i) => {
           const isActive = active === i
           const Icon = r.Icon
@@ -81,8 +83,6 @@ export function WhyGrot() {
             <motion.div
               key={r.titulo}
               className={`grot-why__card grot-why__card--${r.tone}`}
-              data-reveal="flip"
-              data-reveal-delay={DELAYS[i]}
               data-active={isActive ? "true" : undefined}
               role="button"
               tabIndex={0}
