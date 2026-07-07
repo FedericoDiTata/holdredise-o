@@ -1,12 +1,12 @@
 /* HOLD HeroGrot: bloque accent pineado. Las columnas blancas crecen y
-   TAPAN el título (z-order); la frase de la agencia aparece centrada
-   sobre el blanco al final de la transición.
+   TAPAN el título (z-order); sobre el blanco resultante entra el
+   collage de piezas con la coreografía de color.
 
    Z-order dentro del hero:
      1 = contenido (título + typewriter)  ← queda DEBAJO de las columnas
-     2 = base blanca de cierre
-     3 = columnas
-     4 = frase intro (sobre el blanco) */
+     3 = columnas skyline
+     4 = overlay de swap de fondo (3 capas opacity-only)
+     5 = piezas del collage */
 
 /* Wrapper: 70svh de recorrido — columnas cortas y un tramo largo para
    que las piezas de la frase lleguen de forma progresiva. */
@@ -218,7 +218,7 @@
   display: inline-block;
 }
 
-/* Bloque negro (los swaps coreografiados viven en .grot-hero--collage). */
+/* Bloque negro (sus swaps de color viven en la coreografía de abajo). */
 .grot-hero__piece-in--block-dark {
   background: var(--fg);
   color: var(--bg);
@@ -245,7 +245,7 @@
   pointer-events: none;
 }
 
-/* Bloque accent (los swaps coreografiados viven en .grot-hero--collage). */
+/* Bloque accent (sus swaps de color viven en la coreografía de abajo). */
 .grot-hero__piece-in--block-accent {
   background: var(--accent);
   color: #fff;
