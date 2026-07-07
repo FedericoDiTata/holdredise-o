@@ -118,6 +118,65 @@
   background: var(--bg);
   transform-origin: bottom center;
   will-change: transform;
+  /* SIN animación de background acá: repintar 6 columnas full-viewport
+     en cada corte era lo que trababa. El cambio de fondo vive en el
+     overlay .grot-hero__swap (3 capas, solo opacity, GPU). */
+}
+
+/* ── Overlay de fondo: 3 capas apiladas (blanco / accent / negro) ────
+   Cada capa alterna su OPACITY con steps sobre el mismo ciclo de 2.4s:
+   compositor puro, cero repaints, imposible que se trabe. Las capas
+   corren SIEMPRE (sincronizadas con los swaps de las piezas); el
+   umbral de scroll solo hace fade del overlay completo. */
+.grot-hero__swap {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.35s linear;
+  pointer-events: none;
+}
+
+.grot-hero--collage .grot-hero__swap {
+  opacity: 1;
+}
+
+.grot-hero__swap span {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.grot-hero__swap span:nth-child(1) {
+  background: var(--bg);
+  animation: grot-swapop-a 2.4s steps(1) infinite;
+}
+
+.grot-hero__swap span:nth-child(2) {
+  background: var(--accent);
+  animation: grot-swapop-b 2.4s steps(1) infinite;
+}
+
+.grot-hero__swap span:nth-child(3) {
+  background: var(--fg);
+  animation: grot-swapop-c 2.4s steps(1) infinite;
+}
+
+@keyframes grot-swapop-a {
+  0%, 54% { opacity: 1; }
+  55%, 100% { opacity: 0; }
+}
+
+@keyframes grot-swapop-b {
+  0%, 54% { opacity: 0; }
+  55%, 79% { opacity: 1; }
+  80%, 100% { opacity: 0; }
+}
+
+@keyframes grot-swapop-c {
+  0%, 79% { opacity: 0; }
+  80%, 100% { opacity: 1; }
 }
 
 /* ── Frase intro: stickers gigantes desparramados sobre el blanco ────
@@ -128,7 +187,7 @@
 .grot-hero__intro {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -217,26 +276,40 @@
   50% { opacity: 1; }
 }
 
-/* ── Coreografía de color (modo collage) ─────────────────────────────
+/* ── Coreografía de color + respiración continua ─────────────────────
    UN ciclo compartido de 2.4s con cortes SECOS en los mismos instantes
-   (55% y 80%) para fondo y piezas. Tres fases:
+   (55% y 80%) para fondo (overlay) y piezas. Tres fases:
      A (0-55%):  fondo blanco  · bloque1 negro  · bloque2 accent
      B (55-80%): fondo ACCENT  · bloques negros · neón blanco
      C (80-100%): fondo NEGRO  · bloques accent · outline blanco
-   Cada pieza rota sus colores para mantener contraste en cada fase. */
 
-.grot-hero--collage .grot-hero__col {
-  animation: grot-swap-bg 2.4s steps(1) infinite;
+   TODO corre desde el mount (las piezas están fuera de pantalla hasta
+   que llegan): nunca se reinicia, nunca se frena, siempre en sync con
+   el overlay. Además cada pieza RESPIRA: translate + rotate + scale
+   suave en loop, con duración propia para que nunca se sincronicen. */
+
+.grot-hero__piece--0 .grot-hero__piece-in {
+  animation:
+    grot-swap-p0 2.4s steps(1) infinite,
+    grot-breathe-a 3.6s ease-in-out infinite alternate;
 }
 
-@keyframes grot-swap-bg {
-  0%, 54% { background: var(--bg); }
-  55%, 79% { background: var(--accent); }
-  80%, 100% { background: var(--fg); }
+.grot-hero__piece--1 .grot-hero__piece-in {
+  animation:
+    grot-swap-pout 2.4s steps(1) infinite,
+    grot-breathe-b 4.4s ease-in-out infinite alternate;
 }
 
-.grot-hero--collage .grot-hero__piece-in--block-dark {
-  animation: grot-swap-p0 2.4s steps(1) infinite;
+.grot-hero__piece--2 .grot-hero__piece-in {
+  animation:
+    grot-swap-p2 2.4s steps(1) infinite,
+    grot-breathe-c 3.9s ease-in-out infinite alternate;
+}
+
+.grot-hero__piece--3 .grot-hero__piece-in {
+  animation:
+    grot-swap-pneon 2.4s steps(1) infinite,
+    grot-breathe-d 3.1s ease-in-out infinite alternate;
 }
 
 @keyframes grot-swap-p0 {
@@ -245,18 +318,10 @@
   80%, 100% { background: var(--accent); color: #fff; }
 }
 
-.grot-hero--collage .grot-hero__piece-in--block-accent {
-  animation: grot-swap-p2 2.4s steps(1) infinite;
-}
-
 @keyframes grot-swap-p2 {
   0%, 54% { background: var(--accent); color: #fff; }
   55%, 79% { background: var(--fg); color: #fff; }
   80%, 100% { background: var(--accent); color: #fff; }
-}
-
-.grot-hero--collage .grot-hero__piece-in--outline {
-  animation: grot-swap-pout 2.4s steps(1) infinite;
 }
 
 @keyframes grot-swap-pout {
@@ -264,14 +329,31 @@
   80%, 100% { -webkit-text-stroke-color: var(--bg); }
 }
 
-.grot-hero--collage .grot-hero__piece-in--neon {
-  animation: grot-swap-pneon 2.4s steps(1) infinite;
-}
-
 @keyframes grot-swap-pneon {
   0%, 54% { color: var(--accent); }
   55%, 79% { color: #fff; }
   80%, 100% { color: var(--accent); }
+}
+
+/* Respiración: translate + rotate + SCALE suaves, siempre vivas. */
+@keyframes grot-breathe-a {
+  from { transform: translate(-5px, -7px) rotate(-0.7deg) scale(0.985); }
+  to { transform: translate(7px, 7px) rotate(0.8deg) scale(1.03); }
+}
+
+@keyframes grot-breathe-b {
+  from { transform: translate(6px, 6px) rotate(0.6deg) scale(1.025); }
+  to { transform: translate(-7px, -6px) rotate(-0.9deg) scale(0.98); }
+}
+
+@keyframes grot-breathe-c {
+  from { transform: translate(-6px, 5px) rotate(0.5deg) scale(1.02); }
+  to { transform: translate(6px, -6px) rotate(-0.7deg) scale(0.982); }
+}
+
+@keyframes grot-breathe-d {
+  from { transform: translate(0, 6px) rotate(0.8deg) scale(0.975); }
+  to { transform: translate(0, -7px) rotate(-0.9deg) scale(1.05); }
 }
 
 /* Desparramo: cada pieza en su lugar. */
@@ -309,14 +391,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .grot-hero__piece-in--block-dark,
-  .grot-hero__piece-in--block-accent,
-  .grot-hero__piece-in--outline,
-  .grot-hero__piece-in--neon,
+  .grot-hero__piece-in,
   .grot-hero__piece-in--outline::after,
   .grot-hero__piece-in--neon::after,
-  .grot-hero--collage .grot-hero__col {
+  .grot-hero__swap span {
     animation: none;
+  }
+  .grot-hero__swap {
+    display: none;
   }
 }
 

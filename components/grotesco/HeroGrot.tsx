@@ -180,6 +180,17 @@ export function HeroGrot() {
           )}
         </div>
 
+        {/* Fondo del collage: 3 capas apiladas que alternan opacity con
+            steps (compositor puro, no se traba). Corren siempre; el
+            umbral de scroll solo hace fade del overlay entero. */}
+        {!reduce ? (
+          <div className="grot-hero__swap" aria-hidden>
+            <span />
+            <span />
+            <span />
+          </div>
+        ) : null}
+
         {!reduce ? (
           <p className="grot-hero__intro" aria-hidden>
             {PIECES.map((piece, i) => (
