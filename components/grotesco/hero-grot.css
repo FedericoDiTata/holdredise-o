@@ -194,7 +194,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(12px, 2vh, 28px);
+  gap: clamp(14px, 3vh, 42px);
   margin: 0;
   padding-inline: clamp(12px, 3vw, 64px);
   padding-top: calc(var(--hold-header-h, 72px) + 16px);
@@ -370,11 +370,19 @@
 .grot-hero__piece--1 {
   align-self: flex-end;
   margin-right: clamp(4px, 2.4vw, 56px);
+  /* Por ENCIMA de los bloques vecinos: con la respiración + las
+     rotaciones, las esquinas del bloque azul llegan a pisarla y la
+     frase outline tapada no se lee. */
+  z-index: 1;
 }
 
 .grot-hero__piece--2 {
   align-self: flex-start;
   margin-left: clamp(8px, 6vw, 130px);
+  /* Un solo renglón: "resultados." colgada sola abajo rompía el
+     bloque. Fuente más chica para que la frase entre entera. */
+  white-space: nowrap;
+  font-size: clamp(20px, 2.75vw, 54px);
 }
 
 .grot-hero__piece--3 {
@@ -389,6 +397,11 @@
   .grot-hero__piece {
     font-size: clamp(19px, 5.2vw, 30px);
     max-width: 97%;
+  }
+  /* En mobile la frase larga no entra en un renglón: vuelve a wrapear. */
+  .grot-hero__piece--2 {
+    white-space: normal;
+    font-size: clamp(19px, 5.2vw, 30px);
   }
   .grot-hero__piece-in--neon {
     font-size: clamp(23px, 6.2vw, 38px);
