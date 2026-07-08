@@ -74,6 +74,7 @@ export function NavGrotesco() {
       <header className="grot-nav">
         <a href="#inicio" className="grot-nav__logo" aria-label="HOLD inicio">
           hold<span>.</span>
+          <sup>®</sup>
         </a>
         <button
           type="button"
@@ -107,6 +108,7 @@ export function NavGrotesco() {
             <div className="grot-menu__bar">
               <span className="grot-menu__logo">
                 hold<span>.</span>
+                <sup>®</sup>
               </span>
               <button
                 type="button"

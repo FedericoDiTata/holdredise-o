@@ -30,6 +30,16 @@
   color: var(--accent);
 }
 
+/* ® de marca registrada, chiquita y arriba. */
+.grot-nav__logo sup,
+.grot-menu__logo sup {
+  font-size: 0.34em;
+  line-height: 0;
+  vertical-align: super;
+  letter-spacing: 0;
+  margin-left: 0.1em;
+}
+
 .grot-nav__burger {
   display: inline-flex;
   align-items: center;

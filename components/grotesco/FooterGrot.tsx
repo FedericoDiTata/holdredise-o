@@ -23,6 +23,7 @@ export function FooterGrot() {
         <div className="grot-footer__brand">
           <span className="grot-footer__logo">
             hold<span>.</span>
+            <sup>®</sup>
           </span>
           <p className="grot-footer__tagline">
             No llegamos a cambiarte, llegamos a sostenerte.

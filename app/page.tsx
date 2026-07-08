@@ -2,7 +2,6 @@ import { BirraGrot } from "@/components/grotesco/BirraGrot"
 import { CierreGrot } from "@/components/grotesco/CierreGrot"
 import { FoundersGrot } from "@/components/grotesco/FoundersGrot"
 import { HeroGrot } from "@/components/grotesco/HeroGrot"
-import { IntroLoader } from "@/components/grotesco/IntroLoader"
 import { PinScroll } from "@/components/grotesco/PinScroll"
 import { ServiciosGrot } from "@/components/grotesco/ServiciosGrot"
 import { StatsGrot } from "@/components/grotesco/StatsGrot"
@@ -25,7 +24,6 @@ import { WhyGrot } from "@/components/grotesco/WhyGrot"
 export default function Home() {
   return (
     <>
-      <IntroLoader />
       <HeroGrot />
       <StatsGrot />
       <PinScroll />
